@@ -4,7 +4,7 @@
 require 'json'
 #Two helper classes... 
 require_relative 'send_direct_message'
-require_relative 'power_track_rules_manager'
+
 
 class EventManager
 	@@previous_event_id = 0
@@ -16,8 +16,6 @@ class EventManager
 	def initialize
 		#puts 'Creating SendDirectMessage object'
 		@DMSender = SendDirectMessage.new
-		#External 'things' this object can trigger...
-		@RulesManager = PowerTrackRulesManager.new
 	end
 
 	#responses are based on options' Quick Reply metadata settings.
@@ -64,7 +62,7 @@ class EventManager
 						elsif response.include? 'location_list_choice'
 							location_choice = response['location_list_choice: '.length..-1]
 							coordinates = []
-							coordinates = @RulesManager.add_rule_for_list_subscription(user_id, location_choice)
+
 							location_choice = "#{location_choice} (a 25-mile radius circle centered at #{coordinates[0]}, #{coordinates[1]} to be specific)"
 							@DMSender.send_confirmation(user_id, location_choice)
 						elsif response == 'map_selection'
@@ -87,11 +85,11 @@ class EventManager
 							@DMSender.send_confirmation(user_id, location_choice)
 						elsif response == 'list'
 							@DMSender.send_status(user_id,'⌛ Looking up areas of interest...')
-							subscriptions = @RulesManager.get_subscriptions(user_id)
+
 							@DMSender.send_subscription_list(user_id, subscriptions)
 						elsif response == 'unsubscribe'
 							@DMSender.send_status(user_id,'⌛ Deleting areas of interest...')
-							@RulesManager.delete_subscription(user_id)
+
 							@DMSender.send_unsubscribe(user_id)
 						else #we have an answer to one of the above.
 							puts "UNHANDLED user response: #{response}"
@@ -110,12 +108,12 @@ class EventManager
 
 						elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'unsubscribe' or request.downcase.include? 'quit' or request.downcase.include? 'stop')
 							puts 'unsubscribe'
-							@RulesManager.delete_subscription(user_id)
+
 							@DMSender.send_unsubscribe(user_id)
 
 						elsif request.length < COMMAND_MESSAGE_LIMIT and request.downcase.include? 'list'
 							puts "Retrieve current config for user #{user_id}. "
-							area_names = @RulesManager.get_subscriptions(user_id)
+
 							#puts "EventManager: left Rules manager with #{area_names}"
 							@DMSender.send_subscription_list(user_id, area_names)
 							
