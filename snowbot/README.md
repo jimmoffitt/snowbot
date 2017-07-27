@@ -44,9 +44,20 @@ As outlined [HERE](https://dev.twitter.com/webhooks/getting-started), here are t
 
 ## Setting up webhooks
 
-The setup_webooks.rb script helps automate Account Activity configuration management. Here are some example commands:
+The setup_webooks.rb script helps automate Account Activity configuration management. https://dev.twitter.com/webhooks/managing
 
-https://dev.twitter.com/webhooks/managing
+```
+Usage: setup_webhooks [options]
+    -c, --config CONFIG              Configuration file (including path) that provides account OAuth details. 
+    -t, --task TASK                  Securing Webhooks Task to perform: trigger CRC ('crc'), set config ('set'), list configs ('list'), delete config ('delete'), subscribe app ('subscribe'), unsubscribe app ('unsubscribe'),get subscription ('subscription').
+    -u, --url URL                    Webhooks 'consumer' URL, e.g. https://mydomain.com/webhooks/twitter.
+    -i, --id ID                      Webhook ID
+    -h, --help                       Display this screen.  
+```
+
+
+Here are some example commands:
+
 
   + setup_webhooks.rb -t "set" -u "https://snowbotdev.herokuapp.com/snowbot"
   
@@ -89,15 +100,12 @@ Webhook configuration for 883437804897931264 was successfully deleted.
 
   + setup_webhooks.rb -t "crc"
 
+```
+Retrieving webhook configurations...
+204
+CRC request successful and webhook status set to valid.
+```
 
-```
-Usage: setup_webhooks [options]
-    -c, --config CONFIG              Configuration file (including path) that provides account OAuth details. 
-    -t, --task TASK                  Securing Webhooks Task to perform: trigger CRC ('crc'), set config ('set'), list configs ('list'), delete config ('delete'), subscribe app ('subscribe'), unsubscribe app ('unsubscribe'),get subscription ('subscription').
-    -u, --url URL                    Webhooks 'consumer' URL, e.g. https://mydomain.com/webhooks/twitter.
-    -i, --id ID                      Webhook ID
-    -h, --help                       Display this screen.  
-```
 
 
 
