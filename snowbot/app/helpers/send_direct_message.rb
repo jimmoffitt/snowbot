@@ -5,10 +5,12 @@ require_relative 'generate_direct_message_content'
 
 class SendDirectMessage
 
-	attr_accessor :dm,
+	attr_accessor :dm,            #Object that manages DM API requests.
 	              :content,
 	              :sender,
-	              :location_list #This class knows the configurable location list.
+	              :location_list, #This class knows the configurable location list.
+	              :link_list,
+	              :image_list     #JPEGs for now. 
 
 	def initialize
 
@@ -20,22 +22,48 @@ class SendDirectMessage
 		@dm.get_api_access
 
 		@content = GenerateDirectMessageContent.new
-		
-		#puts "In SEND: APP_ROOT: #{APP_ROOT}"
 
+		
+		#Load menu resources:
+
+		@location_list = []
+		
 		begin
 			locations = CSV.read(File.join(APP_ROOT, 'data', 'placesOfInterest.csv'))
 		rescue #Running outside of Sinatra?
 			locations = CSV.read('../../data/placesOfInterest.csv')
 		end
 
-		@location_list = []
-
 		locations.each do |location|
 			@location_list << location[0] #Load just the location name.
 		end
-	end
 
+		@link_list = []
+
+		begin
+			links = CSV.read(File.join(APP_ROOT, 'data', 'links.dat'), { :col_sep => "\t" })
+		rescue #Running outside of Sinatra?
+			links = CSV.read('../../data/links.dat', { :col_sep => "\t" })
+		end
+
+		links.each do |link|
+			@link_list << link[0] #Load just the location name.
+		end
+
+
+		@photo_list = []
+
+		begin
+			photos = "Load path of jpeg file."
+		rescue #Running outside of Sinatra?
+			photos = "Load path of jpeg file."
+		end
+
+		photos.each do |photo|
+			@photo_list << photo[0] #Load just the location name.
+		end
+		
+	end
 
 	#TODO: this method is NOT currently used by 'set-up' webhook scripts...
 	#New users will be served this.
@@ -56,29 +84,36 @@ class SendDirectMessage
 
 	def send_welcome_message(recipient_id)
 		dm_content = @content.generate_welcome_message(recipient_id)
-		#puts "Sending #{dm_content} to #{recipient_id} "
+		send_direct_message(dm_content)
+	end
+		
+	def send_photo(recipient_id, name)
+		dm_content = @content.generate_dm_media(recipient_id, name)
 		send_direct_message(dm_content)
 	end
 
-	def send_area_method(recipient_id)
-		dm_content = @content.generate_location_method(recipient_id)
-		send_direct_message(dm_content)
-	end
+	
 
 	def send_map(recipient_id)
 		dm_content = @content.generate_location_map(recipient_id)
 		send_direct_message(dm_content)
 	end
+	
+	
+	# Sending multiple, different lists -------------------------------------
 
 	def send_location_list(recipient_id)
 		dm_content = @content.generate_location_list(recipient_id, @location_list)
 		send_direct_message(dm_content)
 	end
 
-	def send_subscription_list(recipient_id, subscriptions)
-		dm_content = @content.generate_subscription_list(recipient_id, subscriptions)
+	def send_links(recipient_id)
+		dm_content = @content.generate_link_list(recipient_id, @link_list)
 		send_direct_message(dm_content)
 	end
+
+
+	# App Generic? All apps have these by default?
 
 	def send_system_info(recipient_id)
 		dm_content = @content.generate_system_info(recipient_id)
@@ -90,21 +125,11 @@ class SendDirectMessage
 		send_direct_message(dm_content)
 	end
 
-	def send_confirmation(recipient_id, area_of_interest)
-		dm_content = @content.generate_confirmation(recipient_id, area_of_interest)
-		send_direct_message(dm_content)
-	end
-
 	def send_status(recipient_id, message)
 		dm_content = @content.generate_message(recipient_id, message)
 		send_direct_message(dm_content)
 	end
-
-	def send_unsubscribe(recipient_id)
-		dm_content = @content.generate_unsubscribe(recipient_id)
-		send_direct_message(dm_content)
-	end
-
+	
 end
 
 if __FILE__ == $0 #This script code is executed when running this file.
