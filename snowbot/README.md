@@ -74,11 +74,12 @@ error code: 400 #<Net::HTTPBadRequest:0x007ffe0f710f10>
 {"code"=>214, "message"=>"Webhook URL does not meet the requirements. Please consult: https://dev.twitter.com/webhooks/securing"}
 ```  
 
-
   + setup_webhooks.rb -t "list"
 
+```
 Retrieving webhook configurations...
-Webhook ID 883437804897931264 --> https://snowbotdev.herokuapp.com/snowbot
+Webhook ID 890716673514258432 --> https://snowbotdev.herokuapp.com/snowbot
+```
 
   + setup_webhooks.rb -t "delete" -i 883437804897931264 
   
@@ -123,15 +124,4 @@ Usage: setup_welcome_message [options]
 
 
 
-
-
-
-
-Configuring Twitter Webhooks
-
-
-Webhook Setup
-
-CRC Setup
-
-Validate setup
+## Validate setup
