@@ -1,15 +1,20 @@
 class GenerateDirectMessageContent
+	
+	BOT_NAME = 'snowbot'
+	BOT_CHAR = '❄'
 
+	
 	def generate_greeting
 
-		greeting = "💧Welcome to a Twitter-based, geo-aware notification system. This system is developed to work with any account that posts geo-tagged Tweets, and is currently using the @USGS_TexasFlood and @USGS_TexasRain Twitter accounts as the 'source' data.\n\n💧 You can enroll in the system by adding an area of interest. After enrolling will receive a Direct Message notification whenever a source Twitter account posts a Tweet from that area. "
+		greeting = "#{BOT_CHAR} Welcome to #{BOT_NAME} #{BOT_CHAR}"
 		greeting
 
 	end
 	
 	def generate_main_message
-		greeting = "Welcome to a Twitter-based, geo-aware notification system. "
-		greeting
+		greeting = ''
+		greeting = generate_greeting
+		greeting =+ ' Thanks for stopping by...'
 
 	end
 
@@ -17,36 +22,18 @@ class GenerateDirectMessageContent
 		quick_reply = {}
 		quick_reply['type'] = 'options'
 		quick_reply['options'] = []
+		
+		custom_options = []
+		custom_options = build_custom_options
+		custom_options.each do |option|
+			quick_reply['options'] << option
+		end
 
-		option = {}
-		option['label'] = '➕ Add area of interest'
-		option['description'] = 'Enroll by selecting area of interest'
-		option['metadata'] = 'add_area'
-		quick_reply['options'] << option
-		
-		option = {}
-		option['label'] = '≡ List current area(s) of interest'
-		option['description'] = 'Show current areas of interest'
-		option['metadata'] = 'list'
-		quick_reply['options'] << option
-		
-		option = {}
-		option['label'] = '❓Learn more about this system'
-		option['description'] = 'See a detailed system description and links to related information'
-		option['metadata'] = 'learn_more'
-		quick_reply['options'] << option
-
-		option = {}
-		option['label'] = '☔ Help'
-		option['description'] = 'Help with system commands'
-		option['metadata'] = 'help'
-		quick_reply['options'] << option
-		
-		option = {}
-		option['label'] = '✂ Unsubscribe'
-		option['description'] = 'Unsubscribe from notification system'
-		option['metadata'] = 'unsubscribe'
-		quick_reply['options'] << option
+		default_options = []
+		default_options = build_default_options
+		default_options.each do |option|
+			quick_reply['options'] << option
+		end
 		
 		quick_reply
 	end
@@ -103,7 +90,7 @@ class GenerateDirectMessageContent
 
 	def generate_system_info(recipient_id)
 
-		message_text = "💧The USGS Texas Water Science Center has created two Twitter accounts that Tweet flood information from across Texas. The @USGS_TexasFlood and @USGS_TexasRain accounts are completely autonomous and broadcast data from over 750 rain and river gauges. These gauges Tweet when they have met or exceeded flood thresholds as defined by the National Weather Service (NWS).\n💧For more information about this system, click on: https://blog.twitter.com/2016/using-twitter-as-a-go-to-communication-channel-during-severe-weather-events\n\n💧This system was developed to enable Twitter users to receive notifications when gauges from selected areas of interest Tweet. Before this system, users had the option to follow these two accounts and turn on Twitter Tweet notifications. This option was not ideal since users would receive notifications about all gauges, including those hundreds of miles away.\n\n💧A key detail is that every Tweet posted by these two accounts is geo-tagged, which enables this system to only make notifications when gauges within your area(s) of interest Tweet.\n\n💧For sample code, see https://github.com/jimmoffitt/FloodSocial"
+		message_text = "This is a snow bot... It's kinda simple, kinda not."
 
 		#Build DM content.
 		event = {}
@@ -134,8 +121,7 @@ class GenerateDirectMessageContent
 
 	def generate_system_help(recipient_id)
 
-		message_text = "This system supports several commands. Commands are made by sending a Direct Message including these (case-insensitive) keywords:
-                      \n💧 'Home', 'Hello', or 'Main' -- go back to main menu.\n\💧 'Add' -- Add another area of interest. \n💧 'List' -- Review what areas of interest you are subscribed to. \n💧 'About' -- Learn more about the system and follow links to more information. \n💧 'Help' -- See this help screen. \n💧 'Quit' or 'Stop' or 'Unsubscribe' -- Unsubscribe from system, removing all areas of interest."
+		message_text = "This system will support several commands. TBA. Like 'photo', 'link', and 'day'"
 
 		#Build DM content.
 		event = {}
@@ -154,26 +140,16 @@ class GenerateDirectMessageContent
 		options = []
 		#Not including 'description' option attributes.
 
-		option = {}
-		option['label'] = '⌂ Home'
-		option['metadata'] = "return_to_system"
-		options << option
-
+		options = build_default_options
+		
 		message_data['quick_reply']['options'] = options
 
 		event['event']['message_create']['message_data'] = message_data
 		event.to_json
 	end
 	
-	
-	
-	
-	#Generates Quick Reply for picking method for selecting area of inteerst: map or list
-	def generate_location_method(recipient_id)
+	def generate_link_list(recipient_id, list)
 
-		message_text = "Select method for (privately) sharing location:"
-
-		#Build DM content.
 		event = {}
 		event['event'] = {}
 		event['event']['type'] = 'message_create'
@@ -182,30 +158,23 @@ class GenerateDirectMessageContent
 		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
 
 		message_data = {}
-		message_data['text'] = message_text
+		message_data['text'] = 'Select a link:'
 
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
 
 		options = []
+		
+		#NEEDS UPDATES TO LINK structure...
 
-		option = {}
-		option['label'] = '➕ Add area of interest from list ≡'
-		#option['description'] = 'Enroll by selecting an area of interest from list'
-		option['metadata'] = 'pick_from_list'
-		options << option
-
-		option = {}
-		option['label'] = '➕ Add area of interest from map 🌎'
-		#option['description'] = 'Enroll by selecting an interest using a map'
-		option['metadata'] = 'select_on_map'
-		options << option
-
-		option = {}
-		option['label'] = '⌂ Home'
-		#option['description'] = 'Back to main menu'
-		option['metadata'] = "return_to_system"
-		options << option
+		list.each do |item|
+			option = {}
+			option['label'] = '💧 ' + item[0]
+			option['metadata'] = "location_list_choice: #{item[0]}"
+			#Not including 'description' option attributes.
+			option['description'] = item[2]
+			options << option
+		end
 
 		message_data['quick_reply']['options'] = options
 
@@ -213,6 +182,7 @@ class GenerateDirectMessageContent
 		event.to_json
 
 	end
+	
 	
 	#Generates Quick Reply for presenting user a Map via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/location
@@ -271,48 +241,46 @@ class GenerateDirectMessageContent
 		event.to_json
 
 	end
-
-	def generate_subscription_list(recipient_id, subscriptions)
-		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
-		message_data = {}
-
-		list_message = ''
-
-		if subscriptions.count == 0
-			list_message = "You are not subscribed to any areas of interest.
-                		 \n To select an additional area, send an 'Add' Direct Message.
-                         \n If you want to unsubscribe, send a 'Quit' or 'Stop' Direct Message." #'Unsubscribe' is also supported.
-		else
-			list_message = "You are subscribed to the following areas of interest:"
-
-			subscriptions.each do |area|
-				list_message = list_message + "\n💧 #{area}"
-			end
-
-		end
-
-		message_data['text'] = list_message
-
-		message_data['quick_reply'] = {}
-		message_data['quick_reply']['type'] = 'options'
+	
+	def build_custom_options
 
 		options = []
-		#Not including 'description' option attributes.
 
 		option = {}
-		option['label'] = '➕ Add area of interest'
-		option['description'] = 'Enroll by selecting an area of interest'
-		option['metadata'] = 'add_area'
-		options << option
+		option['label'] = '❄ See snow picture ❄'
+		option['description'] = 'come on, take a look'
+		option['metadata'] = 'see_photo'
+		quick_reply['options'] << option
 
 		option = {}
-		option['label'] = '❓Learn more about this system'
+		option['label'] = '❄ Suggest a snow day ❄'
+		option['description'] = 'soon?'
+		option['metadata'] = 'snow_day'
+		quick_reply['options'] << option
+
+		option = {}
+		option['label'] = '❄ Read and learn about snow ❄'
+		option['description'] = 'Other than it sometimes melts at > 32F'
+		option['metadata'] = 'learn_snow'
+		quick_reply['options'] << option
+
+		option = {}
+		option['label'] = 'Ask Twitter API question!'
+		option['description'] = 'Ask a question, maybe get an answer...'
+		option['metadata'] = 'ask_gnip'
+		quick_reply['options'] << option
+		
+		options
+		
+	end
+	
+	
+	def build_default_options
+		
+		options = []
+
+		option = {}
+		option['label'] = '❓ Learn more about this system'
 		option['description'] = 'See a detailed system description and links to related information'
 		option['metadata'] = 'learn_more'
 		options << option
@@ -324,25 +292,17 @@ class GenerateDirectMessageContent
 		options << option
 
 		option = {}
-		option['label'] = '✂ Unsubscribe'
-		option['description'] = 'Unsubscribe from notification system'
-		option['metadata'] = 'unsubscribe'
+		option['label'] = 'Home'
+		option['metadata'] = "return_home"
 		options << option
-
-		#option = {}
-		#option['label'] = 'Home'
-		#option['metadata'] = "return_to_system"
-		#options << option
-
-		message_data['quick_reply']['options'] = options
-
-		event['event']['message_create']['message_data'] = message_data
-
-		event.to_json
-
+		
+		options
+		
+		
 	end
 
-	def generate_confirmation(recipient_id, area_of_interest)
+
+	def acknowledge_location(recipient_id, area_of_interest)
 		#Build DM content.
 		event = {}
 		event['event'] = {}
@@ -362,18 +322,6 @@ class GenerateDirectMessageContent
 
 		options = []
 		#Not including 'description' option attributes.
-
-		option = {}
-		option['label'] = '➕ Add area of interest'
-		option['description'] = 'Enroll by selecting an area of interest'
-		option['metadata'] = 'add_area'
-		options << option
-
-		option = {}
-		option['label'] = '≡ List current area(s) of interest'
-		option['description'] = 'Show current areas of interest'
-		option['metadata'] = 'list'
-		options << option
 		
 		option = {}
 		option['label'] = '❓ Learn more about this system'
@@ -387,16 +335,11 @@ class GenerateDirectMessageContent
 		option['metadata'] = 'help'
 		options << option
 
+		
 		option = {}
-		option['label'] = '✂ Unsubscribe'
-		option['description'] = 'Unsubscribe from notification system'
-		option['metadata'] = 'unsubscribe'
+		option['label'] = 'Home'
+		option['metadata'] = "return_home"
 		options << option
-
-		#option = {}
-		#option['label'] = 'Home'
-		#option['metadata'] = "return_to_system"
-		#options << option
 
 		message_data['quick_reply']['options'] = options
 		event['event']['message_create']['message_data'] = message_data
@@ -423,23 +366,4 @@ class GenerateDirectMessageContent
 			event.to_json
 	end
 
-	def generate_unsubscribe(recipient_id)
-
-		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
-		message_data = {}
-		message_data['text'] = "You have been unsubscribed.\n\n To re-subscribe either send an 'Add' Direct Message or delete this conversation and send a new Direct Message to see the Welcome Message.
-      \n
-		\n☔ Stay safe and dry! ☔"
-
-		event['event']['message_create']['message_data'] = message_data
-
-		event.to_json
-
-	end
 end
