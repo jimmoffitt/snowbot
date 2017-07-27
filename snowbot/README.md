@@ -30,17 +30,78 @@ As outlined [HERE](https://dev.twitter.com/webhooks/getting-started), here are t
 
 ## Validate setup
 
+# Next Steps
++ To help you put all that information together, check out our [Twitter Direct Message API Playbook].
++ Twitter Webhook APIs https://dev.twitter.com/webhooks
++ Account Activity API documentation https://dev.twitter.com/webhooks/account-activity
++ Direct Message API methods: https://dev.twitter.com/rest/direct-messages
++ Read about another example bot. 
+
+
+
+# Scripts for managing Account Activity API configuration
+
+
+## Setting up webhooks
+
+The setup_webooks.rb script helps automate Account Activity configuration management. Here are some example commands:
+
+https://dev.twitter.com/webhooks/managing
+
+  + setup_webhooks.rb -t "set" -u "https://snowbotdev.herokuapp.com/snowbot"
+  
+```
+Setting a webhook configuration...
+Created webhook instance with webhook_id: 890716673514258432 | pointing to https://snowbotdev.herokuapp.com/snowbot
+```
+  
+If your web app is not running, or your CRC code is not quite ready, you will receive the following response:  
+  
+```
+  Setting a webhook configuration...
+error code: 400 #<Net::HTTPBadRequest:0x007ffe0f710f10>
+{"code"=>214, "message"=>"Webhook URL does not meet the requirements. Please consult: https://dev.twitter.com/webhooks/securing"}
+```  
+
+
+  + setup_webhooks.rb -t "list"
+
+Retrieving webhook configurations...
+Webhook ID 883437804897931264 --> https://snowbotdev.herokuapp.com/snowbot
+
+  + setup_webhooks.rb -t "delete" -i 883437804897931264 
+  
+```
+Attempting to delete configuration for webhook id: 883437804897931264.
+Webhook configuration for 883437804897931264 was successfully deleted.
+```
+
+
+### Adding Subscriptions to a Webhook ID
+
+  + setup_webhooks.rb -t "subscribe" -i webhook_id
+
+  + setup_webhooks.rb -t "unsubscribe" -i webhook_id
+
+  + setup_webhooks.rb -t "subscription" -i webhook_id
+
+### Triggering CRC check 
+
+  + setup_webhooks.rb -t "crc"
+
+
 ```
 Usage: setup_webhooks [options]
     -c, --config CONFIG              Configuration file (including path) that provides account OAuth details. 
     -t, --task TASK                  Securing Webhooks Task to perform: trigger CRC ('crc'), set config ('set'), list configs ('list'), delete config ('delete'), subscribe app ('subscribe'), unsubscribe app ('unsubscribe'),get subscription ('subscription').
     -u, --url URL                    Webhooks 'consumer' URL, e.g. https://mydomain.com/webhooks/twitter.
     -i, --id ID                      Webhook ID
-    -h, --help                       Display this screen.
+    -h, --help                       Display this screen.  
 ```
 
 
 
+## Setting up Welcome Messages
 
 ```
 Usage: setup_welcome_message [options]
@@ -51,14 +112,6 @@ Usage: setup_welcome_message [options]
     -h, --help                       Display this screen.
 ```
 
-
-
-# Next Steps
-+ To help you put all that information together, check out our [Twitter Direct Message API Playbook].
-+ Twitter Webhook APIs https://dev.twitter.com/webhooks
-+ Account Activity API documentation https://dev.twitter.com/webhooks/account-activity
-+ Direct Message API methods: https://dev.twitter.com/rest/direct-messages
-+ Read about another example bot. 
 
 
 
