@@ -265,10 +265,18 @@ class GenerateDirectMessageContent
 		quick_reply['options'] << option
 
 		option = {}
-		option['label'] = 'Ask Twitter API question!'
-		option['description'] = 'Ask a question, maybe get an answer...'
-		option['metadata'] = 'ask_gnip'
+		option['label'] = '❄ Pick a favorite point/place on the globe ❄'
+		option['description'] = 'Just curious.'
+		option['metadata'] = 'pick_from_map'
 		quick_reply['options'] << option
+		
+		option
+
+		#option = {}
+		#option['label'] = 'Ask Twitter API question!'
+		#option['description'] = 'Ask a question, maybe get an answer...'
+		#option['metadata'] = 'ask_gnip'
+		#quick_reply['options'] << option
 		
 		options
 		
