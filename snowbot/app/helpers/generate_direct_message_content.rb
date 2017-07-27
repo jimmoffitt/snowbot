@@ -14,7 +14,7 @@ class GenerateDirectMessageContent
 	def generate_main_message
 		greeting = ''
 		greeting = generate_greeting
-		greeting =+ ' Thanks for stopping by...'
+		greeting =+ ' Thanks for stopping by... '
 
 	end
 
@@ -88,65 +88,8 @@ class GenerateDirectMessageContent
 
 	end
 
-	def generate_system_info(recipient_id)
+	#================================================================
 
-		message_text = "This is a snow bot... It's kinda simple, kinda not."
-
-		#Build DM content.
-		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
-		message_data = {}
-		message_data['text'] = message_text
-
-		message_data['quick_reply'] = {}
-		message_data['quick_reply']['type'] = 'options'
-
-		options = []
-		
-		option = {}
-		option['label'] = '⌂ Home'
-		option['metadata'] = "return_to_system"
-		options << option
-
-		message_data['quick_reply']['options'] = options
-
-		event['event']['message_create']['message_data'] = message_data
-		event.to_json
-	end
-
-	def generate_system_help(recipient_id)
-
-		message_text = "This system will support several commands. TBA. Like 'photo', 'link', and 'day'"
-
-		#Build DM content.
-		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
-		message_data = {}
-		message_data['text'] = message_text
-
-		message_data['quick_reply'] = {}
-		message_data['quick_reply']['type'] = 'options'
-
-		options = []
-		#Not including 'description' option attributes.
-
-		options = build_default_options
-		
-		message_data['quick_reply']['options'] = options
-
-		event['event']['message_create']['message_data'] = message_data
-		event.to_json
-	end
 	
 	def generate_link_list(recipient_id, list)
 
@@ -165,12 +108,12 @@ class GenerateDirectMessageContent
 
 		options = []
 		
-		#NEEDS UPDATES TO LINK structure...
+		#TODO: NEEDS UPDATES TO LINK structure...
 
 		list.each do |item|
 			option = {}
-			option['label'] = '💧 ' + item[0]
-			option['metadata'] = "location_list_choice: #{item[0]}"
+			option['label'] = '❄ ' + item[0]
+			option['metadata'] = "link_choice: #{item[0]}"
 			#Not including 'description' option attributes.
 			option['description'] = item[2]
 			options << option
@@ -229,8 +172,8 @@ class GenerateDirectMessageContent
 
 		list.each do |item|
 			option = {}
-			option['label'] = '💧 ' + item
-			option['metadata'] = "location_list_choice: #{item}"
+			option['label'] = '❄ ' + item
+			option['metadata'] = "location_choice: #{item}"
 			#Not including 'description' option attributes.
 			options << option
 		end
@@ -242,6 +185,152 @@ class GenerateDirectMessageContent
 
 	end
 	
+
+
+
+	def acknowledge_location(recipient_id, area_of_interest)
+		#Build DM content.
+		
+		#So, what to do with the location provided? 
+		#@FloodSocial: Echo selection to user, show next steps.
+		#@snowbot: Make a weather forecast API call? For now just extract coordinates and make a silly comment.
+		
+		response = "That's really interesting."
+			
+		
+		event = {}
+		event['event'] = {}
+		event['event']['type'] = 'message_create'
+		event['event']['message_create'] = {}
+		event['event']['message_create']['target'] = {}
+		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+
+		message_data = {}
+		message_data['text'] = "You indicated: #{area_of_interest}. /n #{response}"
+		
+		#\n To select an additional area, send an 'Add' Direct Message.
+    #  \n To review your current areas of interest, send a 'List' Direct Message.
+    #  \n If you want to unsubscribe, send a 'Quit' or 'Stop' Direct Message." #'Unsubscribe' is also supported.
+
+		message_data['quick_reply'] = {}
+		message_data['quick_reply']['type'] = 'options'
+
+		options = []
+		#Not including 'description' option attributes.
+		
+		options = build_default_options
+		
+		message_data['quick_reply']['options'] = options
+		event['event']['message_create']['message_data'] = message_data
+		event.to_json
+
+	end
+
+
+
+
+	def generate_system_info(recipient_id)
+
+		message_text = "This is a snow bot... It's kinda simple, kinda not."
+
+		#Build DM content.
+		event = {}
+		event['event'] = {}
+		event['event']['type'] = 'message_create'
+		event['event']['message_create'] = {}
+		event['event']['message_create']['target'] = {}
+		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+
+		message_data = {}
+		message_data['text'] = message_text
+
+		message_data['quick_reply'] = {}
+		message_data['quick_reply']['type'] = 'options'
+
+		options = []
+
+		option = {}
+		option['label'] = '⌂ Home'
+		option['metadata'] = "return_to_system"
+		options << option
+
+		message_data['quick_reply']['options'] = options
+
+		event['event']['message_create']['message_data'] = message_data
+		event.to_json
+	end
+
+	def generate_system_help(recipient_id)
+
+		message_text = "This system will support several commands. TBA. Like 'photo', 'link', and 'day'"
+
+		#Build DM content.
+		event = {}
+		event['event'] = {}
+		event['event']['type'] = 'message_create'
+		event['event']['message_create'] = {}
+		event['event']['message_create']['target'] = {}
+		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+
+		message_data = {}
+		message_data['text'] = message_text
+
+		message_data['quick_reply'] = {}
+		message_data['quick_reply']['type'] = 'options'
+
+		options = []
+		#Not including 'description' option attributes.
+
+		options = build_default_options
+
+		message_data['quick_reply']['options'] = options
+
+		event['event']['message_create']['message_data'] = message_data
+		event.to_json
+	end
+	
+	def generate_message_with_media(recipient_id, message, image)
+
+		#Create Twitter ID for image content.
+		#   Get imagine size.
+		
+		#Build DM content.
+		event = {}
+		event['event'] = {}
+		event['event']['type'] = 'message_create'
+		event['event']['message_create'] = {}
+		event['event']['message_create']['target'] = {}
+		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+
+		message_data = {}
+		message_data['text'] = message
+
+		event['event']['message_create']['message_data'] = message_data
+
+		event.to_json
+		
+	end
+	
+	def generate_message(recipient_id, message)
+			#Build DM content.
+			event = {}
+			event['event'] = {}
+			event['event']['type'] = 'message_create'
+			event['event']['message_create'] = {}
+			event['event']['message_create']['target'] = {}
+			event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+
+			message_data = {}
+			message_data['text'] = message
+
+			event['event']['message_create']['message_data'] = message_data
+		
+			event.to_json
+	end
+	
+	#=====================================================================================
+
+
 	def build_custom_options
 
 		options = []
@@ -257,7 +346,8 @@ class GenerateDirectMessageContent
 		option['description'] = 'soon?'
 		option['metadata'] = 'snow_day'
 		quick_reply['options'] << option
-
+	
+		
 		option = {}
 		option['label'] = '❄ Read and learn about snow ❄'
 		option['description'] = 'Other than it sometimes melts at > 32F'
@@ -265,11 +355,17 @@ class GenerateDirectMessageContent
 		quick_reply['options'] << option
 
 		option = {}
-		option['label'] = '❄ Pick a favorite point/place on the globe ❄'
-		option['description'] = 'Just curious.'
+		option['label'] = '❄ Request a forecast for anywhere in the world ❄'
+		option['description'] = 'Exact location or Place centroid'
 		option['metadata'] = 'pick_from_map'
 		quick_reply['options'] << option
-		
+
+		option = {}
+		option['label'] = '❄ Receive a song title containing the snow keyword ❄'
+		option['description'] = '"Sounds good"'
+		option['metadata'] = 'snow_day'
+		quick_reply['options'] << option
+
 		option
 
 		#option = {}
@@ -277,14 +373,14 @@ class GenerateDirectMessageContent
 		#option['description'] = 'Ask a question, maybe get an answer...'
 		#option['metadata'] = 'ask_gnip'
 		#quick_reply['options'] << option
-		
+
 		options
-		
+
 	end
-	
-	
+
+
 	def build_default_options
-		
+
 		options = []
 
 		option = {}
@@ -303,75 +399,8 @@ class GenerateDirectMessageContent
 		option['label'] = 'Home'
 		option['metadata'] = "return_home"
 		options << option
-		
+
 		options
-		
-		
-	end
-
-
-	def acknowledge_location(recipient_id, area_of_interest)
-		#Build DM content.
-		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
-		message_data = {}
-		message_data['text'] = "You have added an area of interest: #{area_of_interest}"
-		#\n To select an additional area, send an 'Add' Direct Message.
-    #  \n To review your current areas of interest, send a 'List' Direct Message.
-    #  \n If you want to unsubscribe, send a 'Quit' or 'Stop' Direct Message." #'Unsubscribe' is also supported.
-
-		message_data['quick_reply'] = {}
-		message_data['quick_reply']['type'] = 'options'
-
-		options = []
-		#Not including 'description' option attributes.
-		
-		option = {}
-		option['label'] = '❓ Learn more about this system'
-		option['description'] = 'See a detailed system description and links to related information'
-		option['metadata'] = 'learn_more'
-		options << option
-
-		option = {}
-		option['label'] = '☔ Help'
-		option['description'] = 'Help with system commands'
-		option['metadata'] = 'help'
-		options << option
-
-		
-		option = {}
-		option['label'] = 'Home'
-		option['metadata'] = "return_home"
-		options << option
-
-		message_data['quick_reply']['options'] = options
-		event['event']['message_create']['message_data'] = message_data
-		event.to_json
 
 	end
-	
-	def generate_message(recipient_id, message)
-
-			message_text = message
-
-			#Build DM content.
-			event = {}
-			event['event'] = {}
-			event['event']['type'] = 'message_create'
-			event['event']['message_create'] = {}
-			event['event']['message_create']['target'] = {}
-			event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
-			message_data = {}
-			message_data['text'] = message_text
-
-			event['event']['message_create']['message_data'] = message_data
-			event.to_json
-	end
-
 end

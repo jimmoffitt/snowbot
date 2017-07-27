@@ -8,6 +8,12 @@ class SendDirectMessage
 	attr_accessor :dm,            #Object that manages DM API requests.
 	              :content,
 	              :sender,
+
+	              #Key feature design details: 
+	              #  Supports a single list of locations 
+	              #  Supports the look-up for a single list of links
+	              #  Supports a single directory of JPEGs.
+	              
 	              :location_list, #This class knows the configurable location list.
 	              :link_list,
 	              :image_list     #JPEGs for now. 
@@ -68,51 +74,50 @@ class SendDirectMessage
 	#TODO: this method is NOT currently used by 'set-up' webhook scripts...
 	#New users will be served this.
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
-
-	#Send a DM back to user.
-	#https://dev.twitter.com/rest/reference/post/direct_messages/events/new
-	def send_direct_message(message)
 		
-		uri_path = "#{@dm.uri_path}/events/new.json"
-		response = @dm.make_post_request(uri_path, message)
-  	#puts "Attempted to send #{message} to #{uri_path}/events/new.json"
-	
-		#Currently, not returning anything... Errors reported in POST request code.
-		response
-
-	end
-
-	def send_welcome_message(recipient_id)
-		dm_content = @content.generate_welcome_message(recipient_id)
+	def send_photo(recipient_id)
+		#Generate message. Static for now, but could generate/retrieve photo capture.
+		message = ''
+		
+		#Select image (at random).
+		image = ''
+		
+		dm_content = @content.generate_dm_with_media(recipient_id, message, image)
 		send_direct_message(dm_content)
 	end
-		
-	def send_photo(recipient_id, name)
-		dm_content = @content.generate_dm_media(recipient_id, name)
-		send_direct_message(dm_content)
-	end
-
 	
-
 	def send_map(recipient_id)
 		dm_content = @content.generate_location_map(recipient_id)
 		send_direct_message(dm_content)
 	end
-	
-	
-	# Sending multiple, different lists -------------------------------------
 
-	def send_location_list(recipient_id)
-		dm_content = @content.generate_location_list(recipient_id, @location_list)
-		send_direct_message(dm_content)
-	end
+	# Sending multiple, different lists -------------------------------------
 
 	def send_links(recipient_id)
 		dm_content = @content.generate_link_list(recipient_id, @link_list)
 		send_direct_message(dm_content)
 	end
+	
+	def send_location_list(recipient_id)
+		dm_content = @content.generate_location_list(recipient_id, @location_list)
+		send_direct_message(dm_content)
+	end
+	
+	def respond_with_link(user_id, link_choice)
+		dm_content = @content.send_link(recipient_id, link_choice)
+		send_direct_message(dm_content)
+	end
 
+	def respond_to_location_choice(recipient_id, location_choice)
+		dm_content = @content.acknowledge_location(recipient_id, location_choice)
+		send_direct_message(dm_content)
+	end
 
+	def respond_to_map_choice(user_id, coordinates)
+		dm_content = @content.acknowledge_location(recipient_id, coordinates)
+		send_direct_message(dm_content)
+	end
+	
 	# App Generic? All apps have these by default?
 
 	def send_system_info(recipient_id)
@@ -129,14 +134,31 @@ class SendDirectMessage
 		dm_content = @content.generate_message(recipient_id, message)
 		send_direct_message(dm_content)
 	end
-	
+
+	def send_welcome_message(recipient_id)
+		dm_content = @content.generate_welcome_message(recipient_id)
+		send_direct_message(dm_content)
+	end
+
+	#Send a DM back to user.
+	#https://dev.twitter.com/rest/reference/post/direct_messages/events/new
+	def send_direct_message(message)
+
+		uri_path = "#{@dm.uri_path}/events/new.json"
+		response = @dm.make_post_request(uri_path, message)
+		#puts "Attempted to send #{message} to #{uri_path}/events/new.json"
+
+		#Currently, not returning anything... Errors reported in POST request code.
+		response
+
+	end
+		
 end
 
 if __FILE__ == $0 #This script code is executed when running this file.
 
 	sender = SendDirectMessage.new
-	sender.send_location_list(944480690)
-
+	
 	sender.send_map(944480690)
 
 end

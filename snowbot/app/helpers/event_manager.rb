@@ -37,20 +37,21 @@ class EventManager
 			@DMSender.send_photo(user_id)
 		elsif response == 'learn_snow'
 			@DMSender.send_links(user_id)
-		elsif response == 'ask_gnip'
-			@DMSender.send_gnip_menu(user_id)
-		elsif response == 'link_choice'
-			@DMSender.send_gnip_menu(user_id)
+		elsif response.include? 'link_choice'
+			link_choice = response['link_choice: '.length..-1]
+				
+			@DMSender.respond_with_link(user_id, link_choice)
 
+		elsif response.include? 'location_choice'
+			
+			location_choice = response['location_choice: '.length..-1]
 
-		elsif response.include? 'link_list_choice'
-			location_choice = response['location_list_choice: '.length..-1]
+			#Get coordinates
 			coordinates = []
 
-			location_choice = "#{location_choice} (a 25-mile radius circle centered at #{coordinates[0]}, #{coordinates[1]} to be specific)"
-			@DMSender.send_confirmation(user_id, location_choice)
-			
-		
+			location_choice = "#{location_choice} (centered at #{coordinates[0]}, #{coordinates[1]} to be specific)"
+			@DMSender.respond_to_location_choice(user_id, location_choice)
+					
 		elsif response == 'map_selection'
 			#Do we have a Twitter Place or exact coordinates....?
 			location_type = dm_event['message_create']['message_data']['attachment']['location']['type']
@@ -66,9 +67,7 @@ class EventManager
 	
 			end
 			
-			@DMSender.send_location_response(user_id, coordinates)
-	
-		
+			@DMSender.respond_to_map_choice(user_id, coordinates)
 		
 		else #we have an answer to one of the above.
 			puts "UNHANDLED user response: #{response}"
@@ -91,15 +90,11 @@ class EventManager
 		elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'learn')
 			@DMSender.send_link(user_id)
 		elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'about')
-			puts "Send 'learn more' content"
 			@DMSender.send_system_info(user_id)
 		elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'help')
-			puts "Send 'help' content"
 			@DMSender.send_system_help(user_id)
-
 		else
-			#"Listen, I only understand a few commands like: Add, List, Quit"
-
+			#"Listen, I only understand a few commands like: learn, about, help"
 		end
 	end
 	
