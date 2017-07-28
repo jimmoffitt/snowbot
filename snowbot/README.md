@@ -135,6 +135,12 @@ Webhook URL does not meet the requirements. Please consult: https://dev.twitter.
 
 If you receive this message you'll need to wait to retry. The default rate limit is one request every 15 minutes. 
 
+require 'bundler'
+Bundler.require
+
+require File.expand_path('../snowbot/config/environment',  __FILE__)
+
+run SnowBotApp
 
 
 
@@ -149,7 +155,32 @@ Usage: setup_welcome_message [options]
     -h, --help                       Display this screen.
 ```
 
+-w "create"
 
+```
+Creating Welcome Message...
+error code: 403 #<Net::HTTPForbidden:0x007ff29903f230>
+Errors occurred.
+{"code"=>151, "message"=>"There was an error sending your message: Field description is not present in all options."}
+```
+
+
+
+setup_welcome_message --w "set" -i 883450462757765123
+
+
+<What the story here? when one option did not have a description, this error is triggered:>
+
+
+
+
+
+setup_welcome_message -w "delete" -i 883450462757765123
+
+```
+Deleting Welcome Message with id: 883450462757765123.
+Deleted message id: 883450462757765123
+```
 
 
 ## Validate setup
