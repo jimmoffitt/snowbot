@@ -92,10 +92,26 @@ Webhook configuration for 883437804897931264 was successfully deleted.
 ### Adding Subscriptions to a Webhook ID
 
   + setup_webhooks.rb -t "subscribe" -i webhook_id
+  
+```
+Setting subscription for 'host' account for webhook id: 890716673514258432
+Webhook subscription for 890716673514258432 was successfully added.
+```
 
   + setup_webhooks.rb -t "unsubscribe" -i webhook_id
+  
+```
+Attempting to delete subscription for webhook: 890716673514258432.
+Webhook subscription for 890716673514258432 was successfully deleted.
+```
 
   + setup_webhooks.rb -t "subscription" -i webhook_id
+  
+```
+Retrieving webhook subscriptions...
+Webhook subscription exists for 890716673514258432.
+```
+
 
 ### Triggering CRC check 
 
@@ -106,6 +122,18 @@ Retrieving webhook configurations...
 204
 CRC request successful and webhook status set to valid.
 ```
+
+If you receive a response saying the 'Webhook URL does not meet the requirements', make sure your web app is up and running. If you are using a cloud platform, make sure your app is not hibernating. 
+
+```
+Retrieving webhook configurations...
+Too Many Requests  - Rate limited...
+error: #<Net::HTTPTooManyRequests:0x007fc4239c1190>
+{"errors":[{"code":88,"message":"Rate limit exceeded."}]}
+Webhook URL does not meet the requirements. Please consult: https://dev.twitter.com/webhook/security
+```
+
+If you receive this message you'll need to wait to retry. The default rate limit is one request every 15 minutes. 
 
 
 
