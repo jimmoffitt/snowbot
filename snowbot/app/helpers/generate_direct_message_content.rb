@@ -1,3 +1,6 @@
+require_relative 'twitter_api'
+
+
 class GenerateDirectMessageContent
 	
 	BOT_NAME = 'snowbot'
@@ -227,8 +230,6 @@ class GenerateDirectMessageContent
 	end
 
 
-
-
 	def generate_system_info(recipient_id)
 
 		message_text = "This is a snow bot... It's kinda simple, kinda not."
@@ -289,11 +290,12 @@ class GenerateDirectMessageContent
 		event.to_json
 	end
 	
-	def generate_message_with_media(recipient_id, message, image)
+	def generate_message_with_media(recipient_id, message, photo)
 
 		#Create Twitter ID for image content.
-		#   Get imagine size.
-		
+		twitter_api = TwitterAPI.new
+		media_id = twitter_api.get_media_id(photo)
+
 		#Build DM content.
 		event = {}
 		event['event'] = {}
@@ -306,6 +308,14 @@ class GenerateDirectMessageContent
 		message_data['text'] = message
 
 		event['event']['message_create']['message_data'] = message_data
+		
+		#Build attachment metadata
+		attachment = {}
+		attachment['type'] = "media"
+		attachment['media'] = {}
+		attachment['media']['id'] = media_id
+		
+		message_data['attachment'] = attachment
 
 		event.to_json
 		
@@ -339,40 +349,38 @@ class GenerateDirectMessageContent
 		option['label'] = '❄ See snow picture ❄'
 		option['description'] = 'come on, take a look'
 		option['metadata'] = 'see_photo'
-		quick_reply['options'] << option
+		options << option
 
 		option = {}
 		option['label'] = '❄ Suggest a snow day ❄'
 		option['description'] = 'soon?'
 		option['metadata'] = 'snow_day'
-		quick_reply['options'] << option
+		options << option
 	
 		
 		option = {}
 		option['label'] = '❄ Read and learn about snow ❄'
 		option['description'] = 'Other than it sometimes melts at > 32F'
 		option['metadata'] = 'learn_snow'
-		quick_reply['options'] << option
+		options << option
 
 		option = {}
-		option['label'] = '❄ Request a forecast for anywhere in the world ❄'
+		option['label'] = '❄ Request a forecast for anywhere ❄'
 		option['description'] = 'Exact location or Place centroid'
 		option['metadata'] = 'pick_from_map'
-		quick_reply['options'] << option
+		options << option
 
 		option = {}
-		option['label'] = '❄ Receive a song title containing the snow keyword ❄'
+		option['label'] = '❄ Receive a "snow" song title ❄'
 		option['description'] = '"Sounds good"'
 		option['metadata'] = 'snow_day'
-		quick_reply['options'] << option
-
-		option
+		options << option
 
 		#option = {}
 		#option['label'] = 'Ask Twitter API question!'
 		#option['description'] = 'Ask a question, maybe get an answer...'
 		#option['metadata'] = 'ask_gnip'
-		#quick_reply['options'] << option
+		#options << option
 
 		options
 
@@ -397,6 +405,7 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = 'Home'
+		option['description'] = 'Go back home'
 		option['metadata'] = "return_home"
 		options << option
 

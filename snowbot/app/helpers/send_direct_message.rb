@@ -16,7 +16,7 @@ class SendDirectMessage
 	              
 	              :location_list, #This class knows the configurable location list.
 	              :link_list,
-	              :image_list     #JPEGs for now. 
+	              :photo_list     #JPEGs for now.
 
 	def initialize
 
@@ -35,9 +35,9 @@ class SendDirectMessage
 		@location_list = []
 		
 		begin
-			locations = CSV.read(File.join(APP_ROOT, 'data', 'placesOfInterest.csv'))
+			locations = CSV.read(File.join(APP_ROOT, 'config', 'data', 'locations', 'placesOfInterest.csv'))
 		rescue #Running outside of Sinatra?
-			locations = CSV.read('../../data/placesOfInterest.csv')
+			locations = CSV.read('../../config/data/locations/placesOfInterest.csv')
 		end
 
 		locations.each do |location|
@@ -47,9 +47,9 @@ class SendDirectMessage
 		@link_list = []
 
 		begin
-			links = CSV.read(File.join(APP_ROOT, 'data', 'links.dat'), { :col_sep => "\t" })
+			links = CSV.read(File.join(APP_ROOT, 'config', 'data', 'links', 'links.dat'), { :col_sep => "\t" })
 		rescue #Running outside of Sinatra?
-			links = CSV.read('../../data/links.dat', { :col_sep => "\t" })
+			links = CSV.read('../../config/data/links/links.dat', { :col_sep => "\t" })
 		end
 
 		links.each do |link|
@@ -60,13 +60,17 @@ class SendDirectMessage
 		@photo_list = []
 
 		begin
-			photos = "Load path of jpeg file."
+			photo_dir = File.join(APP_ROOT, 'config', 'data', 'photos')
+			puts "photo folder: #{photo_dir}"
 		rescue #Running outside of Sinatra?
-			photos = "Load path of jpeg file."
+			photo_dir = '../../config/data/photos/'
 		end
+		
+		#Load photo files into array.
+		photo_files = Dir.glob("../../config/data/photos/*.{jpg,JPG}")
 
-		photos.each do |photo|
-			@photo_list << photo[0] #Load just the location name.
+		photo_files.each do |photo_file|
+			@photo_list << photo_file #Load just the location name.
 		end
 		
 	end
@@ -77,12 +81,12 @@ class SendDirectMessage
 		
 	def send_photo(recipient_id)
 		#Generate message. Static for now, but could generate/retrieve photo capture.
-		message = ''
+		message = 'Here is your random snow photo...'
 		
-		#Select image (at random).
-		image = ''
-		
-		dm_content = @content.generate_dm_with_media(recipient_id, message, image)
+		#Select photo(at random).
+		photo = @photo_list.sample
+
+		dm_content = @content.generate_message_with_media(recipient_id, message, photo)
 		send_direct_message(dm_content)
 	end
 	
@@ -152,13 +156,18 @@ class SendDirectMessage
 		response
 
 	end
-		
+
 end
+
+
+#And here you can unit test sending different types of DMs... send map? attach media?
 
 if __FILE__ == $0 #This script code is executed when running this file.
 
 	sender = SendDirectMessage.new
+	#sender.send_map(944480690)
+	sender.send_photo(944480690)
 	
-	sender.send_map(944480690)
+	
 
 end
