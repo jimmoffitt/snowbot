@@ -79,7 +79,7 @@ class SendDirectMessage
 		
 	def send_photo(recipient_id)
 		#Generate message. Static for now, but could generate/retrieve photo capture.
-		message = 'Here is your random snow photo...'
+		message = 'Here is your random snow photo... (testing DMs with images)'
 		
 		#Select photo(at random).
 		photo = @photo_list.sample
@@ -165,7 +165,5 @@ if __FILE__ == $0 #This script code is executed when running this file.
 	sender = SendDirectMessage.new
 	#sender.send_map(944480690)
 	sender.send_photo(944480690)
-	
-	
 
 end

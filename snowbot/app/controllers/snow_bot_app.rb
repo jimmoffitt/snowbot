@@ -14,8 +14,7 @@ class SnowBotApp < Sinatra::Base
 	#Load authentication details
 	config_file = File.join(File.dirname(__FILE__), '../../config/config_private.yaml')
 	keys = {}
-	
-	
+
 	
 	if File.file?(config_file)
 		keys = YAML::load_file(config_file)
@@ -42,9 +41,10 @@ class SnowBotApp < Sinatra::Base
 
 	get '/' do
 		"<p><b>Welcome to the snow bot...</b></p>
-     <p>I am a sinatra-based web app.</p>
-     <p>I consume Twitter Account Activity webhook events and manage DM bot dialog.</p>
-     <p>Think snow!</p>"
+     <p>I am a sinatra-based web app...</p>
+     <p>I consume Twitter Account Activity webhook events and manage DM bot dialogs...</p>
+     <p>Will soon serve photos, links, and third-party snow data...</p>
+     <p>Think snow...</p>"
 	end
 
 	# Receives challenge response check (CRC).

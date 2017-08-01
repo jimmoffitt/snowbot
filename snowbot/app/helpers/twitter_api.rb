@@ -40,8 +40,19 @@ class TwitterAPI
 	end
   
 	def get_media_id(media)
-    media_id = @upload_client.upload(File.new(media))
-	end
+		puts media
+		
+		media_id = nil
+
+		if media != '' 
+      media_id = @upload_client.upload(File.new(media))
+		else
+			media_id = nil
+		end	
+	  
+		media_id
+	
+  end
 
 end
 

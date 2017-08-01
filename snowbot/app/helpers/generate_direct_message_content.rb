@@ -247,17 +247,12 @@ class GenerateDirectMessageContent
 
 	def generate_system_info(recipient_id)
 
-		message_text = "This is a snow bot... It's kinda simple, kinda not."
+		message_text = "This is a snow bot... It's kinda simple, kinda not. "
 
 		#Build DM content.
 		event = {}
 		event['event'] = message_create_header(recipient_id)
-		#event['event'] = {}
-		#event['event']['type'] = 'message_create'
-		#event['event']['message_create'] = {}
-		#event['event']['message_create']['target'] = {}
-		#event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
+		
 		message_data = {}
 		message_data['text'] = message_text
 
@@ -279,17 +274,12 @@ class GenerateDirectMessageContent
 
 	def generate_system_help(recipient_id)
 
-		message_text = "This system will support several commands. TBA. Like 'photo', 'link', and 'day'"
+		message_text = "This system will support several commands. TBD. Like 'photo', 'link', 'day', 'main', 'about'"
 
 		#Build DM content.
 		event = {}
 		event['event'] = message_create_header(recipient_id)
-		#event['event'] = {}
-		#event['event']['type'] = 'message_create'
-		#event['event']['message_create'] = {}
-		#event['event']['message_create']['target'] = {}
-		#event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
+		
 		message_data = {}
 		message_data['text'] = message_text
 
@@ -312,14 +302,12 @@ class GenerateDirectMessageContent
 		#Create Twitter ID for image content.
 		twitter_api = TwitterAPI.new
 		media_id = twitter_api.get_media_id(photo)
+		
+		puts media_id
 
 		#Build DM content.
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
 		message_data['text'] = message
