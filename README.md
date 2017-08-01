@@ -7,3 +7,4 @@ New twists:
 
 * Baking in twitter gem. First needed for media uploads.
 * Stubbing out third-party requests.
+* Iterating on Account Activity API set-up and subscriptions.
