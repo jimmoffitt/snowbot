@@ -29,38 +29,36 @@ class SendDirectMessage
 
 		@content = GenerateDirectMessageContent.new
 
-		
 		#Load menu resources:
 
-		@location_list = []
+		#@location_list = []
 		
-		begin
-			locations = CSV.read(File.join(APP_ROOT, 'config', 'data', 'locations', 'placesOfInterest.csv'))
-		rescue #Running outside of Sinatra?
-			locations = CSV.read('../../config/data/locations/placesOfInterest.csv')
-		end
+		#begin
+		#	locations = CSV.read(File.join(APP_ROOT, 'config', 'data', 'locations', 'placesOfInterest.csv'))
+		#rescue #Running outside of Sinatra?
+		#	locations = CSV.read('../../config/data/locations/placesOfInterest.csv')
+		#end
 
-		locations.each do |location|
-			@location_list << location[0] #Load just the location name.
-		end
+		#locations.each do |location|
+		#	@location_list << location[0] #Load just the location name.
+		#end
 
-		@link_list = []
+		#@link_list = []
 
-		begin
-			links = CSV.read(File.join(APP_ROOT, 'config', 'data', 'links', 'links.dat'), { :col_sep => "\t" })
-		rescue #Running outside of Sinatra?
-			links = CSV.read('../../config/data/links/links.dat', { :col_sep => "\t" })
-		end
+		#begin
+		#	links = CSV.read(File.join(APP_ROOT, 'config', 'data', 'links', 'links.dat'), { :col_sep => "\t" })
+		#rescue #Running outside of Sinatra?
+		#	links = CSV.read('../../config/data/links/links.dat', { :col_sep => "\t" })
+		#end
 
-		links.each do |link|
-			@link_list << link[0] #Load just the location name.
-		end
-
+		#links.each do |link|
+		#	@link_list << link[0] #Load just the location name.
+		#end
 
 		@photo_list = []
 
 		begin
-			photo_dir = File.join(APP_ROOT, 'config', 'data', 'photos')
+			photo_dir = File.join('..', APP_ROOT, 'config', 'data', 'photos')
 			puts "photo folder: #{photo_dir}"
 		rescue #Running outside of Sinatra?
 			photo_dir = '../../config/data/photos/'

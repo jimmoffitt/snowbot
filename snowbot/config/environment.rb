@@ -10,9 +10,6 @@ Dir.glob(File.join(APP_ROOT, 'app', 'controllers', '*.rb')).each { |file| requir
 # require the helper(s)
 Dir.glob(File.join(APP_ROOT, 'app', 'helpers', '*.rb')).each { |file| require file }
 
-# require the helpers
-#Dir.glob(File.join(APP_ROOT, 'app', 'helpers', '*.rb')).each { |file| require file }
-
 # require database configurations
 #require File.join(APP_ROOT, 'config', 'database')
 
