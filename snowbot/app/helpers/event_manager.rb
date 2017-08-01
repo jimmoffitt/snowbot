@@ -8,7 +8,7 @@ require_relative 'send_direct_message'
 class EventManager
 	@@previous_event_id = 0
 
-	COMMAND_MESSAGE_LIMIT = 10	#Simplistic way to detect an incoming, short, 'commmand' DM.
+	COMMAND_MESSAGE_LIMIT = 20	#Simplistic way to detect an incoming, short, 'commmand' DM.
 	
 	attr_accessor :DMsender
 
@@ -22,7 +22,7 @@ class EventManager
 		response = dm_event['message_create']['message_data']['quick_reply_response']['metadata']
 		user_id = dm_event['message_create']['sender_id']
 
-		#puts "User #{user_id} answered with #{response}"
+		puts "User #{user_id} answered with #{response}"
 
 		#Default options
 		if response == 'help'
@@ -82,6 +82,8 @@ class EventManager
 
 		request = dm_event['message_create']['message_data']['text']
 		user_id = dm_event['message_create']['sender_id']
+		
+		puts "request: #{request}"
 
 		if request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'home' or request.downcase.include? 'main' or request.downcase.include? 'hello')
 			@DMSender.send_welcome_message(user_id)

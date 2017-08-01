@@ -41,7 +41,10 @@ class SnowBotApp < Sinatra::Base
 	end
 
 	get '/' do
-		"<p><b>Welcome to the snow bot!</b></p><p>I am a sinatra-based web app.</p><p>I consume Twitter Account Activity webhook events and manage DM bot dialog.</p>"
+		"<p><b>Welcome to the snow bot...</b></p>
+     <p>I am a sinatra-based web app.</p>
+     <p>I consume Twitter Account Activity webhook events and manage DM bot dialog.</p>
+     <p>Think snow!</p>"
 	end
 
 	# Receives challenge response check (CRC).
