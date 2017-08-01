@@ -40,6 +40,21 @@ class GenerateDirectMessageContent
 		
 		quick_reply
 	end
+	
+	
+	def message_create_header(recipient_id) 
+		
+		header = {}
+
+		header['type'] = 'message_create'
+		header['message_create'] = {}
+		header['message_create']['target'] = {}
+		header['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		
+		header
+		
+	end
+	
 
 	#New users will be served this.
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
@@ -61,11 +76,12 @@ class GenerateDirectMessageContent
 	def generate_welcome_message(recipient_id)
 
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
+		#event['event'] = {}
+		#event['event']['type'] = 'message_create'
+		#event['event']['message_create'] = {}
+		#event['event']['message_create']['target'] = {}
+		#event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
 
 		message_data = {}
 		message_data['text'] = generate_main_message
@@ -213,8 +229,7 @@ class GenerateDirectMessageContent
 		
 		#\n To select an additional area, send an 'Add' Direct Message.
     #  \n To review your current areas of interest, send a 'List' Direct Message.
-    #  \n If you want to unsubscribe, send a 'Quit' or 'Stop' Direct Message." #'Unsubscribe' is also supported.
-
+  
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
 
@@ -236,11 +251,12 @@ class GenerateDirectMessageContent
 
 		#Build DM content.
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
+		#event['event'] = {}
+		#event['event']['type'] = 'message_create'
+		#event['event']['message_create'] = {}
+		#event['event']['message_create']['target'] = {}
+		#event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
 
 		message_data = {}
 		message_data['text'] = message_text
@@ -267,11 +283,12 @@ class GenerateDirectMessageContent
 
 		#Build DM content.
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
+		#event['event'] = {}
+		#event['event']['type'] = 'message_create'
+		#event['event']['message_create'] = {}
+		#event['event']['message_create']['target'] = {}
+		#event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
 
 		message_data = {}
 		message_data['text'] = message_text
@@ -310,13 +327,20 @@ class GenerateDirectMessageContent
 		event['event']['message_create']['message_data'] = message_data
 		
 		#Build attachment metadata
-		attachment = {}
-		attachment['type'] = "media"
-		attachment['media'] = {}
-		attachment['media']['id'] = media_id
 		
-		message_data['attachment'] = attachment
+		if media_id.nil?
+			message_data['text'] = 'Sorry, could not load photo.'
+		else
+			message_data['text'] = message
+			
+			attachment = {}
+			attachment['type'] = "media"
+			attachment['media'] = {}
+			attachment['media']['id'] = media_id
 
+			message_data['attachment'] = attachment	
+		end
+		
 		event.to_json
 		
 	end

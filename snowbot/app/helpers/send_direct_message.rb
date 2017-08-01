@@ -58,7 +58,7 @@ class SendDirectMessage
 		@photo_list = []
 
 		begin
-			photo_dir = File.join('..', APP_ROOT, 'config', 'data', 'photos')
+			photo_dir = File.join(APP_ROOT, 'config', 'data', 'photos')
 			puts "photo folder: #{photo_dir}"
 		rescue #Running outside of Sinatra?
 			photo_dir = '../../config/data/photos/'
