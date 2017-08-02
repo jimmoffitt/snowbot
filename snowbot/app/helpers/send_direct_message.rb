@@ -21,8 +21,6 @@ class SendDirectMessage
 
 	def initialize
 
-		#@dm = ApiRequest.new('../../config/accounts_private.yaml') #this context does not work within Sinatra app...?
-
 		puts "Creating SendDirectMessage object."
 		
 		@dm = ApiOauthRequest.new
@@ -49,7 +47,7 @@ class SendDirectMessage
 			relative = there.relative_path_from here
 			puts "PHOTO FOLDER? #{here + relative}"
 
-			photo_dir = here + relative
+			photo_dir = ".#{here}#{relative}"
 			puts "photo folder: #{photo_dir}"
 
 
