@@ -265,7 +265,7 @@ class GenerateDirectMessageContent
 		#Create Twitter ID for image content.
 		
 		media_id = @twitter_api.get_media_id(photo)
-		puts media_id
+		puts "Generated media_id: #{media_id}"
 
 		#Build DM content.
 		event = {}
@@ -279,7 +279,8 @@ class GenerateDirectMessageContent
 		#Build attachment metadata
 		
 		if media_id.nil?
-			message_data['text'] = 'Sorry, could not load photo.'
+			puts "Count not send photo: #{photo}"
+			message_data['text'] = "Sorry, could not load photo: #{photo} ."
 		else
 			message_data['text'] = message
 			
