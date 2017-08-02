@@ -115,7 +115,13 @@ class SendDirectMessage
 	#TODO: this method is NOT currently used by 'set-up' webhook scripts...
 	#New users will be served this.
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
-		
+	
+	def send_snow_day(recipient_id)
+		message = "We should make that happen... (and I should write more code for continuing that dialog)"
+		dm_content = @content.generate_message(recipient_id, message)
+		send_direct_message(dm_content)
+	end
+	
 	def send_photo(recipient_id)
 		#Generate message. Static for now, but could generate/retrieve photo capture.
 		message = 'Here is your (not yet) random snow photo... (testing DMs with images)'

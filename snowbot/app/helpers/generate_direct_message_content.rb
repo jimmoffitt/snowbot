@@ -226,7 +226,7 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = '⌂ Home'
-		option['metadata'] = "return_to_system"
+		option['metadata'] = "return_home"
 		options << option
 
 		message_data['quick_reply']['options'] = options

@@ -8,7 +8,7 @@ require_relative 'send_direct_message'
 class EventManager
 	@@previous_event_id = 0
 
-	COMMAND_MESSAGE_LIMIT = 20	#Simplistic way to detect an incoming, short, 'commmand' DM.
+	COMMAND_MESSAGE_LIMIT = 12	#Simplistic way to detect an incoming, short, 'commmand' DM.
 	
 	attr_accessor :DMsender
 
@@ -35,6 +35,8 @@ class EventManager
 		#Custom options	
 		elsif response == 'see_photo'
 			@DMSender.send_photo(user_id)
+		elsif response == 'snow_day'
+			@DMSender.send_snow_day(user_id)
 		elsif response == 'learn_snow'
 			@DMSender.send_links(user_id)
 		elsif response.include? 'link_choice'
@@ -85,15 +87,15 @@ class EventManager
 		
 		puts "request with command: #{request}"
 
-		if request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'home' or request.downcase.include? 'main' or request.downcase.include? 'hello')
+		if request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'home' or request.downcase.include? 'main' or request.downcase.include? 'hello' or request.downcase.include? 'back')
 			@DMSender.send_welcome_message(user_id)
-		elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'photo' or request.downcase.include? 'pic' or request.downcase.include? 'see')
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'photo' or request.downcase.include? 'pic' or request.downcase.include? 'see')
 			@DMSender.send_photo(user_id)
-		elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'learn')
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'learn')
 			@DMSender.send_link(user_id)
-		elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'about')
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'about')
 			@DMSender.send_system_info(user_id)
-		elsif request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'help')
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'help')
 			@DMSender.send_system_help(user_id)
 		else
 			#"Listen, I only understand a few commands like: learn, about, help"
