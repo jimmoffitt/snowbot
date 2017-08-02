@@ -31,11 +31,12 @@ class TwitterAPI
 		
 		puts "Value of media: #{media}"
 		
+		
+		
 		#TODO testing
-		media_root = '/app/snowbot/config/data/photos/'
-
-		media = "#{media_root}corduroy.jpg"
-		puts "TESTING in twitter api wrapper : setting media: #{media}"
+		#media_root = '/app/snowbot/config/data/photos/'
+		#media = "#{media_root}corduroy.jpg"
+		#puts "TESTING in twitter api wrapper : setting media: #{media}"
 		
 		media_id = nil
 
