@@ -48,6 +48,9 @@ class SendDirectMessage
 			puts "PHOTO FOLDER? #{here + relative}"
 
 			photo_dir = ".#{here}#{relative}"
+
+			photo_dir - '/app/snowbot/config/data/photos'
+			
 			puts "photo folder: #{photo_dir}"
 
 
@@ -70,7 +73,7 @@ class SendDirectMessage
 			end
 
 		rescue #Running outside of Sinatra?
-			photo_dir = there
+			photo_dir = '/app/snowbot/config/data/photos'
 		end
 		
 		#Load photo files into array.
