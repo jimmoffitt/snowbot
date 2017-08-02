@@ -23,32 +23,34 @@ class TwitterAPI
 			#'Config Variables' via the ENV{} hash.
 			@keys = {}
 
-			if File.file?(config)
-				#puts "Pulling keys from #{config}"
-				@keys = YAML::load_file(config)
-				@keys = keys['dm_api']
-			else
+			#if File.file?(config)
+			#	#puts "Pulling keys from #{config}"
+			#	@keys = YAML::load_file(config)
+			#	@keys = keys['dm_api']
+			#else
 				#puts "Pulling keys from ENV[]"
 				@keys['consumer_key'] = ENV['CONSUMER_KEY']
 				@keys['consumer_secret'] = ENV['CONSUMER_SECRET']
 				@keys['access_token'] = ENV['ACCESS_TOKEN']
 				@keys['access_token_secret'] = ENV['ACCESS_TOKEN_SECRET']
-			end
+			#end
 
 			@upload_client = Twitter::REST::Client.new(@keys)
 	
 	end
   
 	def get_media_id(media)
-		puts media
+		puts "Value of media: #{media}"
 		
 		media_id = nil
 
-		if media != '' 
+		if media != '' and not media.nil?
       media_id = @upload_client.upload(File.new(media))
 		else
 			media_id = nil
 		end	
+		
+		puts "media_id: #{media_id}"
 	  
 		media_id
 	

@@ -71,6 +71,8 @@ class SendDirectMessage
 			@photo_list << photo_file #Load just the location name.
 		end
 		
+		puts "Have a list of #{@photo_list.count} photos..."
+		
 	end
 
 	#TODO: this method is NOT currently used by 'set-up' webhook scripts...
@@ -83,6 +85,8 @@ class SendDirectMessage
 		
 		#Select photo(at random).
 		photo = @photo_list.sample
+		
+		puts "Attempting to send #{photo}."
 
 		dm_content = @content.generate_message_with_media(recipient_id, message, photo)
 		send_direct_message(dm_content)

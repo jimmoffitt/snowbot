@@ -83,7 +83,7 @@ class EventManager
 		request = dm_event['message_create']['message_data']['text']
 		user_id = dm_event['message_create']['sender_id']
 		
-		puts "request: #{request}"
+		puts "request with command: #{request}"
 
 		if request.length < COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'home' or request.downcase.include? 'main' or request.downcase.include? 'hello')
 			@DMSender.send_welcome_message(user_id)
@@ -116,8 +116,6 @@ class EventManager
 			dm_events = events['direct_message_events']
 
 			dm_events.each do |dm_event|
-				
-				#puts "id: #{@@previous_event_id}"
 
 				if dm_event['type'] == 'message_create'
 

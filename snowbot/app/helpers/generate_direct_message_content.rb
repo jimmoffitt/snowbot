@@ -6,7 +6,6 @@ class GenerateDirectMessageContent
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
-	
 	def generate_greeting
 
 		greeting = "#{BOT_CHAR} Welcome to #{BOT_NAME} #{BOT_CHAR}"
@@ -21,27 +20,6 @@ class GenerateDirectMessageContent
 
 	end
 
-	def generate_options_menu
-		quick_reply = {}
-		quick_reply['type'] = 'options'
-		quick_reply['options'] = []
-		
-		custom_options = []
-		custom_options = build_custom_options
-		custom_options.each do |option|
-			quick_reply['options'] << option
-		end
-
-		default_options = []
-		default_options = build_default_options
-		default_options.each do |option|
-			quick_reply['options'] << option
-		end
-		
-		quick_reply
-	end
-	
-	
 	def message_create_header(recipient_id) 
 		
 		header = {}
@@ -77,11 +55,6 @@ class GenerateDirectMessageContent
 
 		event = {}
 		event['event'] = message_create_header(recipient_id)
-		#event['event'] = {}
-		#event['event']['type'] = 'message_create'
-		#event['event']['message_create'] = {}
-		#event['event']['message_create']['target'] = {}
-		#event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
 
 		message_data = {}
 		message_data['text'] = generate_main_message
@@ -113,11 +86,7 @@ class GenerateDirectMessageContent
 	def generate_link_list(recipient_id, list)
 
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
 		message_data['text'] = 'Select a link:'
@@ -151,11 +120,7 @@ class GenerateDirectMessageContent
 	def generate_location_map(recipient_id)
 
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
 		message_data['text'] = 'Select your area of interest from the map:'
@@ -175,11 +140,7 @@ class GenerateDirectMessageContent
 	def generate_location_list(recipient_id, list)
 
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
 		message_data['text'] = 'Select your area of interest:'
@@ -215,14 +176,9 @@ class GenerateDirectMessageContent
 		#@snowbot: Make a weather forecast API call? For now just extract coordinates and make a silly comment.
 		
 		response = "That's really interesting."
-			
 		
 		event = {}
-		event['event'] = {}
-		event['event']['type'] = 'message_create'
-		event['event']['message_create'] = {}
-		event['event']['message_create']['target'] = {}
-		event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
+		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
 		message_data['text'] = "You indicated: #{area_of_interest}. /n #{response}"
@@ -336,12 +292,8 @@ class GenerateDirectMessageContent
 	def generate_message(recipient_id, message)
 			#Build DM content.
 			event = {}
-			event['event'] = {}
-			event['event']['type'] = 'message_create'
-			event['event']['message_create'] = {}
-			event['event']['message_create']['target'] = {}
-			event['event']['message_create']['target']['recipient_id'] = "#{recipient_id}"
-
+			event['event'] = message_create_header(recipient_id)
+			
 			message_data = {}
 			message_data['text'] = message
 
@@ -424,4 +376,25 @@ class GenerateDirectMessageContent
 		options
 
 	end
+
+	def generate_options_menu
+		quick_reply = {}
+		quick_reply['type'] = 'options'
+		quick_reply['options'] = []
+
+		custom_options = []
+		custom_options = build_custom_options
+		custom_options.each do |option|
+			quick_reply['options'] << option
+		end
+
+		default_options = []
+		default_options = build_default_options
+		default_options.each do |option|
+			quick_reply['options'] << option
+		end
+
+		quick_reply
+	end
+
 end

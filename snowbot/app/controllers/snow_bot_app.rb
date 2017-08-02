@@ -8,6 +8,7 @@ require_relative "../../app/helpers/event_manager"
 class SnowBotApp < Sinatra::Base
 
 	def initialize
+		puts "Starting up web app."
 		super()
 	end
 
