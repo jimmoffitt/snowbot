@@ -45,6 +45,7 @@ class TwitterAPI
 		media_id = nil
 
 		if media != '' and not media.nil?
+			puts "Calling upload with #{media}"
       media_id = @upload_client.upload(File.new(media))
 		else
 			media_id = nil

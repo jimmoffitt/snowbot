@@ -6,6 +6,13 @@ class GenerateDirectMessageContent
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
+	attr_accessor :TwitterAPI
+	
+	def initialize
+		@twitter_api = TwitterAPI.new
+		
+	end
+
 	def generate_greeting
 
 		greeting = "#{BOT_CHAR} Welcome to #{BOT_NAME} #{BOT_CHAR}"
@@ -256,9 +263,8 @@ class GenerateDirectMessageContent
 	def generate_message_with_media(recipient_id, message, photo)
 
 		#Create Twitter ID for image content.
-		twitter_api = TwitterAPI.new
-		media_id = twitter_api.get_media_id(photo)
 		
+		media_id = @twitter_api.get_media_id(photo)
 		puts media_id
 
 		#Build DM content.
