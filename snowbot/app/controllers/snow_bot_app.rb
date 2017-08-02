@@ -13,23 +13,8 @@ class SnowBotApp < Sinatra::Base
 	end
 
 	#Load authentication details
-	config_file = File.join(File.dirname(__FILE__), '../../config/config_private.yaml')
 	keys = {}
-
-	
-	if File.file?(config_file)
-		keys = YAML::load_file(config_file)
-		#puts "keys #{keys}"
-		#set :dm_api_consumer_key, keys['dm_api']['consumer_key']
-		set :dm_api_consumer_secret, keys['dm_api']['consumer_secret']
-		#set :dm_api_access_token, keys['dm_api']['access_token']
-		#set :dm_api_access_token_secret, keys['dm_api']['access_token_secret']
-	else
-		#set :dm_api_consumer_key, ENV['CONSUMER_KEY']
-		set :dm_api_consumer_secret, ENV['CONSUMER_SECRET']
-		#set :dm_api_access_token, ENV['ACCESS_TOKEN']
-		#set :dm_api_access_token_secret, ENV['ACCESS_TOKEN_SECRET']
-	end
+	set :dm_api_consumer_secret, ENV['CONSUMER_SECRET']
 
 	#Account Activity API with OAuth
 
