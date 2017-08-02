@@ -44,8 +44,9 @@ class SnowBotApp < Sinatra::Base
 		"<p><b>Welcome to the snow bot...</b></p>
      <p>I am a sinatra-based web app...</p>
      <p>I consume Twitter Account Activity webhook events and manage DM bot dialogs...</p>
-     <p>Will soon serve photos, links, and third-party snow data...</p>
-     <p>Think snow...</p>"
+     <p>Will soon serve photos, links, and third-party snow data...?</p>
+     <p>Think snow...</p>
+     <%= Dir.pwd %>"
 	end
 
 	# Receives challenge response check (CRC).
