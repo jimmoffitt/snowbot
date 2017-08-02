@@ -1,5 +1,6 @@
 require 'json'
 require 'csv'
+require 'pathname'
 require_relative 'api_oauth_request'
 require_relative 'generate_direct_message_content'
 
@@ -22,6 +23,8 @@ class SendDirectMessage
 
 		#@dm = ApiRequest.new('../../config/accounts_private.yaml') #this context does not work within Sinatra app...?
 
+		puts "Creating SendDirectMessage object."
+		
 		@dm = ApiOauthRequest.new
 
 		@dm.uri_path = '/1.1/direct_messages'
@@ -30,9 +33,60 @@ class SendDirectMessage
 		@content = GenerateDirectMessageContent.new
 
 		#Load menu resources:
+		@photo_list = []
+
+		begin
+			
+			#Kludgy I am sure. These photos are stored on backend and only served via DM.
+			#TODO - Testing
+			
+			here = File.dirname(__FILE__)
+			
+			puts "__FILE__ set to: #{here}"
+			
+			there = File.expand_path('../../config/data/photos')
+			
+			relative = there.relative_path_from here
+			puts "PHOTO FOLDER? #{here + relative}"
+
+			photo_dir = here + relative
+			puts "photo folder: #{photo_dir}"
+
+
+			test_file = '../config/data/photos/corduroy.jpg'
+			found = File.file?(test_file)
+			if found
+				puts "FOUND #{test_file}"
+			end
+
+			test_file = '../../config/data/photos/corduroy.jpg'
+			found = File.file?(test_file)
+			if found
+				puts "FOUND #{test_file}"
+			end
+
+			test_file = '/app/snowbot/config/data/photos/corduroy.jpg'
+			found = File.file?(test_file)
+			if found
+				puts "FOUND #{test_file}"
+			end
+
+		rescue #Running outside of Sinatra?
+			photo_dir = there
+		end
+		
+		#Load photo files into array.
+		photo_files = Dir.glob("#{photo_dir}/*.{jpg,JPG}")
+
+		photo_files.each do |photo_file|
+			@photo_list << photo_file #Load just the location name.
+		end
+		
+		puts "Have a list of #{@photo_list.count} photos..."
+
 
 		#@location_list = []
-		
+
 		#begin
 		#	locations = CSV.read(File.join(APP_ROOT, 'config', 'data', 'locations', 'placesOfInterest.csv'))
 		#rescue #Running outside of Sinatra?
@@ -55,24 +109,6 @@ class SendDirectMessage
 		#	@link_list << link[0] #Load just the location name.
 		#end
 
-		@photo_list = []
-
-		begin
-			photo_dir = File.join(APP_ROOT, 'config', 'data', 'photos')
-			puts "photo folder: #{photo_dir}"
-		rescue #Running outside of Sinatra?
-			photo_dir = '../../config/data/photos/'
-		end
-		
-		#Load photo files into array.
-		photo_files = Dir.glob("../../config/data/photos/*.{jpg,JPG}")
-
-		photo_files.each do |photo_file|
-			@photo_list << photo_file #Load just the location name.
-		end
-		
-		puts "Have a list of #{@photo_list.count} photos..."
-		
 	end
 
 	#TODO: this method is NOT currently used by 'set-up' webhook scripts...
@@ -81,7 +117,7 @@ class SendDirectMessage
 		
 	def send_photo(recipient_id)
 		#Generate message. Static for now, but could generate/retrieve photo capture.
-		message = 'Here is your random snow photo... (testing DMs with images)'
+		message = 'Here is your (not yet) random snow photo... (testing DMs with images)'
 		
 		#Select photo(at random).
 		photo = @photo_list.sample

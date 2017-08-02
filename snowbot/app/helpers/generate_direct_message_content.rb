@@ -260,54 +260,6 @@ class GenerateDirectMessageContent
 		event.to_json
 	end
 	
-	def generate_message_with_media(recipient_id, message, photo)
-
-		#Create Twitter ID for image content.
-		
-		media_id = @twitter_api.get_media_id(photo)
-		puts "Generated media_id: #{media_id}"
-
-		#Build DM content.
-		event = {}
-		event['event'] = message_create_header(recipient_id)
-
-		message_data = {}
-		message_data['text'] = message
-
-		event['event']['message_create']['message_data'] = message_data
-		
-		#Build attachment metadata
-		
-		if media_id.nil?
-			puts "Count not send photo: #{photo}"
-			message_data['text'] = "Sorry, could not load photo: #{photo} ."
-		else
-			message_data['text'] = message
-			
-			attachment = {}
-			attachment['type'] = "media"
-			attachment['media'] = {}
-			attachment['media']['id'] = media_id
-
-			message_data['attachment'] = attachment	
-		end
-		
-		event.to_json
-		
-	end
-	
-	def generate_message(recipient_id, message)
-			#Build DM content.
-			event = {}
-			event['event'] = message_create_header(recipient_id)
-			
-			message_data = {}
-			message_data['text'] = message
-
-			event['event']['message_create']['message_data'] = message_data
-		
-			event.to_json
-	end
 	
 	#=====================================================================================
 
@@ -403,5 +355,57 @@ class GenerateDirectMessageContent
 
 		quick_reply
 	end
+
+
+	def generate_message_with_media(recipient_id, message, photo)
+
+		#Create Twitter ID for image content.
+
+		media_id = @twitter_api.get_media_id(photo)
+		puts "Generated media_id: #{media_id}"
+
+		#Build DM content.
+		event = {}
+		event['event'] = message_create_header(recipient_id)
+
+		message_data = {}
+		message_data['text'] = message
+
+		event['event']['message_create']['message_data'] = message_data
+
+		#Build attachment metadata
+
+		if media_id.nil?
+			puts "Count not send photo: #{photo}"
+			message_data['text'] = "Sorry, could not load photo: #{photo} ."
+		else
+			message_data['text'] = message
+
+			attachment = {}
+			attachment['type'] = "media"
+			attachment['media'] = {}
+			attachment['media']['id'] = media_id
+
+			message_data['attachment'] = attachment
+		end
+
+		event.to_json
+
+	end
+
+	def generate_message(recipient_id, message)
+		#Build DM content.
+		event = {}
+		event['event'] = message_create_header(recipient_id)
+
+		message_data = {}
+		message_data['text'] = message
+
+		event['event']['message_create']['message_data'] = message_data
+
+		event.to_json
+	end
+
+
 
 end

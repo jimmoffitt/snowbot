@@ -8,39 +8,33 @@ class TwitterAPI
 	              :base_url, # 'https://api.twitter.com/' or 'upload.twitter.com' or ?
 	              :uri_path #No default.
 
-		def initialize(config_file = nil)
+		def initialize()
 
       @base_url = 'upload.twitter.com'
 			@uri_path = '/1.1/media/upload'
-			
-			if config_file.nil?
-				config = '../../config/config_private.yaml'
-			else
-				config = config_file
-			end
 
 			#Get Twitter App keys and tokens. Read from 'config.yaml' if provided, or if running on Heroku, pull from the
 			#'Config Variables' via the ENV{} hash.
 			@keys = {}
 
-			#if File.file?(config)
-			#	#puts "Pulling keys from #{config}"
-			#	@keys = YAML::load_file(config)
-			#	@keys = keys['dm_api']
-			#else
-				#puts "Pulling keys from ENV[]"
-				@keys['consumer_key'] = ENV['CONSUMER_KEY']
-				@keys['consumer_secret'] = ENV['CONSUMER_SECRET']
-				@keys['access_token'] = ENV['ACCESS_TOKEN']
-				@keys['access_token_secret'] = ENV['ACCESS_TOKEN_SECRET']
-			#end
+			puts "Pulling keys from ENV[]"
+			@keys['consumer_key'] = ENV['CONSUMER_KEY']
+			@keys['consumer_secret'] = ENV['CONSUMER_SECRET']
+			@keys['access_token'] = ENV['ACCESS_TOKEN']
+			@keys['access_token_secret'] = ENV['ACCESS_TOKEN_SECRET']
 
 			@upload_client = Twitter::REST::Client.new(@keys)
 	
 	end
   
 	def get_media_id(media)
+		
 		puts "Value of media: #{media}"
+		
+		#TODO testing
+		media_root = '../../config/data/photos/'
+		media = "#{media_root}corduroy.jpg"
+		puts "TESTING in twitter api wrapper : setting media: #{media}"
 		
 		media_id = nil
 
