@@ -1,3 +1,6 @@
+#With many Twitter (Public) APIs, you can just use something like the 'twitter' gem.
+#This example instead builds requests making the 'oauth' gem, and is not Twitter specific.
+
 require 'yaml'
 require 'json'
 require 'oauth'

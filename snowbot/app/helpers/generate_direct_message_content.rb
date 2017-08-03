@@ -1,16 +1,25 @@
-require_relative 'twitter_api'
+#Generates all content for bot Direct Messages.
+#Many responses include configuration metadata/resources, such as photos, links, and location list.
+#These metadata are loading from local files.
+#Direct Messages with media require a side call to Twitter upload endpoint, so this class uses a Twitter API object. 
 
+require_relative 'twitter_api'
+require_relative 'get_resources'
 
 class GenerateDirectMessageContent
 	
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
-	attr_accessor :TwitterAPI
-	
+	attr_accessor :TwitterAPI, 
+	              :resources
+
 	def initialize
-		@twitter_api = TwitterAPI.new
+
+		puts "Creating GenerateDirectMessageContent object."
 		
+		@twitter_api = TwitterAPI.new
+		@resources = GetResources.new
 	end
 
 	def generate_greeting
@@ -40,33 +49,43 @@ class GenerateDirectMessageContent
 		
 	end
 	
+	#================================================================
+	def generate_random_photo(recipient_id)
 
-	#New users will be served this.
-	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
-	def generate_welcome_message_default
-
-		message = {}
-		message['welcome_message'] = {}
-		message['welcome_message']['message_data'] = {}
-		message['welcome_message']['message_data']['text'] = generate_greeting
-
-		message['welcome_message']['message_data']['quick_reply'] = generate_options_menu
-
-		message.to_json
-
-	end
-
-	#Users are shown this after returning from 'show info' option... A way to serve to other 're-started' dialogs?
-	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
-	def generate_welcome_message(recipient_id)
-
+		#Build DM content.
 		event = {}
 		event['event'] = message_create_header(recipient_id)
-
+		
 		message_data = {}
-		message_data['text'] = generate_main_message
+		
+		#Select photo(at random).
+		photo = @resources.photo_list.sample
+		
+		#message = ''
+		#OK, got photo message
+		#if not photo[1] == ''
+			message = photo[1]
+		#end
 
-		message_data['quick_reply'] = generate_options_menu
+		message_data['text'] = message
+		
+		#Confirm photo file exists
+		photo_file = "#{@resources.photo_home}/#{photo[0]}" 
+		
+		if File.file? photo_file
+			media_id = @twitter_api.get_media_id(photo_file)
+
+			attachment = {}
+			attachment['type'] = "media"
+			attachment['media'] = {}
+			attachment['media']['id'] = media_id
+
+			message_data['attachment'] = attachment
+			
+		else
+			media_id = nil
+			message = "Sorry, could not load photo: #{photo_file}."
+		end
 
 		event['event']['message_create']['message_data'] = message_data
 
@@ -74,22 +93,6 @@ class GenerateDirectMessageContent
 
 	end
 
-	#Users are shown this after returning from 'show info' option... A way to serve to other 're-started' dialogs?
-	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
-	def generate_system_maintenance_welcome
-
-		message = {}
-		message['welcome_message'] = {}
-		message['welcome_message']['message_data'] = {}
-		message['welcome_message']['message_data']['text'] = "System going under maintenance... Come back soon..."
-
-		message.to_json
-
-	end
-
-	#================================================================
-
-	
 	def generate_link_list(recipient_id, list)
 
 		event = {}
@@ -196,9 +199,6 @@ class GenerateDirectMessageContent
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
 
-		options = []
-		#Not including 'description' option attributes.
-		
 		options = build_default_options
 		
 		message_data['quick_reply']['options'] = options
@@ -222,12 +222,7 @@ class GenerateDirectMessageContent
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
 
-		options = []
-
-		option = {}
-		option['label'] = '⌂ Home'
-		option['metadata'] = "return_home"
-		options << option
+		options = build_home_option
 
 		message_data['quick_reply']['options'] = options
 
@@ -252,7 +247,7 @@ class GenerateDirectMessageContent
 		options = []
 		#Not including 'description' option attributes.
 
-		options = build_default_options
+		options = build_home_option
 
 		message_data['quick_reply']['options'] = options
 
@@ -260,9 +255,41 @@ class GenerateDirectMessageContent
 		event.to_json
 	end
 	
+	#=====================================================================================
+	#New users will be served this.
+	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
+	def generate_welcome_message_default
+
+		message = {}
+		message['welcome_message'] = {}
+		message['welcome_message']['message_data'] = {}
+		message['welcome_message']['message_data']['text'] = generate_greeting
+
+		message['welcome_message']['message_data']['quick_reply'] = generate_options_menu
+
+		message.to_json
+
+	end
+
+	#Users are shown this after returning from 'show info' option... A way to serve to other 're-started' dialogs?
+	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
+	def generate_welcome_message(recipient_id)
+
+		event = {}
+		event['event'] = message_create_header(recipient_id)
+
+		message_data = {}
+		message_data['text'] = generate_main_message
+
+		message_data['quick_reply'] = generate_options_menu
+
+		event['event']['message_create']['message_data'] = message_data
+
+		event.to_json
+
+	end
 	
 	#=====================================================================================
-
 
 	def build_custom_options
 
@@ -327,7 +354,7 @@ class GenerateDirectMessageContent
 		options << option
 
 		option = {}
-		option['label'] = 'Home'
+		option['label'] = '⌂ Home'
 		option['description'] = 'Go back home'
 		option['metadata'] = "return_home"
 		options << option
@@ -335,6 +362,21 @@ class GenerateDirectMessageContent
 		options
 
 	end
+
+	def build_home_option
+
+		options = []
+
+		option = {}
+		option['label'] = '⌂ Home'
+		option['description'] = 'Go back home'
+		option['metadata'] = "return_home"
+		options << option
+
+		options
+
+	end
+
 
 	def generate_options_menu
 		quick_reply = {}
@@ -356,42 +398,19 @@ class GenerateDirectMessageContent
 		quick_reply
 	end
 
+	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
+	def generate_system_maintenance_welcome
 
-	def generate_message_with_media(recipient_id, message, photo)
+		message = {}
+		message['welcome_message'] = {}
+		message['welcome_message']['message_data'] = {}
+		message['welcome_message']['message_data']['text'] = "System going under maintenance... Come back soon..."
 
-		#Create Twitter ID for image content.
-
-		media_id = @twitter_api.get_media_id(photo)
-		puts "Generated media_id: #{media_id}"
-
-		#Build DM content.
-		event = {}
-		event['event'] = message_create_header(recipient_id)
-
-		message_data = {}
-		message_data['text'] = message
-
-		event['event']['message_create']['message_data'] = message_data
-
-		#Build attachment metadata
-
-		if media_id.nil?
-			puts "Count not send photo: #{photo}"
-			message_data['text'] = "Sorry, could not load photo: #{photo} ."
-		else
-			message_data['text'] = message
-
-			attachment = {}
-			attachment['type'] = "media"
-			attachment['media'] = {}
-			attachment['media']['id'] = media_id
-
-			message_data['attachment'] = attachment
-		end
-
-		event.to_json
+		message.to_json
 
 	end
+
+	
 
 	def generate_message(recipient_id, message)
 		#Build DM content.

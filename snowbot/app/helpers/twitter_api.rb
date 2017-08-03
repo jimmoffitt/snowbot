@@ -10,6 +10,8 @@ class TwitterAPI
 
 		def initialize()
 
+			puts "Creating TwitterAPI object."
+
       @base_url = 'upload.twitter.com'
 			@uri_path = '/1.1/media/upload'
 

@@ -22,6 +22,12 @@ class GetResources
 
 		#Load resources, populating attributes.
 		@photo_home = '/app/snowbot/config/data/photos' #On Heroku at least.
+
+
+		if not File.directory?(@photo_home)
+			@photo_home = '../../config/data/photos'
+		end
+
 		@photo_list = []
 		@photo_list = get_photos
 
@@ -32,9 +38,11 @@ class GetResources
 	end
 	
 	def get_photos
+		photo_list = []
 		#Load photo files into array.
-		@photos_list = CSV.read("#{@photo_home}/photos.csv")
-		puts "Have a list of #{@photo_list.count} photos..."
+		photo_list = CSV.read("#{@photo_home}/photos.csv", {:col_sep => ";"})
+		puts "Have a list of #{photo_list.count} photos..."
+		photo_list
 	end
 	
 	def get_links

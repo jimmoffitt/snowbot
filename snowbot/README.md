@@ -10,6 +10,22 @@
 * TODO:
   * weather, current and forecast APIs
   * snow, resort reports
+  * launch curated Spotify playlist?
+  
+ ## Notes
+  
+ ### Configuring and hosting photos...
+ 
+ There are two pieces: 
+ * images files in /app/config/data/photos/ [photos_home]
+ * photos.csv file - CSV file with image file name, and caption.
+   * Image file names, all of which should correspond to a file in [photos_home].
+   * Missing captions are OK.
+ 
+
+ 
+ 
+  
  
 
  
