@@ -61,7 +61,7 @@ class GetResources
 		links_list
 	end
 	
-	def get_location_list
+	def get_locations
     #locations_list = [] #Load array of curated locations.
 		locations_list = CSV.read("#{@locations_home}/placesOfInterest.csv")
 		puts "Have a list of #{locations_list.count} locations..."
