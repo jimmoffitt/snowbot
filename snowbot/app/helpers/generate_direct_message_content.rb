@@ -303,11 +303,10 @@ class GenerateDirectMessageContent
 		option['description'] = 'soon?'
 		option['metadata'] = 'snow_day'
 		options << option
-	
-		
+
 		option = {}
 		option['label'] = '❄ Learn something new about snow ❄'
-		option['description'] = 'Other than it sometimes melts at > 32F'
+		option['description'] = 'Other than it sometimes melts around 32°F'
 		option['metadata'] = 'learn_snow'
 		options << option
 
@@ -319,7 +318,7 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = '❄ Request snow report ❄'
-		option['description'] = 'Forecast and snow reports'
+		option['description'] = 'Select for a list of resorts'
 		option['metadata'] = 'weather_info'
 		options << option
 		

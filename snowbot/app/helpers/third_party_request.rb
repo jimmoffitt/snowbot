@@ -10,9 +10,11 @@ class ThirdPartyRequest
 	              :uri_path #No default.
 
 	def initialize(config_file = nil)
+
+		puts "Creating ThirdPartyAPI object."
 		
-		@base_url = 'https://GetSnow.com/'
-		@uri_path = ''
+		#@base_url = 'https://GetSnow.com/'
+		#@uri_path = ''
 		
 		#Get Twitter App keys and tokens. Pull from the 
 		#'Config Variables' via the ENV{} hash.
@@ -50,6 +52,10 @@ class ThirdPartyRequest
 			json_string = f.read
 			parsed_json = JSON.parse(json_string)
 			
+			if parsed_json['response'] && parsed_json['response']['error']
+				return "No weather report available for that location"
+			end
+
 			#Generate place name
 			city = parsed_json['location']['city']
 			state = parsed_json['location']['state']
@@ -83,7 +89,9 @@ end
 if __FILE__ == $0 #This script code is executed when running this file.
 
 	thirdPartyAPI = ThirdPartyRequest.new
-	
+
+	response = thirdPartyAPI.get_current_conditions(5,-15)
+	puts response
 	response = thirdPartyAPI.get_current_conditions(40.0150,-105.2705)
 	puts response
 	response = thirdPartyAPI.get_current_conditions(42.3357,-95.3475)
