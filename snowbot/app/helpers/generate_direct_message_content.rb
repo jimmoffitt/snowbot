@@ -318,7 +318,7 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = '❄ Request snow report ❄'
-		option['description'] = 'Select for a list of resorts'
+		option['description'] = 'Select from a list of resorts'
 		option['metadata'] = 'snow_report'
 		options << option
 		

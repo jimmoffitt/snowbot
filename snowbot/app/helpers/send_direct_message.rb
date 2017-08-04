@@ -55,7 +55,7 @@ class SendDirectMessage
 		send_direct_message(dm_content)
 	end
 
-	def respond_with_weather_info(user_id, coordinates)
+	def respond_with_weather_info(recipient_id, coordinates)
 		dm_content = @content.generate_weather_info(recipient_id, coordinates)
 		send_direct_message(dm_content)
 	end
