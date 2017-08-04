@@ -75,13 +75,10 @@ class SnowBotApp < Sinatra::Base
 	# Receives challenge response check (CRC).
 	get '/snowbot' do
 		crc_token = params['crc_token']
-
-		if not crc_token.nil?
-  		response = {}
-			response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
-			body response.to_json
-		end
-	status 200
+		response = {}
+		response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
+		body response.to_json
+		status 200
 	end
 
 	# Receives DM events.
