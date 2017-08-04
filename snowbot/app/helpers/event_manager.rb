@@ -30,6 +30,7 @@ class EventManager
 		elsif response == 'learn_more'
 			@DMSender.send_system_info(user_id)
 		elsif response == 'return_home'
+			puts "Returning to home in event manager...."
 			@DMSender.send_welcome_message(user_id)
 			
 		#Custom options	

@@ -25,24 +25,7 @@ class ThirdPartyRequest
 		@keys['spotify_consumer_key'] = ENV['SPOTIFY_CONSUMER_KEY']
 
 	end
-	
-	def get_api_access
 
-	end
-
-	def make_post_request(uri_path, request)
-	end
-
-	def make_get_request(uri_path)
-	end
-
-	def make_delete_request(uri_path)
-	end
-
-	def make_put_request(uri_path)
-	end
-	
-	
 	def get_current_conditions(lat,long)
 
 
@@ -85,7 +68,6 @@ class ThirdPartyRequest
 
 end
 
-
 if __FILE__ == $0 #This script code is executed when running this file.
 
 	thirdPartyAPI = ThirdPartyRequest.new
@@ -97,10 +79,4 @@ if __FILE__ == $0 #This script code is executed when running this file.
 	response = thirdPartyAPI.get_current_conditions(42.3357,-95.3475)
 	puts response
 
-
-	#Get current weather conditions for lat/long from WeatherUnderground API?
-	
-	
-	
-	
 end

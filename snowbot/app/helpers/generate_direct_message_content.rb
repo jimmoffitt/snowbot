@@ -269,6 +269,8 @@ class GenerateDirectMessageContent
 	#Users are shown this after returning from 'show info' option... A way to serve to other 're-started' dialogs?
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
 	def generate_welcome_message(recipient_id)
+		
+		puts "Generating welcome message (going home?)"
 
 		event = {}
 		event['event'] = message_create_header(recipient_id)

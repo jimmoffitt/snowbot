@@ -45,7 +45,8 @@ class ApiOauthRequest
 		response = @twitter_api.post(uri_path, request, HEADERS)
 
 		if response.code.to_i >= 300
-			puts "error code: #{response.code} #{response}"
+			puts "POST ERROR occurred with #{uri_path}, request: #{request} "
+			puts "Error code: #{response.code} #{response}"
 		end
 
 		if response.body.nil? #Some successful API calls have nil response bodies, but have 2## response codes.
@@ -62,7 +63,8 @@ class ApiOauthRequest
 		response = @twitter_api.get(uri_path, HEADERS)
 		
 		if response.code.to_i >= 300
-			puts "error: #{response}"
+			puts "GET ERROR occurred with #{uri_path}, request: #{request} "
+			puts "Error: #{response}"
 		end
 
 		if response.body.nil? #Some successful API calls have nil response bodies, but have 2## response codes.
@@ -78,7 +80,8 @@ class ApiOauthRequest
 		response = @twitter_api.delete(uri_path, HEADERS)
 
 		if response.code.to_i >= 300
-			puts "error: #{response}"
+			puts "DELETE ERROR occurred with #{uri_path}, request: #{request} "
+			puts "Error: #{response}"
 		end
 
 		if response.body.nil? #Some successful API calls have nil response bodies, but have 2## response codes.
@@ -99,7 +102,8 @@ class ApiOauthRequest
 		end
 
 		if response.code.to_i >= 300
-			puts "error: #{response}"
+			puts "PUT ERROR occurred with #{uri_path}, request: #{request} "
+			puts "Error: #{response}"
 		end
 
 		if response.body.nil? #Some successful API calls have nil response bodies, but have 2## response codes.
