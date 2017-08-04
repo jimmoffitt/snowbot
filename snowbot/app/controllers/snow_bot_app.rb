@@ -29,7 +29,8 @@ class SnowBotApp < Sinatra::Base
 		"<p><b>Welcome to the snow bot...</b></p>
      <p>I am a sinatra-based web app...</p>
      <p>I consume Twitter Account Activity webhook events and manage DM bot dialogs...</p>
-     <p>Will soon serve photos, links, and third-party snow data...?</p>
+     <p>Serves a local hive of photos. Weather conditions too. </p>
+     <p> Will soon serve snow links, and snow reports...?</p>
      <p>Think snow...</p>"
 	end
 
