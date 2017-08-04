@@ -44,7 +44,7 @@ class EventManager
 			link_choice = response['link_choice: '.length..-1]
 			@DMSender.respond_with_link(user_id, link_choice)
 		elsif response.include? 'weather_info'
-			@DMSender.respond_with_map(user_id)
+			@DMSender.send_map(user_id)
 		elsif response == 'map_selection'
 			#Do we have a Twitter Place or exact coordinates....?
 			location_type = dm_event['message_create']['message_data']['attachment']['location']['type']
