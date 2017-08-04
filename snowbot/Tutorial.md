@@ -181,9 +181,11 @@ run SnowBotApp
 
 ## Setting up Welcome Messages
 
+* *set_welcome_messages.rb* script that makes requests to the Twitter Direct Message API. 
+* Takes one or two command-line parameters. 
+
 ```
 Usage: setup_welcome_message [options]
-    -c, --config CONFIG              Configuration file (including path) that provides account OAuth details. 
     -w, --default WELCOME            Default Welcome Management: 'create', 'set', 'get', 'delete'
     -r, --rule RULE                  Welcome Message Rule management: 'create', 'get', 'delete'
     -i, --id ID                      Message or rule ID
@@ -251,5 +253,18 @@ Getting welcome message list.
 Message IDs: 
 Message ID 893579774534209539 with message: ❄ Welcome to snowbot (ver. 0.02) ❄ 
 ```
+
+### Setting the default Welcome Message
+
+-r "get"
+
+```
+Getting welcome message rules list.
+No rules exist.
+```
+-w "set" -i 874335750661263365
+
+
+-r "delete" -i 870397618781691904
 
 ## Validate setup
