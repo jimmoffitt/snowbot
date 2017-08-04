@@ -190,9 +190,7 @@ class GenerateDirectMessageContent
 		message_data = {}
 		message_data['text'] = weather_info
 		
-		#\n To select an additional area, send an 'Add' Direct Message.
-    #  \n To review your current areas of interest, send a 'List' Direct Message.
-  
+
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
 
@@ -321,7 +319,6 @@ class GenerateDirectMessageContent
 		option['description'] = 'Select from a list of resorts'
 		option['metadata'] = 'snow_report'
 		options << option
-		
 
 		#option = {}
 		#option['label'] = '❄ Receive a "snow" song title ❄'
@@ -413,8 +410,6 @@ class GenerateDirectMessageContent
 
 	end
 
-	
-
 	def generate_message(recipient_id, message)
 		#Build DM content.
 		event = {}
@@ -427,7 +422,5 @@ class GenerateDirectMessageContent
 
 		event.to_json
 	end
-
-
 
 end

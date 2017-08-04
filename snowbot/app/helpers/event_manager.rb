@@ -13,7 +13,7 @@ class EventManager
 	attr_accessor :DMsender
 
 	def initialize
-		#puts 'Creating SendDirectMessage object'
+		puts 'Creating EventManager object'
 		@DMSender = SendDirectMessage.new
 	end
 
