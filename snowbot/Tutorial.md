@@ -298,8 +298,12 @@ Message ID 893579774534209539 with message: ‚ùÑ Welcome to snowbot (ver. 0.02) ‚
 Getting welcome message rules list.
 No rules exist.
 ```
--w "set" -i 874335750661263365
+Setting the default Welcome Message
+-w "set" -i 893579774534209539
 
+```
+Setting default Welcome Message to message with id 893579774534209539...
+```
 
 -r "delete" -i 870397618781691904
 
