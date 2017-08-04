@@ -35,6 +35,10 @@
   Error 403
  "{"errors":[{"code":151,"message":"There was an error sending your message: Field label's display length exceeds maximum length of 36."}]}"
  
+ * Error code: 403 #<Net::HTTPForbidden:0x007f979302fc38>
+Error Message: {"errors":[{"code":151,"message":"There was an error sending your message: Invalid QuickReply field description containing url(s)."}]}
+
+ 
 
  
 
