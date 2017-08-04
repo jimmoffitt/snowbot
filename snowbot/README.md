@@ -24,8 +24,15 @@
  
 
  
+ ### Common errors:
  
+ * Account associated with AA/DM app must allow Direct Messages (dms) from all accounts. 
+ Error 400 
+ "{"errors":[{"code":214,"message":"owner must allow dms from anyone"}]}"
   
+ * option['label'] = '❄ Learn something new about snow ❄ - TOO LONG'
+  Error 403
+ "{"errors":[{"code":151,"message":"There was an error sending your message: Field label's display length exceeds maximum length of 36."}]}"
  
 
  
