@@ -9,6 +9,7 @@ require_relative 'get_resources'        #Loads local resources used to present D
 
 class GenerateDirectMessageContent
 	
+  VERSION = 0.02
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
@@ -16,41 +17,18 @@ class GenerateDirectMessageContent
 	              :resources,
 	              :thirdparty_api
 
-	def initialize
+	def initialize(setup=nil) #'Setup Welcome Message' script using this too, but does not require many helper objects.
 
 		puts "Creating GenerateDirectMessageContent object."
 		
-		@twitter_api = TwitterAPI.new
-		@resources = GetResources.new
-		@thirdparty_api = ThirdPartyRequest.new
-	end
-
-	def generate_greeting
-
-		greeting = "#{BOT_CHAR} Welcome to #{BOT_NAME} #{BOT_CHAR}"
-		greeting
-
-	end
-	
-	def generate_main_message
-		greeting = ''
-		greeting = generate_greeting
-		greeting =+ ' Thanks for stopping by... '
+		if setup.nil?
+			@twitter_api = TwitterAPI.new
+			@resources = GetResources.new
+			@thirdparty_api = ThirdPartyRequest.new
+		end
 
 	end
 
-	def message_create_header(recipient_id) 
-		
-		header = {}
-
-		header['type'] = 'message_create'
-		header['message_create'] = {}
-		header['message_create']['target'] = {}
-		header['message_create']['target']['recipient_id'] = "#{recipient_id}"
-		
-		header
-		
-	end
 	
 	#================================================================
 	def generate_random_photo(recipient_id)
@@ -90,6 +68,12 @@ class GenerateDirectMessageContent
 			message = "Sorry, could not load photo: #{photo_file}."
 		end
 
+		message_data['quick_reply'] = {}
+		message_data['quick_reply']['type'] = 'options'
+
+		options = build_home_option
+		message_data['quick_reply']['options'] = options
+		
 		event['event']['message_create']['message_data'] = message_data
 
 		event.to_json
@@ -205,7 +189,7 @@ class GenerateDirectMessageContent
 
 	def generate_system_info(recipient_id)
 
-		message_text = "This is a snow bot... It's kinda simple, kinda not. "
+		message_text = "This is a snow bot... It's kinda simple, kinda not... see https://github.com/jimmoffitt/snowbot"
 
 		#Build DM content.
 		event = {}
@@ -252,7 +236,37 @@ class GenerateDirectMessageContent
 	
 	#=====================================================================================
 	#New users will be served this.
-	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
+	
+	def generate_greeting
+
+		greeting = "#{BOT_CHAR} Welcome to #{BOT_NAME} (ver. #{VERSION}) #{BOT_CHAR}"
+		greeting
+
+	end
+
+	def generate_main_message
+		greeting = ''
+		greeting = generate_greeting
+		greeting =+ '❄ Thanks for stopping by... ❄'
+
+	end
+
+	def message_create_header(recipient_id)
+
+		header = {}
+
+		header['type'] = 'message_create'
+		header['message_create'] = {}
+		header['message_create']['target'] = {}
+		header['message_create']['target']['recipient_id'] = "#{recipient_id}"
+
+		header
+
+	end
+
+
+
+
 	def generate_welcome_message_default
 
 		message = {}
@@ -297,23 +311,17 @@ class GenerateDirectMessageContent
 		option['description'] = 'come on, take a look'
 		option['metadata'] = 'see_photo'
 		options << option
-
+		
 		option = {}
-		option['label'] = '❄ Suggest a snow day ❄'
-		option['description'] = 'soon?'
-		option['metadata'] = 'snow_day'
+		option['label'] = '❄ Weather data from anywhere ❄'
+		option['description'] = 'Exact location or Place centroid'
+		option['metadata'] = 'weather_info'
 		options << option
-
+		
 		option = {}
 		option['label'] = '❄ Learn something new about snow ❄'
 		option['description'] = 'Other than it sometimes melts around 32°F'
 		option['metadata'] = 'learn_snow'
-		options << option
-
-		option = {}
-		option['label'] = '❄ Request weather data for anywhere ❄'
-		option['description'] = 'Exact location or Place centroid'
-		option['metadata'] = 'weather_info'
 		options << option
 
 		option = {}
@@ -327,6 +335,12 @@ class GenerateDirectMessageContent
 		#option['description'] = '"Sounds good"'
 		#option['metadata'] = 'snow_day'
 		#options << option
+
+		option = {}
+		option['label'] = '❄ Suggest a snow day ❄'
+		option['description'] = 'soon?'
+		option['metadata'] = 'snow_day'
+		options << option
 
 		#option = {}
 		#option['label'] = 'Ask Twitter API question!'
@@ -345,7 +359,7 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = '❓ Learn more about this system'
-		option['description'] = 'See a detailed system description and links to related information'
+		option['description'] = 'At least a link to underlying code...'
 		option['metadata'] = 'learn_more'
 		options << option
 
@@ -364,6 +378,20 @@ class GenerateDirectMessageContent
 		options
 
 	end
+
+  def build_photo_option
+
+	  options = []
+
+	  option = {}
+	  option['label'] = '❄ Another ❄'
+	  option['description'] = 'Snow another photo'
+	  option['metadata'] = "see_photo"
+	  options << option
+
+	  options
+
+  end
 
 	def build_home_option
 
@@ -412,7 +440,9 @@ class GenerateDirectMessageContent
 
 	end
 
+	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
 	def generate_message(recipient_id, message)
+
 		#Build DM content.
 		event = {}
 		event['event'] = message_create_header(recipient_id)
