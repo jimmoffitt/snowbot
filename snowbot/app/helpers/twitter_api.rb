@@ -19,7 +19,6 @@ class TwitterAPI
 			#'Config Variables' via the ENV{} hash.
 			@keys = {}
 
-			puts "Pulling keys from ENV[]"
 			@keys['consumer_key'] = ENV['CONSUMER_KEY']
 			@keys['consumer_secret'] = ENV['CONSUMER_SECRET']
 			@keys['access_token'] = ENV['ACCESS_TOKEN']

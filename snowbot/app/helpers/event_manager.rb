@@ -59,6 +59,8 @@ class EventManager
 			
 			
 		#TODO - IMPLEMENT	------------------------------------------
+		elsif response.include? 'snow_report'
+			@DMSender.respond_with_resort_list(user_id)
 		elsif response.include? 'resort_choice'
 			
 			location_choice = response['location_choice: '.length..-1]
@@ -83,7 +85,7 @@ class EventManager
 		request = dm_event['message_create']['message_data']['text']
 		user_id = dm_event['message_create']['sender_id']
 		
-		puts "request with command: #{request}"
+		puts "Request with command: #{request}"
 
 		if request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'home' or request.downcase.include? 'main' or request.downcase.include? 'hello' or request.downcase.include? 'back')
 			@DMSender.send_welcome_message(user_id)
