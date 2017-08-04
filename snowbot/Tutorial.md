@@ -1,4 +1,5 @@
-# Tutorial: Building a Snowbot
+# Tutorial: Building the snowbot
+#### Tags: DMAPI, AAAPI, Ruby, WebApp
 
 ## Introduction
 
