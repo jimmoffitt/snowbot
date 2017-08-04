@@ -3,8 +3,9 @@
 #These metadata are loading from local files.
 #Direct Messages with media require a side call to Twitter upload endpoint, so this class uses a Twitter API object. 
 
-require_relative 'twitter_api'
-require_relative 'get_resources'
+require_relative 'twitter_api'          #Hooks to Twitter Public APIs via 'twitter' gem. 
+require_relative 'third_party_request'  #Hooks to third-party APIs.
+require_relative 'get_resources'        #Loads local resources used to present DM menu options and photos to users.
 
 class GenerateDirectMessageContent
 	
@@ -12,7 +13,8 @@ class GenerateDirectMessageContent
 	BOT_CHAR = '❄'
 
 	attr_accessor :TwitterAPI, 
-	              :resources
+	              :resources,
+	              :thirdparty_api
 
 	def initialize
 
@@ -20,6 +22,7 @@ class GenerateDirectMessageContent
 		
 		@twitter_api = TwitterAPI.new
 		@resources = GetResources.new
+		@thirdparty_api = ThirdPartyRequest.new
 	end
 
 	def generate_greeting
@@ -133,7 +136,7 @@ class GenerateDirectMessageContent
 		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
-		message_data['text'] = 'Select your area of interest from the map:'
+		message_data['text'] = 'Select where you want weather info for:'
 
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'location'
@@ -174,24 +177,18 @@ class GenerateDirectMessageContent
 		event.to_json
 
 	end
-	
 
+	def generate_weather_info(recipient_id, coordinates)
+		
+		puts "Coordinates: #{coordinates}"
 
+		weather_info = @thirdparty_api.get_current_conditions(coordinates[1], coordinates[0])
 
-	def acknowledge_location(recipient_id, area_of_interest)
-		#Build DM content.
-		
-		#So, what to do with the location provided? 
-		#@FloodSocial: Echo selection to user, show next steps.
-		#@snowbot: Make a weather forecast API call? For now just extract coordinates and make a silly comment.
-		
-		response = "That's really interesting."
-		
 		event = {}
 		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
-		message_data['text'] = "You indicated: #{area_of_interest}. /n #{response}"
+		message_data['text'] = weather_info
 		
 		#\n To select an additional area, send an 'Add' Direct Message.
     #  \n To review your current areas of interest, send a 'List' Direct Message.
@@ -199,7 +196,7 @@ class GenerateDirectMessageContent
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
 
-		options = build_default_options
+		options = build_home_option
 		
 		message_data['quick_reply']['options'] = options
 		event['event']['message_create']['message_data'] = message_data
@@ -309,22 +306,29 @@ class GenerateDirectMessageContent
 	
 		
 		option = {}
-		option['label'] = '❄ Read and learn about snow ❄'
+		option['label'] = '❄ Learn something new about snow ❄'
 		option['description'] = 'Other than it sometimes melts at > 32F'
 		option['metadata'] = 'learn_snow'
 		options << option
 
 		option = {}
-		option['label'] = '❄ Request a forecast for anywhere ❄'
+		option['label'] = '❄ Request weather data for anywhere ❄'
 		option['description'] = 'Exact location or Place centroid'
-		option['metadata'] = 'pick_from_map'
+		option['metadata'] = 'weather_info'
 		options << option
 
 		option = {}
-		option['label'] = '❄ Receive a "snow" song title ❄'
-		option['description'] = '"Sounds good"'
-		option['metadata'] = 'snow_day'
+		option['label'] = '❄ Request snow report ❄'
+		option['description'] = 'Forecast and snow reports'
+		option['metadata'] = 'weather_info'
 		options << option
+		
+
+		#option = {}
+		#option['label'] = '❄ Receive a "snow" song title ❄'
+		#option['description'] = '"Sounds good"'
+		#option['metadata'] = 'snow_day'
+		#options << option
 
 		#option = {}
 		#option['label'] = 'Ask Twitter API question!'

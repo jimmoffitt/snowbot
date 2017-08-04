@@ -41,10 +41,25 @@ class EventManager
 			@DMSender.send_links(user_id)
 		elsif response.include? 'link_choice'
 			link_choice = response['link_choice: '.length..-1]
-				
 			@DMSender.respond_with_link(user_id, link_choice)
+		elsif response.include? 'weather_info'
+			@DMSender.respond_with_map(user_id)
+		elsif response == 'map_selection'
+			#Do we have a Twitter Place or exact coordinates....?
+			location_type = dm_event['message_create']['message_data']['attachment']['location']['type']
 
-		elsif response.include? 'location_choice'
+			if location_type == 'shared_coordinate'
+				coordinates = dm_event['message_create']['message_data']['attachment']['location']['shared_coordinate']['coordinates']['coordinates']
+			else
+				coordinates = dm_event['message_create']['message_data']['attachment']['location']['shared_place']['place']['centroid']
+			end
+
+			@DMSender.respond_with_weather_info(user_id, coordinates)
+			
+			
+			
+		#TODO - IMPLEMENT	------------------------------------------
+		elsif response.include? 'resort_choice'
 			
 			location_choice = response['location_choice: '.length..-1]
 
@@ -53,23 +68,6 @@ class EventManager
 
 			location_choice = "#{location_choice} (centered at #{coordinates[0]}, #{coordinates[1]} to be specific)"
 			@DMSender.respond_to_location_choice(user_id, location_choice)
-					
-		elsif response == 'map_selection'
-			#Do we have a Twitter Place or exact coordinates....?
-			location_type = dm_event['message_create']['message_data']['attachment']['location']['type']
-
-			if location_type == 'shared_coordinate'
-				coordinates = dm_event['message_create']['message_data']['attachment']['location']['shared_coordinate']['coordinates']['coordinates']
-				location_choice = " #{coordinates[0].round(4)}, #{coordinates[1].round(4)}."
-				
-			else
-				coordinates = dm_event['message_create']['message_data']['attachment']['location']['shared_place']['place']['centroid']
-				place_name = dm_event['message_create']['message_data']['attachment']['location']['shared_place']['place']['name']
-				location_choice = "Location suggested: #{place_name} "
-	
-			end
-			
-			@DMSender.respond_to_map_choice(user_id, coordinates)
 		
 		else #we have an answer to one of the above.
 			puts "UNHANDLED user response: #{response}"

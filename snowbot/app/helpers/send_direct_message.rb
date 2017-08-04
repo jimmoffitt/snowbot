@@ -55,13 +55,8 @@ class SendDirectMessage
 		send_direct_message(dm_content)
 	end
 
-	def respond_to_location_choice(recipient_id, location_choice)
-		dm_content = @content.acknowledge_location(recipient_id, location_choice)
-		send_direct_message(dm_content)
-	end
-
-	def respond_to_map_choice(user_id, coordinates)
-		dm_content = @content.acknowledge_location(recipient_id, coordinates)
+	def respond_with_weather_info(user_id, coordinates)
+		dm_content = @content.generate_weather_info(recipient_id, coordinates)
 		send_direct_message(dm_content)
 	end
 	
