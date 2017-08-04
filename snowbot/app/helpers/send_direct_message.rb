@@ -41,7 +41,7 @@ class SendDirectMessage
 	end
 
 	def send_links(recipient_id)
-		dm_content = @content.generate_link_list(recipient_id, @links_list)
+		dm_content = @content.generate_link_list(recipient_id)
 		send_direct_message(dm_content)
 	end
 	
@@ -106,6 +106,9 @@ if __FILE__ == $0 #This script code is executed when running this file.
 
 	sender = SendDirectMessage.new
 	#sender.send_map(944480690)
-	sender.send_photo(944480690)
+	#sender.send_photo(944480690)
+
+	sender.send_links(944480690)
+
 
 end

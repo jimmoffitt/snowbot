@@ -84,7 +84,7 @@ class GenerateDirectMessageContent
 	end
 
   
-	def generate_link_list(recipient_id, list)
+	def generate_link_list(recipient_id)
 
 		event = {}
 		event['event'] = message_create_header(recipient_id)
@@ -99,7 +99,7 @@ class GenerateDirectMessageContent
 		
 		#TODO: NEEDS UPDATES TO LINK structure...
 
-		list.each do |item|
+		@resources.links_list.each do |item|
 			option = {}
 			option['label'] = '❄ ' + item[0]
 			option['metadata'] = "link_choice: #{item[0]}"
