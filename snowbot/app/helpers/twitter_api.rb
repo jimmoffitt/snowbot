@@ -10,7 +10,7 @@ class TwitterAPI
 
 		def initialize()
 
-			puts "Creating TwitterAPI object."
+			puts "Creating Twitter (public) API object."
 
       @base_url = 'upload.twitter.com'
 			@uri_path = '/1.1/media/upload'
@@ -31,14 +31,7 @@ class TwitterAPI
 	def get_media_id(media)
 		
 		puts "Value of media: #{media}"
-		
-		
-		
-		#TODO testing
-		#media_root = '/app/snowbot/config/data/photos/'
-		#media = "#{media_root}corduroy.jpg"
-		#puts "TESTING in twitter api wrapper : setting media: #{media}"
-		
+
 		media_id = nil
 
 		if media != '' and not media.nil?
@@ -47,9 +40,7 @@ class TwitterAPI
 		else
 			media_id = nil
 		end	
-		
-		puts "media_id: #{media_id}"
-	  
+
 		media_id
 	
   end
