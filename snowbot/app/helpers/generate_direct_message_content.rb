@@ -71,7 +71,10 @@ class GenerateDirectMessageContent
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
 
-		options = build_home_option
+		options = []
+		options = build_photo_option
+		options = options + build_home_option
+
 		message_data['quick_reply']['options'] = options
 		
 		event['event']['message_create']['message_data'] = message_data
