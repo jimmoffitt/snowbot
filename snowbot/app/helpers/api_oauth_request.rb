@@ -47,6 +47,7 @@ class ApiOauthRequest
 		if response.code.to_i >= 300
 			puts "POST ERROR occurred with #{uri_path}, request: #{request} "
 			puts "Error code: #{response.code} #{response}"
+			puts "Error Message: #{response.body}"
 		end
 
 		if response.body.nil? #Some successful API calls have nil response bodies, but have 2## response codes.
