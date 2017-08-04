@@ -35,14 +35,14 @@ class ApiOauthRequest
 		         :oauth_token_secret => @keys['access_token_secret']
 		}
 
-		@thirdparty_api = OAuth::AccessToken.from_hash(consumer, token)
+		@twitter_api = OAuth::AccessToken.from_hash(consumer, token)
 
 	end
 
 	def make_post_request(uri_path, request)
-		get_api_access if @thirdparty_api.nil? #token timeout?
+		get_api_access if @twitter_api.nil? #token timeout?
 
-		response = @thirdparty_api.post(uri_path, request, HEADERS)
+		response = @twitter_api.post(uri_path, request, HEADERS)
 
 		if response.code.to_i >= 300
 			puts "error code: #{response.code} #{response}"
@@ -57,9 +57,9 @@ class ApiOauthRequest
 	end
 
 	def make_get_request(uri_path)
-		get_api_access if @thirdparty_api.nil? #token timeout?
+		get_api_access if @twitter_api.nil? #token timeout?
 
-		response = @thirdparty_api.get(uri_path, HEADERS)
+		response = @twitter_api.get(uri_path, HEADERS)
 		
 		if response.code.to_i >= 300
 			puts "error: #{response}"
@@ -73,9 +73,9 @@ class ApiOauthRequest
 	end
 
 	def make_delete_request(uri_path)
-		get_api_access if @thirdparty_api.nil? #token timeout?
+		get_api_access if @twitter_api.nil? #token timeout?
 
-		response = @thirdparty_api.delete(uri_path, HEADERS)
+		response = @twitter_api.delete(uri_path, HEADERS)
 
 		if response.code.to_i >= 300
 			puts "error: #{response}"
@@ -90,9 +90,9 @@ class ApiOauthRequest
 
 	def make_put_request(uri_path)
 
-		get_api_access if @thirdparty_api.nil? #token timeout?
+		get_api_access if @twitter_api.nil? #token timeout?
 
-		response = @thirdparty_api.put(uri_path, '', {"content-type" => "application/json"})
+		response = @twitter_api.put(uri_path, '', {"content-type" => "application/json"})
 
 		if response.code.to_i == 429
 			puts "#{response.message}  - Rate limited..."
