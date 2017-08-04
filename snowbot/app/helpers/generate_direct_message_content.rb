@@ -40,7 +40,7 @@ class GenerateDirectMessageContent
 		message_data = {}
 		
 		#Select photo(at random).
-		photo = @resources.photo_list.sample
+		photo = @resources.photos_list.sample
 		
 		#message = ''
 		#OK, got photo message
@@ -51,7 +51,7 @@ class GenerateDirectMessageContent
 		message_data['text'] = message
 		
 		#Confirm photo file exists
-		photo_file = "#{@resources.photo_home}/#{photo[0]}" 
+		photo_file = "#{@resources.photos_home}/#{photo[0]}"
 		
 		if File.file? photo_file
 			media_id = @twitter_api.get_media_id(photo_file)
@@ -83,6 +83,7 @@ class GenerateDirectMessageContent
 
 	end
 
+  
 	def generate_link_list(recipient_id, list)
 
 		event = {}
@@ -113,7 +114,12 @@ class GenerateDirectMessageContent
 		event.to_json
 
 	end
-	
+
+  
+  
+  
+  
+  
 	
 	#Generates Quick Reply for presenting user a Map via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/location
@@ -214,7 +220,7 @@ class GenerateDirectMessageContent
 
 	def generate_system_help(recipient_id)
 
-		message_text = "This system will support several commands. TBD. Like 'photo', 'link', 'day', 'main', 'about'"
+		message_text = "Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'weather', 'wx', 'link', 'day'"
 
 		#Build DM content.
 		event = {}
@@ -310,37 +316,37 @@ class GenerateDirectMessageContent
 		options = []
 
 		option = {}
-		option['label'] = '❄ See snow picture ❄'
-		option['description'] = 'come on, take a look'
+		option['label'] = '❄ See snow picture'
+		option['description'] = 'Come on, take a look'
 		option['metadata'] = 'see_photo'
 		options << option
 		
 		option = {}
-		option['label'] = '❄ Weather data from anywhere ❄'
+		option['label'] = '❄ Weather data from anywhere'
 		option['description'] = 'Exact location or Place centroid'
 		option['metadata'] = 'weather_info'
 		options << option
 		
 		option = {}
-		option['label'] = '❄ Learn something new about snow ❄'
-		option['description'] = 'Other than it sometimes melts around 32°F'
+		option['label'] = '❄ Learn something new about snow'
+		option['description'] = 'Other than it sometimes melts around 32°F and is fun to slide on'
 		option['metadata'] = 'learn_snow'
 		options << option
 
 		option = {}
-		option['label'] = '❄ Request snow report ❄'
+		option['label'] = '❄ Request snow report'
 		option['description'] = 'Select from a list of resorts'
 		option['metadata'] = 'snow_report'
 		options << option
 
 		#option = {}
-		#option['label'] = '❄ Receive a "snow" song title ❄'
+		#option['label'] = '❄ Receive a "snow" song title'
 		#option['description'] = '"Sounds good"'
 		#option['metadata'] = 'snow_day'
 		#options << option
 
 		option = {}
-		option['label'] = '❄ Suggest a snow day ❄'
+		option['label'] = '❄ Suggest a snow day'
 		option['description'] = 'soon?'
 		option['metadata'] = 'snow_day'
 		options << option
@@ -387,8 +393,8 @@ class GenerateDirectMessageContent
 	  options = []
 
 	  option = {}
-	  option['label'] = '❄ Another ❄'
-	  option['description'] = 'Snow another photo'
+	  option['label'] = '❄ Another'
+	  option['description'] = 'Another snow photo'
 	  option['metadata'] = "see_photo"
 	  options << option
 

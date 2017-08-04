@@ -36,13 +36,6 @@ class EventManager
 		#Custom options	
 		elsif response == 'see_photo'
 			@DMSender.send_photo(user_id)
-		elsif response == 'snow_day'
-			@DMSender.send_snow_day(user_id)
-		elsif response == 'learn_snow'
-			@DMSender.send_links(user_id)
-		elsif response.include? 'link_choice'
-			link_choice = response['link_choice: '.length..-1]
-			@DMSender.respond_with_link(user_id, link_choice)
 		elsif response.include? 'weather_info'
 			@DMSender.send_map(user_id)
 		elsif response == 'map_selection'
@@ -56,7 +49,20 @@ class EventManager
 			end
 
 			@DMSender.respond_with_weather_info(user_id, coordinates)
+
+		elsif response == 'learn_snow'
+			@DMSender.send_links(user_id)
+
+
+
+		elsif response == 'snow_day'
+			@DMSender.send_snow_day(user_id)
 			
+			
+		elsif response.include? 'link_choice'
+			link_choice = response['link_choice: '.length..-1]
+			@DMSender.respond_with_link(user_id, link_choice)
+	
 			
 			
 		#TODO - IMPLEMENT	------------------------------------------
@@ -92,6 +98,10 @@ class EventManager
 			@DMSender.send_welcome_message(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'photo' or request.downcase.include? 'pic' or request.downcase.include? 'see')
 			@DMSender.send_photo(user_id)
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'wx' or request.downcase.include? 'weather' )
+			@DMSender.send_map(user_id)
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'day')
+			@DMSender.send_snow_day(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'learn')
 			@DMSender.send_link(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'about')

@@ -10,10 +10,10 @@
 
 class GetResources
 
-	attr_accessor :photo_home,
-	              :photo_list,     #CSV with file name and caption. That's it.
-	              :location_list, #This class knows the configurable location list.
-	              :link_list,
+	attr_accessor :photos_home,
+	              :photos_list,     #CSV with file name and caption. That's it.
+	              :locations_list, #This class knows the configurable location list.
+	              :links_list,
 	              :playlists
 	
 	def initialize()
@@ -21,62 +21,51 @@ class GetResources
 		puts "Creating GetResources object."
 
 		#Load resources, populating attributes.
-		@photo_home = '/app/snowbot/config/data/photos' #On Heroku at least.
-
-
-		if not File.directory?(@photo_home)
-			@photo_home = '../../config/data/photos'
+		@photos_home = '/app/snowbot/config/data/photos' #On Heroku at least.
+		if not File.directory?(@photos_home)
+			@photos_home = '../../config/data/photos'
 		end
+		@photos_list = []
+		@photos_list = get_photos
 
-		@photo_list = []
-		@photo_list = get_photos
+		@links_home = '/app/snowbot/config/data/links' #On Heroku at least.
+		if not File.directory?(@links_home)
+			@links_home = '../../config/data/links'
+		end
+		@links_list = []
+		@links_list = get_links
 
-		@location_list = []
-		@link_list = []
+		@locations_home = '/app/snowbot/config/data/locations' #On Heroku at least.
+		if not File.directory?(@locations_home)
+			@locations_home = '../../config/data/locations'
+		end
+		@locations_list = []
+		@locations_list = get_locations
+
+		#TODO Implement
 		@playlists = []
 		
 	end
 	
 	def get_photos
-		photo_list = []
-		#Load photo files into array.
-		photo_list = CSV.read("#{@photo_home}/photos.csv", {:col_sep => ";"})
+		#photo_list = [] #Load array of photo metadata.
+		photo_list = CSV.read("#{@photos_home}/photos.csv", {:col_sep => ";"})
 		puts "Have a list of #{photo_list.count} photos..."
 		photo_list
 	end
 	
 	def get_links
-
-		#@link_list = []
-
-		#begin
-		#	links = CSV.read(File.join(APP_ROOT, 'config', 'data', 'links', 'links.dat'), { :col_sep => "\t" })
-		#rescue #Running outside of Sinatra?
-		#	links = CSV.read('../../config/data/links/links.dat', { :col_sep => "\t" })
-		#end
-
-		#links.each do |link|
-		#	@link_list << link[0] #Load just the location name.
-		#end
-		
+		#links_list = [] #Load array of curated links.
+		links_list = CSV.read("#{@links_home}/links.csv", {:col_sep => ";"})
+		puts "Have a list of #{links_list.count} links..."
+		links_list
 	end
 	
 	def get_location_list
-
-		#@location_list = []
-
-		#begin
-		#	locations = CSV.read(File.join(APP_ROOT, 'config', 'data', 'locations', 'placesOfInterest.csv'))
-		#rescue #Running outside of Sinatra?
-		#	locations = CSV.read('../../config/data/locations/placesOfInterest.csv')
-		#end
-
-		#locations.each do |location|
-		#	@location_list << location[0] #Load just the location name.
-		#end
-
-
+    #locations_list = [] #Load array of curated locations.
+		locations_list = CSV.read("#{@locations_home}/placesOfInterest.csv")
+		puts "Have a list of #{locations_list.count} locations..."
+		links_list
 	end
-	
-	
+
 end

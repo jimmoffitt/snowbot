@@ -41,12 +41,12 @@ class SendDirectMessage
 	end
 
 	def send_links(recipient_id)
-		dm_content = @content.generate_link_list(recipient_id, @link_list)
+		dm_content = @content.generate_link_list(recipient_id, @links_list)
 		send_direct_message(dm_content)
 	end
 	
 	def send_location_list(recipient_id)
-		dm_content = @content.generate_location_list(recipient_id, @location_list)
+		dm_content = @content.generate_location_list(recipient_id, @locations_list)
 		send_direct_message(dm_content)
 	end
 	
