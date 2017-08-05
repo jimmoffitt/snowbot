@@ -104,7 +104,9 @@ class GenerateDirectMessageContent
 				options << option
 			end
 		end
-
+		
+		options = options + build_home_option
+	
 		message_data['quick_reply']['options'] = options
 
 		event['event']['message_create']['message_data'] = message_data
@@ -121,7 +123,7 @@ class GenerateDirectMessageContent
 		message = "Issue with displaying #{link_choice}..."
 		@resources.links_list.each do |link|
 			if link[0] == link_choice
-				message = "#{link[1]}\n#{link[3]}"
+				message = "#{link[2]}\n#{link[3]}"
 				break
 			end
 		end
