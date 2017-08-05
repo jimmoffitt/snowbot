@@ -118,6 +118,7 @@ class GenerateDirectMessageContent
 		puts "Link choice: #{link_choice} (Switch to numeric or keep as tag?)"
 
 		#Build link response.
+		message = "Issue with displaying #{link_choice}..."
 		@resources.links_list.each do |link|
 			if link[0] == link_choice
 				message = "#{link[1]}\n#{link[2]}"
