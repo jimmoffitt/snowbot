@@ -60,7 +60,7 @@ class EventManager
 		elsif response_metadata == 'snow_day'
 			@DMSender.send_snow_day(user_id)
 		
-		elsif response_metadata.include == 'snow_report'
+		elsif response_metadata == 'snow_report'
 			@DMSender.send_location_list(user_id)
 
 		elsif response_metadata.include? 'location_choice'
@@ -79,7 +79,7 @@ class EventManager
 				
 			end
 
-		elsif response_metadata.include? 'resort_choice'
+		elsif response_metadata.include? 'location_choice'
 			
 			location_choice = response_metadata['location_choice: '.length..-1]
 
