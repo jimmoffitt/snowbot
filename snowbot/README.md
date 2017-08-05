@@ -23,6 +23,15 @@
    * Image file names, all of which should correspond to a file in [photos_home].
    * Missing captions are OK.
   
+  
+ ### Spotify notes
+ GET https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}
+ 
+ https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids
+ ```
+ The base-62 identifier that you can find at the end of the Spotify URI (see above) for an artist, track, album, playlist, etc. Unlike a Spotify URI, a Spotify ID does not clearly identify the type of resource; that information is provided elsewhere in the call.
+ ```
+ 
  ### Common errors:
  
  Building Welcome Messages: 
