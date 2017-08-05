@@ -19,50 +19,65 @@ class EventManager
 
 	def handle_quick_reply(dm_event)
 
-		response = dm_event['message_create']['message_data']['quick_reply_response']['metadata']
+		response_metadata = dm_event['message_create']['message_data']['quick_reply_response']['metadata']
 		user_id = dm_event['message_create']['sender_id']
 
 		#Default options
-		if response == 'help'
+		if response_metadata == 'help'
 			@DMSender.send_system_help(user_id)
-		elsif response == 'learn_more'
+		elsif response_metadata == 'learn_more'
 			@DMSender.send_system_info(user_id)
-		elsif response == 'return_home'
+		elsif response_metadata == 'return_home'
 			puts "Returning to home in event manager...."
 			@DMSender.send_welcome_message(user_id)
 			
 		#Custom options	
-		elsif response == 'see_photo'
+		elsif response_metadata == 'see_photo'
 			@DMSender.send_photo(user_id)
-		elsif response.include? 'weather_info'
+
+		elsif response_metadata.include? 'weather_info'
 			@DMSender.send_map(user_id)
-		elsif response == 'map_selection'
+
+		elsif response_metadata == 'map_selection'
 			#Do we have a Twitter Place or exact coordinates....?
 			location_type = dm_event['message_create']['message_data']['attachment']['location']['type']
-
 			if location_type == 'shared_coordinate'
 				coordinates = dm_event['message_create']['message_data']['attachment']['location']['shared_coordinate']['coordinates']['coordinates']
 			else
 				coordinates = dm_event['message_create']['message_data']['attachment']['location']['shared_place']['place']['centroid']
 			end
+			@DMSender.send_weather_info(user_id, coordinates)
 
-			@DMSender.respond_with_weather_info(user_id, coordinates)
-		elsif response == 'learn_snow'
-			@DMSender.send_links(user_id)
-		elsif response.include? 'link_choice'
-			link_choice = response['link_choice: '.length..-1]
-			@DMSender.respond_with_link(user_id, link_choice)
+		elsif response_metadata == 'learn_snow'
+			@DMSender.send_links_list(user_id)
 
-		#TODO - IMPLEMENT	------------------------------------------
-		elsif response == 'snow_day'
+		elsif response_metadata.include? 'link_choice'
+			link_choice = response_metadata['link_choice: '.length..-1]
+			@DMSender.send_link(user_id, link_choice)
+
+	#TODO - IMPLEMENT	------------------------------------------
+
+		elsif response_metadata == 'snow_day'
 			@DMSender.send_snow_day(user_id)
-
-		elsif response.include? 'snow_report'
+		
+		elsif response_metadata.include? 'snow_report'
 			@DMSender.respond_with_resort_list(user_id)
 
-		elsif response.include? 'resort_choice'
+		elsif response_metadata.include? 'go_back'
+			puts "Parse #{response_metadata} and point there."
 			
-			location_choice = response['location_choice: '.length..-1]
+			type = 'links'
+			
+			if type == 'links'
+				@DMSender.send_links_list(user_id)
+			elsif type = 'resorts'
+				@DMSender.send_location_list(user_id)
+				
+			end
+
+		elsif response_metadata.include? 'resort_choice'
+			
+			location_choice = response_metadata['location_choice: '.length..-1]
 
 			#Get coordinates
 			coordinates = []
@@ -71,7 +86,7 @@ class EventManager
 			@DMSender.respond_to_location_choice(user_id, location_choice)
 		
 		else #we have an answer to one of the above.
-			puts "UNHANDLED user response: #{response}"
+			puts "UNHANDLED user response: #{response_metadata}"
 		end
 		
 	end

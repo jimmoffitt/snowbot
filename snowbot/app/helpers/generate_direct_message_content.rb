@@ -121,7 +121,7 @@ class GenerateDirectMessageContent
 		message = "Issue with displaying #{link_choice}..."
 		@resources.links_list.each do |link|
 			if link[0] == link_choice
-				message = "#{link[1]}\n#{link[2]}"
+				message = "#{link[1]}\n#{link[3]}"
 				break
 			end
 		end
@@ -134,7 +134,8 @@ class GenerateDirectMessageContent
 	  message_data['quick_reply'] = {}
 	  message_data['quick_reply']['type'] = 'options'
 
-	  options = build_home_option
+		options = build_back_option 'links'
+	  options = options + build_home_option
 
 	  message_data['quick_reply']['options'] = options
 	  event['event']['message_create']['message_data'] = message_data
@@ -161,10 +162,31 @@ class GenerateDirectMessageContent
 
 		event.to_json
 	end
+  
+  def generate_resort_info(recipient_id, resort)
+	  resort_info = @thirdparty_api.get_resort_info(resort)
+
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = resort_info
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = build_back_option 'resorts'
+	  options = options + build_home_option
+
+	  message_data['quick_reply']['options'] = options
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+
+  end
 
   def generate_weather_info(recipient_id, coordinates)
 
-	  weather_info = @thirdparty_api.get_current_conditions(coordinates[1], coordinates[0])
+	  weather_info = @thirdparty_api.get_current_weather(coordinates[1], coordinates[0])
 
 	  event = {}
 	  event['event'] = message_create_header(recipient_id)
@@ -189,6 +211,10 @@ class GenerateDirectMessageContent
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/options
 	def generate_location_list(recipient_id, list)
 
+		
+		#TODO: load resorts! from resources!
+		
+		
 		event = {}
 		event['event'] = message_create_header(recipient_id)
 
@@ -300,7 +326,7 @@ class GenerateDirectMessageContent
 
   def generate_system_help(recipient_id)
 
-	  message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
+	  message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'learn', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
 
 	  #Build DM content.
 	  event = {}
@@ -415,7 +441,23 @@ class GenerateDirectMessageContent
 	  options
 
   end
+  
+  #Types: list choices, going back to list. links, resorts
+	def build_back_option(type)
 
+		options = []
+
+		option = {}
+		option['label'] = '<- Back'
+		option['description'] = ''
+		option['metadata'] = "go_back #{type} "
+		options << option
+
+		options
+		
+  end
+  
+  
 	def build_home_option
 
 		options = []

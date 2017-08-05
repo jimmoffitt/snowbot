@@ -40,8 +40,13 @@ class SendDirectMessage
 		send_direct_message(dm_content)
 	end
 
-	def send_links(recipient_id)
+	def send_links_list(recipient_id)
 		dm_content = @content.generate_link_list(recipient_id)
+		send_direct_message(dm_content)
+	end
+
+	def send_link(recipient_id, link_choice)
+		dm_content = @content.generate_link(recipient_id, link_choice)
 		send_direct_message(dm_content)
 	end
 	
@@ -49,17 +54,14 @@ class SendDirectMessage
 		dm_content = @content.generate_location_list(recipient_id, @locations_list)
 		send_direct_message(dm_content)
 	end
-	
-	def respond_with_link(recipient_id, link_choice)
 		
-		puts "Link choice: #{link_choice}"
-		
-		dm_content = @content.generate_link(recipient_id, link_choice)
+	def send_weather_info(recipient_id, coordinates)
+		dm_content = @content.generate_weather_info(recipient_id, coordinates)
 		send_direct_message(dm_content)
 	end
 
-	def respond_with_weather_info(recipient_id, coordinates)
-		dm_content = @content.generate_weather_info(recipient_id, coordinates)
+	def send_resort_info(recipient_id, location_choice)
+		dm_content = @content.generate_resort_info(recipient_id, location_choice)
 		send_direct_message(dm_content)
 	end
 	
@@ -110,7 +112,7 @@ if __FILE__ == $0 #This script code is executed when running this file.
 	#sender.send_map(944480690)
 	#sender.send_photo(944480690)
 
-	sender.send_links(944480690)
+	sender.send_links_list(944480690)
 	#sender.respond_with_link(944480690,'NASA')
 
 end

@@ -18,7 +18,7 @@ class GetResources
 	
 	def initialize()
 
-		puts "Creating GetResources object."
+		puts "Creating GetResources object. "
 
 		#Load resources, populating attributes.
 		@photos_home = '/app/snowbot/config/data/photos' #On Heroku at least.

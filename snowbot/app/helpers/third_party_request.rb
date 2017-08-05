@@ -26,7 +26,13 @@ class ThirdPartyRequest
 
 	end
 
-	def get_current_conditions(lat,long)
+	def get_resort_info(resort)
+		resort_summary = '(Not implemented yet... by this fall?'
+		return "#{resort} information: \n #{resort_summary}"
+	end
+
+
+	def get_current_weather(lat,long)
 
 
 		#http://api.wunderground.com/api/APIKEY/forecast/astronomy/conditions/q/42.077201843262,-8.4819002151489.json
@@ -72,11 +78,11 @@ if __FILE__ == $0 #This script code is executed when running this file.
 
 	thirdPartyAPI = ThirdPartyRequest.new
 
-	response = thirdPartyAPI.get_current_conditions(5,-15)
+	response = thirdPartyAPI.get_current_weather(5,-15)
 	puts response
-	response = thirdPartyAPI.get_current_conditions(40.0150,-105.2705)
+	response = thirdPartyAPI.get_current_weather(40.0150,-105.2705)
 	puts response
-	response = thirdPartyAPI.get_current_conditions(42.3357,-95.3475)
+	response = thirdPartyAPI.get_current_weather(42.3357,-95.3475)
 	puts response
 
 end
