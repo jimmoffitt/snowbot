@@ -52,16 +52,20 @@ class EventManager
 			@DMSender.send_links_list(user_id)
 
 		elsif response_metadata.include? 'link_choice'
-			link_choice = response_metadata['link_choice: '.length..-1]
-			@DMSender.send_link(user_id, link_choice)
+			choice = response_metadata['link_choice: '.length..-1]
+			@DMSender.send_link(user_id, choice)
 
 	#TODO - IMPLEMENT	------------------------------------------
 
 		elsif response_metadata == 'snow_day'
 			@DMSender.send_snow_day(user_id)
 		
-		elsif response_metadata.include? 'snow_report'
-			@DMSender.respond_with_resort_list(user_id)
+		elsif response_metadata.include == 'snow_report'
+			@DMSender.send_location_list(user_id)
+
+		elsif response_metadata.include? 'location_choice'
+			choice = response_metadata['location_choice: '.length..-1]
+			@DMSender.send_location_info(user_id, choice)
 
 		elsif response_metadata.include? 'go_back'
 			puts "Parse #{response_metadata} and point there."
@@ -109,7 +113,9 @@ class EventManager
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'day')
 			@DMSender.send_snow_day(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'learn')
-			@DMSender.send_link(user_id)
+			@DMSender.send_links_list(user_id)
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'report')
+			@DMSender.send_locations_list(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'about')
 			@DMSender.send_system_info(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'help')

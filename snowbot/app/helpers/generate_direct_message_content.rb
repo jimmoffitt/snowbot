@@ -326,7 +326,7 @@ class GenerateDirectMessageContent
 
   def generate_system_help(recipient_id)
 
-	  message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'learn', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
+	  message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'report', 'learn', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
 
 	  #Build DM content.
 	  event = {}

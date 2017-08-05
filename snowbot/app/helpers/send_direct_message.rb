@@ -35,35 +35,38 @@ class SendDirectMessage
 		send_direct_message(dm_content)
 	end
 	
+	#Weather data is map based.
 	def send_map(recipient_id)
 		dm_content = @content.generate_location_map(recipient_id)
 		send_direct_message(dm_content)
 	end
-
+	def send_weather_info(recipient_id, coordinates)
+		dm_content = @content.generate_weather_info(recipient_id, coordinates)
+		send_direct_message(dm_content)
+	end
+	
+  #Links are list based, and currently app has just one links list. 
 	def send_links_list(recipient_id)
 		dm_content = @content.generate_link_list(recipient_id)
 		send_direct_message(dm_content)
 	end
 
-	def send_link(recipient_id, link_choice)
-		dm_content = @content.generate_link(recipient_id, link_choice)
+	def send_link(recipient_id, choice)
+		dm_content = @content.generate_link(recipient_id, choice)
 		send_direct_message(dm_content)
 	end
-	
+
+	#Snow reports are list based, and currently app has just one location list.
 	def send_location_list(recipient_id)
 		dm_content = @content.generate_location_list(recipient_id, @locations_list)
 		send_direct_message(dm_content)
 	end
-		
-	def send_weather_info(recipient_id, coordinates)
-		dm_content = @content.generate_weather_info(recipient_id, coordinates)
+
+	def send_location_info(recipient_id, choice)
+		dm_content = @content.generate_resort_info(recipient_id, choice)
 		send_direct_message(dm_content)
 	end
 
-	def send_resort_info(recipient_id, location_choice)
-		dm_content = @content.generate_resort_info(recipient_id, location_choice)
-		send_direct_message(dm_content)
-	end
 	
 	# App Generic? All apps have these by default?
 
