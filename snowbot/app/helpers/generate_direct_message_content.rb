@@ -286,7 +286,7 @@ class GenerateDirectMessageContent
 		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
-		message_data['text'] = "#{BOT_CHAR}" #generate_main_message
+		message_data['text'] = "#{BOT_CHAR} Welcome back..." #generate_main_message
 
 		message_data['quick_reply'] = generate_options_menu
 
@@ -316,7 +316,7 @@ class GenerateDirectMessageContent
 		
 		option = {}
 		option['label'] = "#{BOT_CHAR} Learn something new about snow"
-		option['description'] = 'Other than it sometimes melts around 32°F and is fun to slide on'
+		option['description'] = 'Other than it melts around 32°F and is fun to slide on'
 		option['metadata'] = 'learn_snow'
 		options << option
 
