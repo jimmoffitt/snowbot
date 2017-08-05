@@ -46,26 +46,26 @@ class GetResources
 		@playlists = []
 		
 	end
-	
+
+	#photo_list = [] #Load array of photo metadata.
 	def get_photos
-		#photo_list = [] #Load array of photo metadata.
 		photo_list = CSV.read("#{@photos_home}/photos.csv", {:col_sep => ";"})
 		puts "Have a list of #{photo_list.count} photos..."
 		photo_list
 	end
-	
+
+	#list = [] #Load array of curated links.
 	def get_links
-		#links_list = [] #Load array of curated links.
-		links_list = CSV.read("#{@links_home}/links.csv", {:col_sep => ";"})
-		puts "Have a list of #{links_list.count} links..."
-		links_list
+		list = CSV.read("#{@links_home}/links.csv", {:col_sep => ";"})
+		puts "Have a list of #{list.count} links..."
+		list
 	end
-	
+
+	#list = [] #Load array of curated locations.
 	def get_locations
-    #locations_list = [] #Load array of curated locations.
-		locations_list = CSV.read("#{@locations_home}/placesOfInterest.csv")
-		puts "Have a list of #{locations_list.count} locations..."
-		links_list
+		list = CSV.read("#{@locations_home}/placesOfInterest.csv")
+		puts "Have a list of #{list.count} locations..."
+		list
 	end
 
 end
