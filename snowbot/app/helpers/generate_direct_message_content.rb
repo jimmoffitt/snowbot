@@ -106,7 +106,7 @@ class GenerateDirectMessageContent
 		end
 		
 		options = options + build_home_option
-	
+
 		message_data['quick_reply']['options'] = options
 
 		event['event']['message_create']['message_data'] = message_data
