@@ -121,7 +121,7 @@ class GenerateDirectMessageContent
 	  event['event'] = message_create_header(recipient_id)
 
 	  message_data = {}
-	  message_data['text'] = 'Here is that URL, with description. (back button here?)'
+	  message_data['text'] = "You picked #{link_choice} Here is that URL, with description. (back button here?)"
 
 	  #Build link response.
 	  puts @resources.links_list
