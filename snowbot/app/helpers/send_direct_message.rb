@@ -50,7 +50,7 @@ class SendDirectMessage
 		send_direct_message(dm_content)
 	end
 	
-	def respond_with_link(user_id, link_choice)
+	def respond_with_link(recipient_id, link_choice)
 		dm_content = @content.generate_link(recipient_id, link_choice)
 		send_direct_message(dm_content)
 	end

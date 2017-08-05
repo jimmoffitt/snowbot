@@ -115,6 +115,8 @@ class GenerateDirectMessageContent
 
   def generate_link(recipient_id, link_choice)
 
+		puts "Link choice: #{link_choice} (Switch to numeric or keep as tag?)"
+		
 	  event = {}
 	  event['event'] = message_create_header(recipient_id)
 
