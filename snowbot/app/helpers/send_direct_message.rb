@@ -91,7 +91,6 @@ class SendDirectMessage
 
 		uri_path = "#{@dm.uri_path}/events/new.json"
 		response = @dm.make_post_request(uri_path, message)
-		#puts "Attempted to send #{message} to #{uri_path}/events/new.json"
 
 		#Currently, not returning anything... Errors reported in POST request code.
 		response
@@ -109,6 +108,5 @@ if __FILE__ == $0 #This script code is executed when running this file.
 	#sender.send_photo(944480690)
 
 	sender.send_links(944480690)
-
 
 end

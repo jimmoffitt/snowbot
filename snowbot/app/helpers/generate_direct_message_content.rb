@@ -83,7 +83,6 @@ class GenerateDirectMessageContent
 
 	end
 
-  
 	def generate_link_list(recipient_id)
 
 		event = {}
@@ -97,8 +96,6 @@ class GenerateDirectMessageContent
 
 		options = []
 		
-		#TODO: NEEDS UPDATES TO LINK structure...
-
 		@resources.links_list.each do |item|
 			if item.count > 0 
 				option = {}
@@ -116,12 +113,6 @@ class GenerateDirectMessageContent
 
 	end
 
-  
-  
-  
-  
-  
-	
 	#Generates Quick Reply for presenting user a Map via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/location
 	def generate_location_map(recipient_id)

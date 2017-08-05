@@ -22,8 +22,6 @@ class EventManager
 		response = dm_event['message_create']['message_data']['quick_reply_response']['metadata']
 		user_id = dm_event['message_create']['sender_id']
 
-		puts "User #{user_id} answered with #{response}"
-
 		#Default options
 		if response == 'help'
 			@DMSender.send_system_help(user_id)
@@ -53,18 +51,13 @@ class EventManager
 		elsif response == 'learn_snow'
 			@DMSender.send_links(user_id)
 
-
-
 		elsif response == 'snow_day'
 			@DMSender.send_snow_day(user_id)
-			
-			
+
 		elsif response.include? 'link_choice'
 			link_choice = response['link_choice: '.length..-1]
 			@DMSender.respond_with_link(user_id, link_choice)
-	
-			
-			
+
 		#TODO - IMPLEMENT	------------------------------------------
 		elsif response.include? 'snow_report'
 			@DMSender.respond_with_resort_list(user_id)
@@ -87,12 +80,11 @@ class EventManager
 	def handle_command(dm_event)
 
 		#Since this DM is not a response to a QR, let's check for other 'action' commands
-		#puts 'Received a command/question DM? Need to track conversation stage?'
 
 		request = dm_event['message_create']['message_data']['text']
 		user_id = dm_event['message_create']['sender_id']
 		
-		puts "Request with command: #{request}"
+		#puts "Request with command: #{request}"
 
 		if request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'home' or request.downcase.include? 'main' or request.downcase.include? 'hello' or request.downcase.include? 'back')
 			@DMSender.send_welcome_message(user_id)
