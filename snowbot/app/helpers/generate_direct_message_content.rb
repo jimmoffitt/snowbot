@@ -114,7 +114,6 @@ class GenerateDirectMessageContent
 
 	end
 
-
   def generate_link(recipient_id, link_choice)
 
 		puts "Link choice: #{link_choice} (Switch to numeric or keep as tag?)"
@@ -210,7 +209,7 @@ class GenerateDirectMessageContent
 
   #Generates Qucik Reply for presenting user a Location List via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/options
-	def generate_location_list(recipient_id, list)
+	def generate_location_list(recipient_id)
 
 		#TODO: load resorts! from resources!
 
@@ -525,6 +524,9 @@ class GenerateDirectMessageContent
 		message_data['text'] = message
 
 		event['event']['message_create']['message_data'] = message_data
+		
+		
+		#TODO: Add home option? options = options + build_home_option
 
 		event.to_json
 	end
