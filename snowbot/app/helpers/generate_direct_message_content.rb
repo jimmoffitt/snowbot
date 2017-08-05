@@ -446,7 +446,7 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = '<- Back'
-		option['description'] = ''
+		option['description'] = 'Previous list...'
 		option['metadata'] = "go_back #{type} "
 		options << option
 
