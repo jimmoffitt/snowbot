@@ -57,6 +57,8 @@ class EventManager
 		elsif response.include? 'link_choice'
 			link_choice = response['link_choice: '.length..-1]
 			@DMSender.respond_with_link(user_id, link_choice)
+			
+			
 
 		#TODO - IMPLEMENT	------------------------------------------
 		elsif response.include? 'snow_report'

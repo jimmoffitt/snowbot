@@ -28,7 +28,6 @@ class GenerateDirectMessageContent
 		end
 
 	end
-
 	
 	#================================================================
 	def generate_random_photo(recipient_id)
@@ -101,7 +100,7 @@ class GenerateDirectMessageContent
 				option = {}
 				option['label'] = "#{BOT_CHAR} " + item[0]
 				option['metadata'] = "link_choice: #{item[0]}"
-				option['description'] = item[0]
+				option['description'] = item[1]
 				options << option
 			end
 		end
@@ -112,6 +111,29 @@ class GenerateDirectMessageContent
 		event.to_json
 
 	end
+
+
+  def generate_link(recipient_id, link_choice)
+
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = 'Here is that URL, with description. (back button here?)'
+
+	  #Build link response.
+	  puts @resources.links_list
+	  
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = build_home_option
+
+	  message_data['quick_reply']['options'] = options
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+		
+  end
 
 	#Generates Quick Reply for presenting user a Map via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/location
@@ -133,7 +155,30 @@ class GenerateDirectMessageContent
 		event.to_json
 	end
 
-	#Generates Qucik Reply for presenting user a Location List via Direct Message.
+  def generate_weather_info(recipient_id, coordinates)
+
+	  weather_info = @thirdparty_api.get_current_conditions(coordinates[1], coordinates[0])
+
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = weather_info
+
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = build_home_option
+
+	  message_data['quick_reply']['options'] = options
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+
+  end
+
+
+  #Generates Qucik Reply for presenting user a Location List via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/options
 	def generate_location_list(recipient_id, list)
 
@@ -163,80 +208,10 @@ class GenerateDirectMessageContent
 
 	end
 
-	def generate_weather_info(recipient_id, coordinates)
-		
-		puts "Coordinates: #{coordinates}"
-
-		weather_info = @thirdparty_api.get_current_conditions(coordinates[1], coordinates[0])
-
-		event = {}
-		event['event'] = message_create_header(recipient_id)
-
-		message_data = {}
-		message_data['text'] = weather_info
-		
-
-		message_data['quick_reply'] = {}
-		message_data['quick_reply']['type'] = 'options'
-
-		options = build_home_option
-		
-		message_data['quick_reply']['options'] = options
-		event['event']['message_create']['message_data'] = message_data
-		event.to_json
-
-	end
-
-
-	def generate_system_info(recipient_id)
-
-		message_text = "#{BOT_CHAR} This is a snow bot... It's kinda simple, kinda not... see link https://github.com/jimmoffitt/snowbot"
-
-		#Build DM content.
-		event = {}
-		event['event'] = message_create_header(recipient_id)
-		
-		message_data = {}
-		message_data['text'] = message_text
-
-		message_data['quick_reply'] = {}
-		message_data['quick_reply']['type'] = 'options'
-
-		options = build_home_option
-
-		message_data['quick_reply']['options'] = options
-
-		event['event']['message_create']['message_data'] = message_data
-		event.to_json
-	end
-
-	def generate_system_help(recipient_id)
-
-		message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
-
-		#Build DM content.
-		event = {}
-		event['event'] = message_create_header(recipient_id)
-		
-		message_data = {}
-		message_data['text'] = message_text
-
-		message_data['quick_reply'] = {}
-		message_data['quick_reply']['type'] = 'options'
-
-		options = []
-		#Not including 'description' option attributes.
-
-		options = build_home_option
-
-		message_data['quick_reply']['options'] = options
-
-		event['event']['message_create']['message_data'] = message_data
-		event.to_json
-	end
+	
 	
 	#=====================================================================================
-	#New users will be served this.
+	
 	
 	def generate_greeting
 
@@ -295,6 +270,54 @@ class GenerateDirectMessageContent
 		event.to_json
 
 	end
+
+ 
+  def generate_system_info(recipient_id)
+
+	  message_text = "#{BOT_CHAR} This is a snow bot... It's kinda simple, kinda not... see link https://github.com/jimmoffitt/snowbot"
+
+	  #Build DM content.
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = message_text
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = build_home_option
+
+	  message_data['quick_reply']['options'] = options
+
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+  end
+
+  def generate_system_help(recipient_id)
+
+	  message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
+
+	  #Build DM content.
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = message_text
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = []
+	  #Not including 'description' option attributes.
+
+	  options = build_home_option
+
+	  message_data['quick_reply']['options'] = options
+
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+  end
 	
 	#=====================================================================================
 

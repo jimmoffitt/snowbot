@@ -53,12 +53,12 @@ class ThirdPartyRequest
 			rain_today = parsed_json['current_observation']['precip_today_string']
 			forecast_url = parsed_json['current_observation']['forecast_url']
 
-			weather_summary = "#{weather}\n" +
-			                  "Current temp: #{temp}\n" + 
-				                "Feels like: #{feels_like}  \n" + 
-			                  "Wind speed: #{wind}  \n" +
-			                  "Rain today: #{rain_today}  \n" + 
-			                  "For forecast, see: #{forecast_url}\n"
+			weather_summary = "* #{weather}\n" +
+			                  "* Current temp: #{temp}\n" +
+				                "* Feels like: #{feels_like}  \n" +
+			                  "* Wind speed: #{wind}  \n" +
+			                  "* Rain today: #{rain_today}  \n" +
+			                  "--> #{forecast_url}\n"
 
 			return "Current weather conditions in #{place_name}: \n #{weather_summary}"
 		end
