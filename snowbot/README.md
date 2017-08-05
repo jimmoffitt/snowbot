@@ -48,8 +48,9 @@
 Error Message: {"errors":[{"code":151,"message":"There was an error sending your message: Invalid QuickReply field description containing url(s)."}]}
 
 * Error code: 400 #<Net::HTTPBadRequest:0x00000003848cf0> 
-Aug 05 09:31:29 snowbotdev app/web.1:  Error Message: {"errors":[{"code":214,"message":"event.message_create.message_data: Neither text nor attachment defined on message_data"}]}  
+Error Message: {"errors":[{"code":214,"message":"event.message_create.message_data: Neither text or attachment defined on message_data"}]}  
 
- 
+* Error code: 403 #<Net::HTTPForbidden:0x0000000354f418> 
+Error Message: {"errors":[{"code":151,"message":"There was an error sending your message: Field description is empty."}]} 
 
 
