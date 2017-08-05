@@ -11,9 +11,9 @@ New twists:
 
 * Baking in twitter gem. First needed for media uploads for attaching media to Direct Messages.
 
-* Needed tools to manange AA setup and subscriptions and default welcome messages.
+* Needed tools to manage AA setup and subscriptions and default welcome messages.
   * Iterating on Account Activity API set-up and subscription script.
-  * Iterating on DM default Welcome Message script.
+  * Iterating on DM default Welcome Message script.
 
 * Supporting only ENV for configuration and ripping out loading from config.yaml files. 
   * Deploying this on Heroku led to a switch from yaml config files to using system environmental variables.
