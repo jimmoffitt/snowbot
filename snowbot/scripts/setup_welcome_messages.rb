@@ -185,11 +185,6 @@ if __FILE__ == $0 #This script code is executed when running this file.
 		#results = JSON.parse(response)
 		#message_id = results['welcome_message']['id']
 
-
-		#rule_id = 868183223955738624
-		#message_manager.delete_message_rule(rule_id)
-
-
 		message_manager.set_default_welcome_message($id)
 	elsif $welcome == 'get'
 		welcome_messages = message_manager.get_welcome_messages

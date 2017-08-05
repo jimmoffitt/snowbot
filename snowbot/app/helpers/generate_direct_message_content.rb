@@ -274,9 +274,6 @@ class GenerateDirectMessageContent
 
 	end
 
-
-
-
 	def generate_welcome_message_default
 
 		message = {}
@@ -294,13 +291,11 @@ class GenerateDirectMessageContent
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
 	def generate_welcome_message(recipient_id)
 		
-		puts "Generating welcome message (going home?)"
-
 		event = {}
 		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
-		message_data['text'] = generate_main_message
+		#message_data['text'] = generate_main_message
 
 		message_data['quick_reply'] = generate_options_menu
 
