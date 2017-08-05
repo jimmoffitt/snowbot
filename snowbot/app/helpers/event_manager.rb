@@ -6,8 +6,8 @@ require 'json'
 require_relative 'send_direct_message'
 
 class EventManager
-	@@previous_event_id = 0
-
+	#Design: Identifying explicit commands is easy and can restrict text length based on its own length.
+	#        If you want to be more flexible,
 	COMMAND_MESSAGE_LIMIT = 12	#Simplistic way to detect an incoming, short, 'commmand' DM.
 	
 	attr_accessor :DMsender
@@ -47,22 +47,19 @@ class EventManager
 			end
 
 			@DMSender.respond_with_weather_info(user_id, coordinates)
-
 		elsif response == 'learn_snow'
 			@DMSender.send_links(user_id)
-
-		elsif response == 'snow_day'
-			@DMSender.send_snow_day(user_id)
-
 		elsif response.include? 'link_choice'
 			link_choice = response['link_choice: '.length..-1]
 			@DMSender.respond_with_link(user_id, link_choice)
-			
-			
 
 		#TODO - IMPLEMENT	------------------------------------------
+		elsif response == 'snow_day'
+			@DMSender.send_snow_day(user_id)
+
 		elsif response.include? 'snow_report'
 			@DMSender.respond_with_resort_list(user_id)
+
 		elsif response.include? 'resort_choice'
 			
 			location_choice = response['location_choice: '.length..-1]
@@ -106,7 +103,6 @@ class EventManager
 			#"Listen, I only understand a few commands like: learn, about, help"
 		end
 	end
-	
 
 	#responses are based on options' Quick Reply metadata settings.
 	#pick_from_list, select_on_map, location list items (e.g. 'location_list_choice: Austin' or 'Fort Worth')

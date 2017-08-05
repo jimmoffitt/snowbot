@@ -216,9 +216,7 @@ class GenerateDirectMessageContent
 	end
 
 	
-	
 	#=====================================================================================
-	
 	
 	def generate_greeting
 
@@ -277,7 +275,6 @@ class GenerateDirectMessageContent
 		event.to_json
 
 	end
-
  
   def generate_system_info(recipient_id)
 
@@ -352,7 +349,7 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = "#{BOT_CHAR} Request snow report"
-		option['description'] = 'Select from a list of resorts'
+		option['description'] = '(Coming Fall 2017)'
 		option['metadata'] = 'snow_report'
 		options << option
 
@@ -453,6 +450,11 @@ class GenerateDirectMessageContent
 
 		quick_reply
 	end
+  
+  
+  #=============================================================
+  
+  
 
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
 	def generate_system_maintenance_welcome
