@@ -116,16 +116,20 @@ class GenerateDirectMessageContent
   def generate_link(recipient_id, link_choice)
 
 		puts "Link choice: #{link_choice} (Switch to numeric or keep as tag?)"
-		
-	  event = {}
+
+		#Build link response.
+		@resources.links_list.each do |link|
+			if link[0] == link_choice
+				message = "#{link[1]}\n#{link[2]}"
+				break
+			end
+		end
+		event = {}
 	  event['event'] = message_create_header(recipient_id)
 
 	  message_data = {}
-	  message_data['text'] = "You picked #{link_choice} Here is that URL, with description. (back button here?)"
+	  message_data['text'] = message
 
-	  #Build link response.
-	  puts @resources.links_list
-	  
 	  message_data['quick_reply'] = {}
 	  message_data['quick_reply']['type'] = 'options'
 
