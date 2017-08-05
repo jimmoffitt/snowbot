@@ -61,7 +61,7 @@ class EventManager
 			@DMSender.send_snow_day(user_id)
 		
 		elsif response_metadata == 'snow_report'
-			@DMSender.send_location_list(user_id)
+			@DMSender.send_locations_list(user_id)
 
 		elsif response_metadata.include? 'location_choice'
 			choice = response_metadata['location_choice: '.length..-1]
@@ -73,7 +73,7 @@ class EventManager
 			if type == 'links'
 				@DMSender.send_links_list(user_id)
 			elsif type == 'locations'
-				@DMSender.send_location_list(user_id)
+				@DMSender.send_locations_list(user_id)
 				
 			end
 

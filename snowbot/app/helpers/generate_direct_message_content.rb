@@ -225,14 +225,22 @@ class GenerateDirectMessageContent
 
 		options = []
 
-		list.each do |item|
-			option = {}
-			option['label'] = "#{BOT_CHAR} " + item
-			option['metadata'] = "location_choice: #{item}"
-			#Not including 'description' option attributes.
-			options << option
-		end
+		#----------
 
+		@resources.locations_list.each do |item|
+			if item.count > 0
+				option = {}
+				option['label'] = "#{BOT_CHAR} " + item[0]
+				option['metadata'] = "link_choice: #{item[0]}"
+				option['description'] = 'what is there to say here?'
+				options << option
+			end
+		end
+		
+		options = options + build_home_option
+
+		#----------
+		
 		message_data['quick_reply']['options'] = options
 
 		event['event']['message_create']['message_data'] = message_data

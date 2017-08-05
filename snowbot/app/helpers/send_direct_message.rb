@@ -57,7 +57,7 @@ class SendDirectMessage
 	end
 
 	#Snow reports are list based, and currently app has just one location list.
-	def send_location_list(recipient_id)
+	def send_locations_list(recipient_id)
 		dm_content = @content.generate_location_list(recipient_id, @locations_list)
 		send_direct_message(dm_content)
 	end
