@@ -100,12 +100,13 @@ class GenerateDirectMessageContent
 		#TODO: NEEDS UPDATES TO LINK structure...
 
 		@resources.links_list.each do |item|
-			option = {}
-			option['label'] = '❄ ' + item[0]
-			option['metadata'] = "link_choice: #{item[0]}"
-			#Not including 'description' option attributes.
-			option['description'] = item[2]
-			options << option
+			if item.count > 0 
+				option = {}
+				option['label'] = '❄ ' + item[0]
+				option['metadata'] = "link_choice: #{item[0]}"
+				option['description'] = item[0]
+				options << option
+			end
 		end
 
 		message_data['quick_reply']['options'] = options
@@ -198,7 +199,7 @@ class GenerateDirectMessageContent
 
 	def generate_system_info(recipient_id)
 
-		message_text = "This is a snow bot... It's kinda simple, kinda not... see https://github.com/jimmoffitt/snowbot"
+		message_text = "This is a snow bot... It's kinda simple, kinda not... see link https://github.com/jimmoffitt/snowbot"
 
 		#Build DM content.
 		event = {}
