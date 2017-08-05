@@ -9,7 +9,7 @@ require_relative 'get_resources'        #Loads local resources used to present D
 
 class GenerateDirectMessageContent
 	
-  VERSION = 0.02
+  VERSION = 0.03
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
@@ -99,7 +99,7 @@ class GenerateDirectMessageContent
 		@resources.links_list.each do |item|
 			if item.count > 0 
 				option = {}
-				option['label'] = '❄ ' + item[0]
+				option['label'] = "#{BOT_CHAR} " + item[0]
 				option['metadata'] = "link_choice: #{item[0]}"
 				option['description'] = item[0]
 				options << option
@@ -141,7 +141,7 @@ class GenerateDirectMessageContent
 		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
-		message_data['text'] = 'Select your area of interest:'
+		message_data['text'] = "#{BOT_CHAR} Select your area of interest:"
 
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'options'
@@ -150,7 +150,7 @@ class GenerateDirectMessageContent
 
 		list.each do |item|
 			option = {}
-			option['label'] = '❄ ' + item
+			option['label'] = "#{BOT_CHAR} " + item
 			option['metadata'] = "location_choice: #{item}"
 			#Not including 'description' option attributes.
 			options << option
@@ -190,7 +190,7 @@ class GenerateDirectMessageContent
 
 	def generate_system_info(recipient_id)
 
-		message_text = "This is a snow bot... It's kinda simple, kinda not... see link https://github.com/jimmoffitt/snowbot"
+		message_text = "#{BOT_CHAR} This is a snow bot... It's kinda simple, kinda not... see link https://github.com/jimmoffitt/snowbot"
 
 		#Build DM content.
 		event = {}
@@ -212,7 +212,7 @@ class GenerateDirectMessageContent
 
 	def generate_system_help(recipient_id)
 
-		message_text = "Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'weather', 'wx', 'link', 'day'"
+		message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
 
 		#Build DM content.
 		event = {}
@@ -248,7 +248,7 @@ class GenerateDirectMessageContent
 	def generate_main_message
 		greeting = ''
 		greeting = generate_greeting
-		greeting =+ '❄ Thanks for stopping by... ❄'
+		greeting =+ "#{BOT_CHAR} Thanks for stopping by... #{BOT_CHAR}"
 
 	end
 
@@ -286,7 +286,7 @@ class GenerateDirectMessageContent
 		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
-		#message_data['text'] = generate_main_message
+		message_data['text'] = "#{BOT_CHAR}" #generate_main_message
 
 		message_data['quick_reply'] = generate_options_menu
 
@@ -303,37 +303,37 @@ class GenerateDirectMessageContent
 		options = []
 
 		option = {}
-		option['label'] = '❄ See snow picture'
+		option['label'] = "#{BOT_CHAR} See snow picture"
 		option['description'] = 'Come on, take a look'
 		option['metadata'] = 'see_photo'
 		options << option
 		
 		option = {}
-		option['label'] = '❄ Weather data from anywhere'
+		option['label'] = "#{BOT_CHAR} Weather data from anywhere"
 		option['description'] = 'Exact location or Place centroid'
 		option['metadata'] = 'weather_info'
 		options << option
 		
 		option = {}
-		option['label'] = '❄ Learn something new about snow'
+		option['label'] = "#{BOT_CHAR} Learn something new about snow"
 		option['description'] = 'Other than it sometimes melts around 32°F and is fun to slide on'
 		option['metadata'] = 'learn_snow'
 		options << option
 
 		option = {}
-		option['label'] = '❄ Request snow report'
+		option['label'] = "#{BOT_CHAR} Request snow report"
 		option['description'] = 'Select from a list of resorts'
 		option['metadata'] = 'snow_report'
 		options << option
 
 		#option = {}
-		#option['label'] = '❄ Receive a "snow" song title'
+		#option['label'] = "#{BOT_CHAR} Receive a "snow" song title"
 		#option['description'] = '"Sounds good"'
 		#option['metadata'] = 'snow_day'
 		#options << option
 
 		option = {}
-		option['label'] = '❄ Suggest a snow day'
+		option['label'] = "#{BOT_CHAR} Suggest a snow day"
 		option['description'] = 'soon?'
 		option['metadata'] = 'snow_day'
 		options << option
@@ -380,7 +380,7 @@ class GenerateDirectMessageContent
 	  options = []
 
 	  option = {}
-	  option['label'] = '❄ Another'
+	  option['label'] = "#{BOT_CHAR} Another"
 	  option['description'] = 'Another snow photo'
 	  option['metadata'] = "see_photo"
 	  options << option
