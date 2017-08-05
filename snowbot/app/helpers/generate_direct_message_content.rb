@@ -163,19 +163,19 @@ class GenerateDirectMessageContent
 		event.to_json
 	end
   
-  def generate_resort_info(recipient_id, resort)
-	  resort_info = @thirdparty_api.get_resort_info(resort)
+  def generate_location_info(recipient_id, location)
+	  location_info = @thirdparty_api.get_resort_info(resort)
 
 	  event = {}
 	  event['event'] = message_create_header(recipient_id)
 
 	  message_data = {}
-	  message_data['text'] = resort_info
+	  message_data['text'] = location_info
 
 	  message_data['quick_reply'] = {}
 	  message_data['quick_reply']['type'] = 'options'
 
-	  options = build_back_option 'resorts'
+	  options = build_back_option 'locations'
 	  options = options + build_home_option
 
 	  message_data['quick_reply']['options'] = options
@@ -206,15 +206,12 @@ class GenerateDirectMessageContent
 
   end
 
-
   #Generates Qucik Reply for presenting user a Location List via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/options
 	def generate_location_list(recipient_id, list)
 
-		
 		#TODO: load resorts! from resources!
-		
-		
+
 		event = {}
 		event['event'] = message_create_header(recipient_id)
 
@@ -492,11 +489,8 @@ class GenerateDirectMessageContent
 
 		quick_reply
 	end
-  
-  
+
   #=============================================================
-  
-  
 
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
 	def generate_system_maintenance_welcome

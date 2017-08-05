@@ -63,7 +63,7 @@ class SendDirectMessage
 	end
 
 	def send_location_info(recipient_id, choice)
-		dm_content = @content.generate_resort_info(recipient_id, choice)
+		dm_content = @content.generate_location_info(recipient_id, choice)
 		send_direct_message(dm_content)
 	end
 

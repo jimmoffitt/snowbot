@@ -74,7 +74,7 @@ class EventManager
 			
 			if type == 'links'
 				@DMSender.send_links_list(user_id)
-			elsif type = 'resorts'
+			elsif type = 'locations'
 				@DMSender.send_location_list(user_id)
 				
 			end
