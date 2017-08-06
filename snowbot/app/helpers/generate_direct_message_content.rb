@@ -116,8 +116,6 @@ class GenerateDirectMessageContent
 
   def generate_link(recipient_id, link_choice)
 
-		puts "Link choice: #{link_choice} (Switch to numeric or keep as tag?)"
-
 		#Build link response.
 		message = "Issue with displaying #{link_choice}..."
 		@resources.links_list.each do |link|
@@ -227,6 +225,8 @@ class GenerateDirectMessageContent
 def generate_location_info(recipient_id, location)
 	 
 	  location_info = @thirdparty_api.get_resort_info(location)
+	  
+	  puts "Location: #{location_info}"
 
 	  event = {}
 	  event['event'] = message_create_header(recipient_id)
