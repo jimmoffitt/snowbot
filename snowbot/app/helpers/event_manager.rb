@@ -69,6 +69,8 @@ class EventManager
 
 		elsif response_metadata.include? 'go_back'
 			puts "Parse #{response_metadata} and point there."
+			
+			type =  response_metadata['go_back'.length..-1]
 
 			if type == 'links'
 				@DMSender.send_links_list(user_id)
