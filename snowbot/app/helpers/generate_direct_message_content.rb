@@ -105,7 +105,7 @@ class GenerateDirectMessageContent
 			end
 		end
 		
-		options = options + build_home_option
+		options = options + build_home_option('with description')
 
 		message_data['quick_reply']['options'] = options
 
@@ -152,7 +152,7 @@ class GenerateDirectMessageContent
 		event['event'] = message_create_header(recipient_id)
 
 		message_data = {}
-		message_data['text'] = 'Select where you want weather info for:'
+		message_data['text'] = 'Select weather area of interest:'
 
 		message_data['quick_reply'] = {}
 		message_data['quick_reply']['type'] = 'location'
@@ -163,27 +163,6 @@ class GenerateDirectMessageContent
 
 		event.to_json
 	end
-  
-  def generate_location_info(recipient_id, location)
-	  location_info = @thirdparty_api.get_resort_info(resort)
-
-	  event = {}
-	  event['event'] = message_create_header(recipient_id)
-
-	  message_data = {}
-	  message_data['text'] = location_info
-
-	  message_data['quick_reply'] = {}
-	  message_data['quick_reply']['type'] = 'options'
-
-	  options = build_back_option 'locations'
-	  options = options + build_home_option
-
-	  message_data['quick_reply']['options'] = options
-	  event['event']['message_create']['message_data'] = message_data
-	  event.to_json
-
-  end
 
   def generate_weather_info(recipient_id, coordinates)
 
@@ -207,11 +186,9 @@ class GenerateDirectMessageContent
 
   end
 
-  #Generates Qucik Reply for presenting user a Location List via Direct Message.
+  #Generates Quick Reply for presenting user a Location List via Direct Message.
 	#https://dev.twitter.com/rest/direct-messages/quick-replies/options
 	def generate_location_list(recipient_id)
-
-		#TODO: load resorts! from resources!
 
 		event = {}
 		event['event'] = message_create_header(recipient_id)
@@ -225,13 +202,13 @@ class GenerateDirectMessageContent
 		options = []
 
 		#----------
-
+		#TODO: load resorts! from resources!
 		@resources.locations_list.each do |item|
 			if item.count > 0
 				option = {}
 				option['label'] = "#{BOT_CHAR} " + item[0]
 				option['metadata'] = "link_choice: #{item[0]}"
-				option['description'] = 'what is there to say here?'
+				#option['description'] = 'what is there to say here?'
 				options << option
 			end
 		end
@@ -247,7 +224,27 @@ class GenerateDirectMessageContent
 
 	end
 
-	
+def generate_location_info(recipient_id, location)
+	  location_info = @thirdparty_api.get_resort_info(resort)
+
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = location_info
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = build_back_option 'locations'
+	  options = options + build_home_option('with_description)
+
+	  message_data['quick_reply']['options'] = options
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+
+  end
+
 	#=====================================================================================
 	
 	def generate_greeting
@@ -284,13 +281,13 @@ class GenerateDirectMessageContent
 		message['welcome_message']['message_data'] = {}
 		message['welcome_message']['message_data']['text'] = generate_greeting
 
-		message['welcome_message']['message_data']['quick_reply'] = generate_options_menu
+		message['welcome_message']['message_data']['quick_reply'] = generate_welcome_options
 
 		message.to_json
 
 	end
 
-	#Users are shown this after returning from 'show info' option... A way to serve to other 're-started' dialogs?
+	#Users are shown this when returning home... A way to 're-start' dialogs...
 	#https://dev.twitter.com/rest/reference/post/direct_messages/welcome_messages/new
 	def generate_welcome_message(recipient_id)
 		
@@ -300,7 +297,7 @@ class GenerateDirectMessageContent
 		message_data = {}
 		message_data['text'] = "#{BOT_CHAR} Welcome back..." #generate_main_message
 
-		message_data['quick_reply'] = generate_options_menu
+		message_data['quick_reply'] = generate_welcome_options
 
 		event['event']['message_create']['message_data'] = message_data
 
@@ -407,7 +404,6 @@ class GenerateDirectMessageContent
 
 	end
 
-
 	def build_default_options
 
 		options = []
@@ -449,13 +445,13 @@ class GenerateDirectMessageContent
   end
   
   #Types: list choices, going back to list. links, resorts
-	def build_back_option(type)
+	def build_back_option(type=nil, description=nil)
 
 		options = []
 
 		option = {}
 		option['label'] = '<- Back'
-		option['description'] = 'Previous list...'
+		option['description'] = 'Previous list...' if description
 		option['metadata'] = "go_back #{type} "
 		options << option
 
@@ -463,14 +459,13 @@ class GenerateDirectMessageContent
 		
   end
   
-  
-	def build_home_option
-
+	def build_home_option(description=nil)
+		
 		options = []
 
 		option = {}
 		option['label'] = '⌂ Home'
-		option['description'] = 'Go back home'
+		option['description'] = 'Go back home' if description
 		option['metadata'] = "return_home"
 		options << option
 
@@ -478,8 +473,7 @@ class GenerateDirectMessageContent
 
 	end
 
-
-	def generate_options_menu
+	def generate_welcome_options
 		quick_reply = {}
 		quick_reply['type'] = 'options'
 		quick_reply['options'] = []
