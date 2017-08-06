@@ -237,7 +237,7 @@ def generate_location_info(recipient_id, location)
 	  message_data['quick_reply']['type'] = 'options'
 
 	  options = build_back_option 'locations'
-	  options = options + build_home_option('with_description)
+	  options = options + build_home_option('with_description')
 
 	  message_data['quick_reply']['options'] = options
 	  event['event']['message_create']['message_data'] = message_data
