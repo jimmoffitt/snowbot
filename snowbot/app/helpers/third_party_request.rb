@@ -27,7 +27,7 @@ class ThirdPartyRequest
 	end
 
 	def get_resort_info(resort)
-		resort_summary = '(Not implemented yet... by this fall?'
+		resort_summary = '(Not implemented yet... by this fall?_'
 		return "#{resort} information: \n #{resort_summary}"
 	end
 

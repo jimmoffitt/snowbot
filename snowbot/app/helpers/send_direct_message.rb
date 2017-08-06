@@ -66,7 +66,6 @@ class SendDirectMessage
 		dm_content = @content.generate_location_info(recipient_id, choice)
 		send_direct_message(dm_content)
 	end
-
 	
 	# App Generic? All apps have these by default?
 

@@ -225,7 +225,8 @@ class GenerateDirectMessageContent
 	end
 
 def generate_location_info(recipient_id, location)
-	  location_info = @thirdparty_api.get_resort_info(resort)
+	 
+	  location_info = @thirdparty_api.get_resort_info(location)
 
 	  event = {}
 	  event['event'] = message_create_header(recipient_id)
