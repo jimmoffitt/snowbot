@@ -72,7 +72,7 @@ class GenerateDirectMessageContent
 
 		options = []
 		options = build_photo_option
-		options = options + build_home_option('with_description')
+		options += build_home_option('with_description')
 
 		message_data['quick_reply']['options'] = options
 		
@@ -105,7 +105,7 @@ class GenerateDirectMessageContent
 			end
 		end
 		
-		options = options + build_home_option('with description')
+		options += build_home_option('with description')
 
 		message_data['quick_reply']['options'] = options
 
@@ -117,10 +117,10 @@ class GenerateDirectMessageContent
   def generate_link(recipient_id, link_choice)
 
 		#Build link response.
-		message = "Issue with displaying #{link_choice} XXXXX ..."
+		message = "Issue with displaying #{link_choice}..."
 		@resources.links_list.each do |link|
 			if link[0] == link_choice
-				message = "#{link[2]}\n#{link[3]}"
+				message = "#{link[3]}\nSummary:\n#{link[2]}"
 				break
 			end
 		end
@@ -134,7 +134,7 @@ class GenerateDirectMessageContent
 	  message_data['quick_reply']['type'] = 'options'
 
 		options = build_back_option 'links'
-	  options = options + build_home_option
+	  options += build_home_option
 
 	  message_data['quick_reply']['options'] = options
 	  event['event']['message_create']['message_data'] = message_data
@@ -199,8 +199,6 @@ class GenerateDirectMessageContent
 
 		options = []
 
-		#----------
-		#TODO: load resorts! from resources!
 		@resources.locations_list.each do |item|
 			if item.count > 0
 				option = {}
@@ -211,10 +209,8 @@ class GenerateDirectMessageContent
 			end
 		end
 		
-		options = options + build_home_option
+		options += build_home_option
 
-		#----------
-		
 		message_data['quick_reply']['options'] = options
 
 		event['event']['message_create']['message_data'] = message_data
