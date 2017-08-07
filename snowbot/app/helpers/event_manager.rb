@@ -70,7 +70,7 @@ class EventManager
 		elsif response_metadata.include? 'go_back'
 			puts "Parse #{response_metadata.strip} and point there."
 			
-			type =  response_metadata['go_back'.length..-1]
+			type =  response_metadata['go_back'.length..-1].strip
 
 			puts "------------------> type = #{type}"
 			
