@@ -117,7 +117,7 @@ class GenerateDirectMessageContent
   def generate_link(recipient_id, link_choice)
 
 		#Build link response.
-		message = "Issue with displaying #{link_choice}..."
+		message = "Issue with displaying #{link_choice} XXXXX ..."
 		@resources.links_list.each do |link|
 			if link[0] == link_choice
 				message = "#{link[2]}\n#{link[3]}"
@@ -205,7 +205,7 @@ class GenerateDirectMessageContent
 			if item.count > 0
 				option = {}
 				option['label'] = "#{BOT_CHAR} " + item[0]
-				option['metadata'] = "link_choice: #{item[0]}"
+				option['metadata'] = "location_choice: #{item[0]}"
 				#option['description'] = 'what is there to say here?'
 				options << option
 			end
