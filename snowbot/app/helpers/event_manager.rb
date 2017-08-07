@@ -68,7 +68,7 @@ class EventManager
 			@DMSender.send_location_info(user_id, choice)
 
 		elsif response_metadata.include? 'go_back'
-			puts "Parse #{response_metadata} and point there."
+			puts "Parse #{response_metadata.strip} and point there."
 			
 			type =  response_metadata['go_back'.length..-1]
 

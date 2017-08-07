@@ -203,7 +203,7 @@ class GenerateDirectMessageContent
 			if item.count > 0
 				option = {}
 				option['label'] = "#{BOT_CHAR} " + item[0]
-				option['metadata'] = "location_choice: #{item[0]}"
+				option['metadata'] = "location_choice: #{item[0].strip}"
 				#option['description'] = 'what is there to say here?'
 				options << option
 			end
