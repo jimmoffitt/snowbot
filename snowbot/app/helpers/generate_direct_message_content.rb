@@ -222,7 +222,7 @@ class GenerateDirectMessageContent
 
 	end
 
-def generate_location_info(recipient_id, location)
+  def generate_location_info(recipient_id, location)
 	 
 	  location_info = @thirdparty_api.get_resort_info(location)
 	  
@@ -239,6 +239,25 @@ def generate_location_info(recipient_id, location)
 
 	  options = build_back_option 'locations'
 	  options = options + build_home_option  #('with_description')
+
+	  message_data['quick_reply']['options'] = options
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+
+  end
+  
+  def generate_snow_day(recipient_id)
+
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = "We should make that happen... when? where? (and I should write more code for continuing that dialog)"
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = build_home_option('with_description')
 
 	  message_data['quick_reply']['options'] = options
 	  event['event']['message_create']['message_data'] = message_data

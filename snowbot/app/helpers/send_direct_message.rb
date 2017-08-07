@@ -25,8 +25,7 @@ class SendDirectMessage
 
 	def send_snow_day(recipient_id)
 		#Demonstrates easy way to stub out future functionality until customer 'generate content' method is written.
-		message = "We should make that happen... (and I should write more code for continuing that dialog)"
-		dm_content = @content.generate_message(recipient_id, message)
+		dm_content = @content.generate_snow_day(recipient_id)
 		send_direct_message(dm_content)
 	end
 	
