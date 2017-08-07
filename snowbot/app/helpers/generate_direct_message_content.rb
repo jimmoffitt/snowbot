@@ -120,7 +120,7 @@ class GenerateDirectMessageContent
 		message = "Issue with displaying #{link_choice}..."
 		@resources.links_list.each do |link|
 			if link[0] == link_choice
-				message = "#{link[3]}\nSummary:\n#{link[2]}"
+				message = "#{link[2]}\nSummary:\n#{link[3]}"
 				break
 			end
 		end
@@ -462,6 +462,8 @@ class GenerateDirectMessageContent
   
   #Types: list choices, going back to list. links, resorts
 	def build_back_option(type=nil, description=nil)
+		
+		puts "Incoming parameters: type = #{type}, description = #{description} "
 
 		options = []
 
@@ -469,6 +471,9 @@ class GenerateDirectMessageContent
 		option['label'] = '<- Back'
 		option['description'] = 'Previous list...' if description
 		option['metadata'] = "go_back #{type} "
+		
+		puts "METADATA: #{option['metadata']}"
+
 		options << option
 
 		options
@@ -534,8 +539,7 @@ class GenerateDirectMessageContent
 		message_data['text'] = message
 
 		event['event']['message_create']['message_data'] = message_data
-		
-		
+
 		#TODO: Add home option? options = options + build_home_option
 
 		event.to_json

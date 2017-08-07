@@ -72,6 +72,8 @@ class EventManager
 			
 			type =  response_metadata['go_back'.length..-1]
 
+			puts "------------------> type = #{type}"
+			
 			if type == 'links'
 				@DMSender.send_links_list(user_id)
 			elsif type == 'locations'
