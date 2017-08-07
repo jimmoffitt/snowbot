@@ -72,7 +72,7 @@ class GenerateDirectMessageContent
 
 		options = []
 		options = build_photo_option
-		options = options + build_home_option
+		options = options + build_home_option('with_description')
 
 		message_data['quick_reply']['options'] = options
 		
