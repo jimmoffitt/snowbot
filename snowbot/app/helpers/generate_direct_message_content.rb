@@ -405,7 +405,14 @@ class GenerateDirectMessageContent
 
   def generate_system_help(recipient_id)
 
-	  message_text = "#{BOT_CHAR} Several commands are supported. Like 'home', 'main', 'about', 'photo', 'pic', 'report', 'learn', 'weather', 'wx', 'link', 'day' #{BOT_CHAR}"
+	  message_text = "Several commands are supported: \n \n" + 
+                "#{BOT_CHAR} 'home', 'main' ---> Main menu \n " + 
+                "#{BOT_CHAR} 'photo', 'pic' --> See photo \n " + 
+                "#{BOT_CHAR} 'weather', 'wx' --> Get weather conditions \n "  +
+		            "#{BOT_CHAR} 'learn', 'link' --> Learn about snow \n" +
+		            "#{BOT_CHAR} 'playlist' --> Get playlist \n" +
+		            "#{BOT_CHAR} 'about' --> Learn about bot \n" +
+		            "#{BOT_CHAR} 'help' --> Review these commands \n"
 
 	  #Build DM content.
 	  event = {}
@@ -454,7 +461,7 @@ class GenerateDirectMessageContent
 
 	  option = {}
 		option['label'] = "#{BOT_CHAR} Get a snow or rain themed playlist"
-		option['description'] = "'Sounds good.' (A nod to the old OneRain on-hold music)"
+		option['description'] = "'Sounds good.'"
 		option['metadata'] = 'snow_music'
 		options << option
 
