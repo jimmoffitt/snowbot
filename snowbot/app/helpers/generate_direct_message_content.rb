@@ -82,7 +82,66 @@ class GenerateDirectMessageContent
 
 	end
 
-	def generate_link_list(recipient_id)
+  def generate_playlist_list(recipient_id)
+
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = 'Select a playlist:'
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = []
+
+	  @resources.playlists_list.each do |item|
+		  if item.count > 0
+			  option = {}
+			  option['label'] = "#{BOT_CHAR} " + item[0]
+			  option['metadata'] = "playlist_choice: #{item[0]}"
+			  option['description'] = item[1]
+			  options << option
+		  end
+	  end
+
+	  options += build_home_option('with description')
+
+	  message_data['quick_reply']['options'] = options
+
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+
+  end
+  
+  def generate_playlist(recipient_id, playlist_choice)
+
+	  #Build link response.
+	  message = "Issue with sharing #{playlist_choice} playlist..."
+	  @resources.playlists_list.each do |playlist|
+		  if playlist[0] == playlist_choice
+			  message = playlist[2]
+			  break
+		  end
+	  end
+	  event = {}
+	  event['event'] = message_create_header(recipient_id)
+
+	  message_data = {}
+	  message_data['text'] = message
+
+	  message_data['quick_reply'] = {}
+	  message_data['quick_reply']['type'] = 'options'
+
+	  options = build_back_option 'playlists'
+	  options += build_home_option
+
+	  message_data['quick_reply']['options'] = options
+	  event['event']['message_create']['message_data'] = message_data
+	  event.to_json
+  end
+
+  def generate_link_list(recipient_id)
 
 		event = {}
 		event['event'] = message_create_header(recipient_id)
@@ -392,17 +451,17 @@ class GenerateDirectMessageContent
 		option['metadata'] = 'learn_snow'
 		options << option
 
+	  option = {}
+		option['label'] = "#{BOT_CHAR} Get a snow or rain themed Spotify playlist"
+		option['description'] = "'Sounds good.' (A nod to the old OneRain on-hold music)"
+		option['metadata'] = 'snow_music'
+		options << option
+
 		option = {}
 		option['label'] = "#{BOT_CHAR} Request snow report"
 		option['description'] = '(Coming Fall 2017)'
 		option['metadata'] = 'snow_report'
 		options << option
-
-		#option = {}
-		#option['label'] = "#{BOT_CHAR} Receive a "snow" song title"
-		#option['description'] = '"Sounds good"'
-		#option['metadata'] = 'snow_day'
-		#options << option
 
 		option = {}
 		option['label'] = "#{BOT_CHAR} Suggest a snow day"

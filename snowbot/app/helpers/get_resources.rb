@@ -12,9 +12,12 @@ class GetResources
 
 	attr_accessor :photos_home,
 	              :photos_list,     #CSV with file name and caption. That's it.
+	              :locations_home,
 	              :locations_list, #This class knows the configurable location list.
+	              :links_home,
 	              :links_list,
-	              :playlists
+	              :playlists_home,
+	              :playlists_list
 	
 	def initialize()
 
@@ -41,8 +44,15 @@ class GetResources
 		end
 		@locations_list = []
 		@locations_list = get_locations
+		
+		@playlists_home = '/app/snowbot/config/data/playlists' #On Heroku at least.
+		if not File.directory?(@playlists_home)
+			@playlists_home = '../../config/data/playlists'
+		end
+		@playlists_list = []
+		@playlists_list = get_playlists
 
-		#TODO Implement
+	  
 		@playlists = []
 		
 	end
@@ -67,5 +77,14 @@ class GetResources
 		puts "Have a list of #{list.count} locations..."
 		list
 	end
+
+	#list = [] #Load array of curated locations.
+	def get_playlists
+		list = CSV.read("#{@playlists_home}/playlists.csv")
+		puts "Have a list of #{list.count} playlists..."
+		list
+	end
+
+	
 
 end

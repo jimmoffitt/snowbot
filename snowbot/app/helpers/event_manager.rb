@@ -34,8 +34,8 @@ class EventManager
 		#Custom options	
 		elsif response_metadata == 'see_photo'
 			@DMSender.send_photo(user_id)
-
-		elsif response_metadata.include? 'weather_info'
+	
+			elsif response_metadata.include? 'weather_info'
 			@DMSender.send_map(user_id)
 
 		elsif response_metadata == 'map_selection'
@@ -50,6 +50,9 @@ class EventManager
 
 		elsif response_metadata == 'learn_snow'
 			@DMSender.send_links_list(user_id)
+
+		elsif response_metadata == 'snow_music'
+			@DMSender.send_playlists_list(user_id)
 
 		elsif response_metadata.include? 'link_choice'
 			choice = response_metadata['link_choice: '.length..-1]
@@ -78,7 +81,8 @@ class EventManager
 				@DMSender.send_links_list(user_id)
 			elsif type == 'locations'
 				@DMSender.send_locations_list(user_id)
-				
+			elsif type == 'playlists'
+				@DMSender.send_playlists_list(user_id)
 			end
 
 		elsif response_metadata.include? 'location_choice'
@@ -116,6 +120,8 @@ class EventManager
 			@DMSender.send_snow_day(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'learn')
 			@DMSender.send_links_list(user_id)
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'playlist')
+			@DMSender.send_playlists_list(user_id)	
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'report')
 			@DMSender.send_locations_list(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'about')
