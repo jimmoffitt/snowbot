@@ -65,6 +65,12 @@ class SendDirectMessage
 		dm_content = @content.generate_location_info(recipient_id, choice)
 		send_direct_message(dm_content)
 	end
+
+	#Links are list based, and currently app has just one links list.
+	def send_playlists_list(recipient_id)
+		dm_content = @content.generate_playlist_list(recipient_id)
+		send_direct_message(dm_content)
+	end
 	
 	# App Generic? All apps have these by default?
 
