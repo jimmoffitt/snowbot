@@ -71,6 +71,11 @@ class SendDirectMessage
 		dm_content = @content.generate_playlist_list(recipient_id)
 		send_direct_message(dm_content)
 	end
+
+	def send_playlist(recipient_id, choice)
+		dm_content = @content.generate_playlist(recipient_id, choice)
+		send_direct_message(dm_content)
+	end
 	
 	# App Generic? All apps have these by default?
 

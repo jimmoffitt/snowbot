@@ -124,6 +124,7 @@ class GenerateDirectMessageContent
 			  break
 		  end
 	  end
+
 	  event = {}
 	  event['event'] = message_create_header(recipient_id)
 

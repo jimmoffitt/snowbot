@@ -58,6 +58,10 @@ class EventManager
 			choice = response_metadata['link_choice: '.length..-1]
 			@DMSender.send_link(user_id, choice)
 
+		elsif response_metadata.include? 'playlist_choice'
+			choice = response_metadata['playlist_choice: '.length..-1]
+			@DMSender.send_playlist(user_id, choice)
+
 	#TODO - IMPLEMENT	------------------------------------------
 
 		elsif response_metadata == 'snow_day'
