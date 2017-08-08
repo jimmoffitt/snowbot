@@ -45,9 +45,9 @@ class GetResources
 		@locations_list = []
 		@locations_list = get_locations
 		
-		@playlists_home = '/app/snowbot/config/data/playlists' #On Heroku at least.
+		@playlists_home = '/app/snowbot/config/data/music' #On Heroku at least.
 		if not File.directory?(@playlists_home)
-			@playlists_home = '../../config/data/playlists'
+			@playlists_home = '../../config/data/music'
 		end
 		@playlists_list = []
 		@playlists_list = get_playlists
