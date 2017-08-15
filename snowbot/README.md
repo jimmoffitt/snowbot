@@ -10,7 +10,7 @@
 
 * TODO:
   * weather, current and forecast APIs (started)
-  * snow, resort reports (still looking for a free api to try).
+  * snow, resort reports (still looking for a free api to try). Plan on experimenting with http://feeds.snocountry.net/.
   * launch curated Spotify playlist?
   
  ## Notes
