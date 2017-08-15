@@ -1,6 +1,6 @@
 # Snowbot
 
-## Recent updates, things in motion, and future dreams
+## Recent updates, things in motion, and future possibilities
 
 * Iterated 'generate content' class without much testing so far. Mainly code clean-up... like common JSON headers. 
 * Going with all ENV configuration, and eliminating confile.yaml files. 
