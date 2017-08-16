@@ -32,6 +32,8 @@ Basically a snowbox for experimenting and exploring...A playground for sending D
 
 * Providing 3-day forecast
 * Build in ski reports. Need to find a free API that serves snow/resort reports. 
+* Adding 'features' to the 'get resources' process. These resources are data files containing metadata for the bot, such as location lists to present to bot users. Basically these are CSV files that have values loaded into a Twitter DM Quick Reply.
+  * Need to support file headers/comments.
 
 
 
