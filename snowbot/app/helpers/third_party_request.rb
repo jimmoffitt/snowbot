@@ -19,18 +19,59 @@ class ThirdPartyRequest
 		#Get Twitter App keys and tokens. Pull from the 
 		#'Config Variables' via the ENV{} hash.
 		@keys = {}
-
-		@keys['snow_consumer_key'] = ENV['SNOW_CONSUMER_KEY']
+	
 		@keys['weather_consumer_key'] = ENV['WEATHERUNDERGROUND_KEY']
-		@keys['spotify_consumer_key'] = ENV['SPOTIFY_CONSUMER_KEY']
+		@keys['snocountry_consumer_key'] = ENV['SNOCOUNTRY_KEY']
+		#@keys['spotify_consumer_key'] = ENV['SPOTIFY_CONSUMER_KEY'] #Not used yet.
 
 	end
 
+	#http://feeds.snocountry.net/conditions.php?apiKey=KEY_ID&resortType=Alpine&action=top20
+	def get_top_snow_resorts
+
+		open("http://feeds.snocountry.net/conditions.php?apiKey=#{@keys['snocountry_consumer_key']}&resortType=Alpine&action=top20") do |f|
+			json_string = f.read
+			
+			puts json_string
+			
+			parsed_json = JSON.parse(json_string)
+			
+			puts parsed_json
+			
+			
+			return "Made call..."
+			
+		end	
+		
+		
+	end
+	
+	
+  #http://feeds.snocountry.net/conditions.php?apiKey=KEY_ID&ids=303001
 	def get_resort_info(resort)
+		
+		#Given Resort name, look up resort ID
+		resort_id = 303001
+
+		open("http://feeds.snocountry.net/conditions.php?apiKey=#{@keys['snocountry_consumer_key']}&ids=#{resort_id}") do |f|
+			json_string = f.read
+
+			puts json_string
+
+			parsed_json = JSON.parse(json_string)
+
+			puts parsed_json
+
+
+			return "Made call..."
+
+		end
+
+
+
 		resort_summary = '(Not implemented yet... by this fall? Trying to find a free snow report API)'
 		return "#{resort} information: \n #{resort_summary}"
 	end
-
 
 	def get_current_weather(lat,long)
 
@@ -70,7 +111,6 @@ class ThirdPartyRequest
 		end
 		
 	end
-	
 
 end
 
@@ -78,11 +118,19 @@ if __FILE__ == $0 #This script code is executed when running this file.
 
 	thirdPartyAPI = ThirdPartyRequest.new
 
-	response = thirdPartyAPI.get_current_weather(5,-15)
+	#Testing WeatherUnderground
+	#response = thirdPartyAPI.get_current_weather(5,-15)
+	#puts response
+	#response = thirdPartyAPI.get_current_weather(40.0150,-105.2705)
+	#puts response
+	#response = thirdPartyAPI.get_current_weather(42.3357,-95.3475)
+	#puts response
+	
+	
+	#response = thirdPartyAPI.get_top_snow_resorts
+	
+	response = thirdPartyAPI.get_resort_info('The Remarkables')
 	puts response
-	response = thirdPartyAPI.get_current_weather(40.0150,-105.2705)
-	puts response
-	response = thirdPartyAPI.get_current_weather(42.3357,-95.3475)
-	puts response
+	
 
 end
