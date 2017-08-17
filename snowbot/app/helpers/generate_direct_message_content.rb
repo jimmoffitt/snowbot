@@ -9,7 +9,7 @@ require_relative 'get_resources'        #Loads local resources used to present D
 
 class GenerateDirectMessageContent
 	
-  VERSION = 0.04
+  VERSION = 0.05
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
@@ -417,6 +417,7 @@ class GenerateDirectMessageContent
                 "#{BOT_CHAR} 'home', 'main' ---> Main menu \n " + 
                 "#{BOT_CHAR} 'photo', 'pic' --> See photo \n " + 
                 "#{BOT_CHAR} 'weather', 'wx' --> Get weather conditions \n "  +
+		            "#{BOT_CHAR} 'report', 'resort' --> Get resort snow report \n "  +
 		            "#{BOT_CHAR} 'learn', 'link' --> Learn about snow \n" +
 		            "#{BOT_CHAR} 'playlist' --> Get playlist \n" +
 		            "#{BOT_CHAR} 'about' --> Learn about bot \n" +
@@ -475,15 +476,15 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = "#{BOT_CHAR} Request snow report"
-		option['description'] = '(Coming Fall 2017)'
+		option['description'] = 'Select areas in CO, MN and NZ.'
 		option['metadata'] = 'snow_report'
 		options << option
 
-		option = {}
-		option['label'] = "#{BOT_CHAR} Suggest a snow day"
-		option['description'] = 'soon?'
-		option['metadata'] = 'snow_day'
-		options << option
+		#option = {}
+		#option['label'] = "#{BOT_CHAR} Suggest a snow day"
+		#option['description'] = 'soon?'
+		#option['metadata'] = 'snow_day'
+		#options << option
 
 		#option = {}
 		#option['label'] = 'Ask Twitter API question!'

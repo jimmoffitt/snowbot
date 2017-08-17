@@ -62,14 +62,14 @@ class EventManager
 			choice = response_metadata['playlist_choice: '.length..-1]
 			@DMSender.send_playlist(user_id, choice)
 
+		elsif response_metadata == 'snow_report'
+			@DMSender.send_locations_list(user_id)
+			
 	#TODO - IMPLEMENT	------------------------------------------
 
 		elsif response_metadata == 'snow_day'
 			@DMSender.send_snow_day(user_id)
-		
-		elsif response_metadata == 'snow_report'
-			@DMSender.send_locations_list(user_id)
-
+	
 		elsif response_metadata.include? 'location_choice'
 			choice = response_metadata['location_choice: '.length..-1]
 			@DMSender.send_location_info(user_id, choice)
@@ -118,16 +118,16 @@ class EventManager
 			@DMSender.send_welcome_message(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'photo' or request.downcase.include? 'pic' or request.downcase.include? 'see')
 			@DMSender.send_photo(user_id)
-		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'wx' or request.downcase.include? 'weather' )
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'wx' or request.downcase.include? 'weather')
 			@DMSender.send_map(user_id)
+		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'report' or request.downcase.include? 'resort')
+			@DMSender.send_locations_list(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'day')
 			@DMSender.send_snow_day(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'learn')
 			@DMSender.send_links_list(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'playlist')
 			@DMSender.send_playlists_list(user_id)	
-		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'report')
-			@DMSender.send_locations_list(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'about')
 			@DMSender.send_system_info(user_id)
 		elsif request.length <= COMMAND_MESSAGE_LIMIT and (request.downcase.include? 'help')
