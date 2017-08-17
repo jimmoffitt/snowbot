@@ -1,6 +1,6 @@
 # Snowbot
 
-## Recent updates, things in motion, and future dreams
+## Recent updates, things in motion, and future possibilities
 
 * Iterated 'generate content' class without much testing so far. Mainly code clean-up... like common JSON headers. 
 * Going with all ENV configuration, and eliminating confile.yaml files. 
@@ -10,7 +10,7 @@
 
 * TODO:
   * weather, current and forecast APIs (started)
-  * snow, resort reports (still looking for a free api to try).
+  * snow, resort reports (still looking for a free api to try). Plan on experimenting with http://feeds.snocountry.net/.
   * launch curated Spotify playlist?
   
  ## Notes
