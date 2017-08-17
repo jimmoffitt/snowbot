@@ -39,6 +39,7 @@ class SendDirectMessage
 		dm_content = @content.generate_location_map(recipient_id)
 		send_direct_message(dm_content)
 	end
+
 	def send_weather_info(recipient_id, coordinates)
 		dm_content = @content.generate_weather_info(recipient_id, coordinates)
 		send_direct_message(dm_content)
@@ -124,7 +125,9 @@ if __FILE__ == $0 #This script code is executed when running this file.
 	#sender.send_map(944480690)
 	#sender.send_photo(944480690)
 
-	sender.send_links_list(944480690)
+	#sender.send_links_list(944480690)
 	#sender.respond_with_link(944480690,'NASA')
+	
+	sender.send_location_info(944480690,"The Remarkables NZ")
 
 end

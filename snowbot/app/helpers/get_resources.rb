@@ -75,7 +75,6 @@ class GetResources
 		list
 
 	end
-	
 
 	#photo_list = [] #Load array of photo metadata.
 	def get_photos
@@ -104,8 +103,6 @@ class GetResources
 		
 		list
 	end
-	
-	
 
 	#list = [] #Load array of curated locations.
 	def get_locations
@@ -134,8 +131,6 @@ class GetResources
 		
 		list
 	end
-
-
 
   #=======================
 	if __FILE__ == $0 #This script code is executed when running this file.

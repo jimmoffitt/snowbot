@@ -9,7 +9,7 @@ require_relative 'get_resources'        #Loads local resources used to present D
 
 class GenerateDirectMessageContent
 	
-  VERSION = 0.03
+  VERSION = 0.04
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
@@ -278,9 +278,17 @@ class GenerateDirectMessageContent
 
 	end
 
-  def generate_location_info(recipient_id, location)
-	 
-	  location_info = @thirdparty_api.get_resort_info(location)
+  def generate_location_info(recipient_id, location_name)
+
+		resort_id = 0
+	  @resources.locations_list.each do |location|
+		  if location[0] == location_name
+				resort_id = location[3]
+				break
+		  end  
+	  end
+		
+	  location_info = @thirdparty_api.get_resort_info(resort_id)
 	  
 	  puts "Location: #{location_info}"
 

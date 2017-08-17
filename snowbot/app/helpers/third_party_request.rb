@@ -48,22 +48,46 @@ class ThirdPartyRequest
 	
 	
   #http://feeds.snocountry.net/conditions.php?apiKey=KEY_ID&ids=303001
-	def get_resort_info(resort)
-		
-		#Given Resort name, look up resort ID
-		resort_id = 303001
+	def get_resort_info(resort_id)
 
 		open("http://feeds.snocountry.net/conditions.php?apiKey=#{@keys['snocountry_consumer_key']}&ids=#{resort_id}") do |f|
 			json_string = f.read
-
 			puts json_string
-
 			parsed_json = JSON.parse(json_string)
+			
+			#if parsed_json['openDownHillLifts'] && parsed_json['openDownHillTrails']
+			#	return "Ski area is not open."
+			#end
+			
+			resort_data = parsed_json["items"][0]
 
-			puts parsed_json
+			#"operatingStatus" --> "Open for Events\/Activities", ""
+			
+			name = resort_data["resortName"]
+			last_snow_date = resort_data["lastSnowFallDate"]
+			last_snow_amount = resort_data["lastSnowFallAmount"]
+			prev_snow_date = resort_data["prevSnowFallDate"]
+			prev_snow_amount = resort_data["prevSnowFallAmount"]
+			open_lifts = resort_data["openDownHillLifts"]
+			total_lifts = resort_data["maxOpenDownHillLifts"]
+			open_trails = resort_data["openDownHillTrails"]
+			total_trails = resort_data["maxOpenDownHillTrails"]
+			open_acres = resort_data["openDownHillAcres"]
+			total_acres = resort_data["maxOpenDownHillAcres"]
+			web_site_link = resort_data["webSiteLink"]
+			trail_map = resort_data["lgTrailMapURL"]
 
-
-			return "Made call..."
+			resort_summary = "#{name} report:\n" +
+				"* Last snow: #{last_snow_amount} inches on #{last_snow_date}\n" +
+			  "* Previous snow: #{prev_snow_amount} inches on #{prev_snow_date}\n" +
+			  "* Open lifts: #{open_lifts} / #{total_lifts}\n" +
+				"* Open trails: #{open_trails} / #{total_trails}\n" +
+				"* Open acres: #{open_acres} / #{total_acres}\n" +
+				"* Web site: #{web_site_link}\n" +
+				"* Trail map: #{trail_map}\n" 
+			
+			
+			return resort_summary
 
 		end
 
@@ -81,6 +105,9 @@ class ThirdPartyRequest
 		open("http://api.wunderground.com/api/#{@keys['weather_consumer_key']}/geolookup/conditions/q/#{lat},#{long}.json") do |f|
 			json_string = f.read
 			parsed_json = JSON.parse(json_string)
+			
+			
+			
 			
 			if parsed_json['response'] && parsed_json['response']['error']
 				return "No weather report available for that location"
@@ -128,9 +155,11 @@ if __FILE__ == $0 #This script code is executed when running this file.
 	
 	
 	#response = thirdPartyAPI.get_top_snow_resorts
-	
-	response = thirdPartyAPI.get_resort_info('The Remarkables')
+	#Given Resort name, look up resort ID
+	resort_id = 303001 #A-Basin
+	#resort_id = 615013 #The Remarkables
+
+	response = thirdPartyAPI.get_resort_info(resort_id)
 	puts response
-	
 
 end
