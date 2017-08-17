@@ -1,5 +1,4 @@
 #http://feeds.snocountry.net/getResortList.php?apiKey=KEY_ID&states=co&resortType=alpine&output=json
-#
 Arapahoe Basin, -105.8717, 39.6423, 303001
 Aspen, -106.8175, 39.1911, 303003
 Beaver Creek,,,303005
@@ -11,6 +10,7 @@ Keystone, -105.9347, 39.5792,303014
 Loveland,,,303015
 Snowmass,,,303020
 Steamboat, -106.8317, 40.4850,303021
+Squaw Valley CA,,,916011
 Telluride, -107.8123, 37.9375,303022
 Vail, -106.3742, 39.640,303023
 Winter Park, -105.7631, 39.8917, 303024
