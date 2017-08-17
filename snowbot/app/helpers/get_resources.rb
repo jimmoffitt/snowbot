@@ -9,13 +9,18 @@
 #  Supports a single directory of JPEGs.
 
 class GetResources
+	
+	require 'csv'
 
 	attr_accessor :photos_home,
 	              :photos_list,     #CSV with file name and caption. That's it.
+	              
 	              :locations_home,
 	              :locations_list, #This class knows the configurable location list.
+	              
 	              :links_home,
 	              :links_list,
+	              
 	              :playlists_home,
 	              :playlists_list
 	
@@ -52,39 +57,97 @@ class GetResources
 		@playlists_list = []
 		@playlists_list = get_playlists
 
-	  
-		@playlists = []
-		
 	end
+
+	#Take resource file with '#' comment lines and filter them out.
+	def filter_list(lines)
+
+		list = []
+
+		#Filter out '#' comment lines.
+		lines.each do |line|
+			if line[0][0] != '#'
+				#drop dynamically from array
+				list << line
+			end
+		end
+
+		list
+
+	end
+	
 
 	#photo_list = [] #Load array of photo metadata.
 	def get_photos
-		photo_list = CSV.read("#{@photos_home}/photos.csv", {:col_sep => ";"})
-		puts "Have a list of #{photo_list.count} photos..."
-		photo_list
+		
+		list = []
+		
+		begin
+			list = filter_list(CSV.read("#{@photos_home}/photos.csv", {:col_sep => ";"}))
+			puts "Have a list of #{photo_list.count} photos..."
+		rescue
+		end
+		
+		list
 	end
 
 	#list = [] #Load array of curated links.
 	def get_links
-		list = CSV.read("#{@links_home}/links.csv", {:col_sep => ";"})
-		puts "Have a list of #{list.count} links..."
+		
+		list = []
+		
+		begin
+			list = filter_list(CSV.read("#{@links_home}/links.csv", {:col_sep => ";"}))
+			puts "Have a list of #{list.count} links..."
+		rescue
+		end
+		
 		list
 	end
+	
+	
 
 	#list = [] #Load array of curated locations.
 	def get_locations
-		list = CSV.read("#{@locations_home}/placesOfInterest.csv")
+		
+		list = []
+		
+		begin
+			list = filter_list(CSV.read("#{@locations_home}/placesOfInterest.csv"))
+		rescue
+		end	
+
 		puts "Have a list of #{list.count} locations..."
 		list
 	end
 
 	#list = [] #Load array of curated locations.
 	def get_playlists
-		list = CSV.read("#{@playlists_home}/playlists.csv")
-		puts "Have a list of #{list.count} playlists..."
+		
+		list = []
+		
+		begin
+			list = filter_list(CSV.read("#{@playlists_home}/playlists.csv"))
+			puts "Have a list of #{list.count} playlists..."
+		rescue
+		end
+		
 		list
 	end
 
-	
 
+
+  #=======================
+	if __FILE__ == $0 #This script code is executed when running this file.
+		retriever = GetResources.new
+		
+		#Example code for loading location file --------
+		retriever.locations_home = '/Users/jmoffitt/work/snowbot/snowbot/config/data/locations'
+		locations = retriever.get_locations
+		
+		locations.each do |resorts|  #explore that list
+			puts resorts
+		end
+	
+	end
 end
