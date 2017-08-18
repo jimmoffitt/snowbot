@@ -1,5 +1,7 @@
-# snowbot
-A snow bot, of course.
+# TEMPLATE
+
+# abot
+A bot, of course.
 
 This is the second Twitter bot I've built. Code wise, this is an iteration on the [@FloodSocial bot](https://github.com/jimmoffitt/FloodSocial). That bot is a flood notification proof-of-concept app developed to learn the Account Activity and Direct Message APIs, and was first demoed at an early-warning conference in June 2017.
 
