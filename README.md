@@ -28,12 +28,15 @@ Basically a snowbox for experimenting and exploring...A playground for sending D
   
   * Serving up Spotify playlists.
   
+  * Built in SnoCountry API: http://feeds.snocountry.net/
+  
 ## Upcoming? 
 
 * Providing 3-day forecast
-* Build in ski reports. Need to find a free API that serves snow/resort reports. 
 * Adding 'features' to the 'get resources' process. These resources are data files containing metadata for the bot, such as location lists to present to bot users. Basically these are CSV files that have values loaded into a Twitter DM Quick Reply.
   * Need to support file headers/comments.
+  * I've built two bots now that serve up location lists, and they have been different in structure, a mix of common attributes and others unique to the bot. In @FloodSocial, the location list is made up of major Texas cities (roughly top 20 in population). With the snowbot, ski resorts are served up. Common attributes for these bots include location name, longitude and latitude.  In all cases these coordinates are based on the geographical center of the location list **places**. For the snowbot, a resort ID is also the configuration metadata.
+  
 
 
 
