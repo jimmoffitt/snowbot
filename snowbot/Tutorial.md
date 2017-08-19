@@ -73,16 +73,7 @@ class SnowBotApp < Sinatra::Base
 		"<p><b>Welcome to the snow bot...</b></p>
   end
 
-	# Receives challenge response check (CRC).
-	get '/snowbot' do
-		crc_token = params['crc_token']
-		response = {}
-		response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
-		body response.to_json
-		status 200
-	end
-
-	# Receives DM events.
+# Receives DM events.
 	post '/snowbot' do
 		request.body.rewind
 		events = request.body.read
@@ -96,6 +87,18 @@ end
   
   
  ### Implementing CRC Check
+ 
+ ```ruby
+ 	# Receives challenge response check (CRC).
+	get '/snowbot' do
+		crc_token = params['crc_token']
+		response = {}
+		response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
+		body response.to_json
+		status 200
+	end
+ ```
+ 
  
  ### Validating setup
 
