@@ -29,11 +29,11 @@ Basically a snowbox for experimenting and exploring...A playground for sending D
   * If you are developing/testing/deploying on MacOs/Linux/Heroku at least, definitely recommend it. Windows is an unknown here, have not tested Ruby ENV on Windows, but image it is straightforward.
   * Inside IDE, it is kinda of a pain having some many configurations, each with its own ENV hive.
  
-  * Fundamental 'feature' is the display of a location list. If a bot needs to be geo-aware, and there are pre-determined locations of interest, then a mechanism to load a pre-configured list of locations is mandatory. 
+* Fundamental 'feature' is the display of a location list. If a bot needs to be geo-aware, and there are pre-determined locations of interest, then a mechanism to load a pre-configured list of locations is mandatory. 
   
-    * Adding 'features' to the 'get resources' process. These resources are data files containing metadata for the bot, such as location lists to present to bot users. Basically these are CSV files that have values loaded into a Twitter DM Quick Reply.
-    * Need to support file headers/comments.
-    * I've built two bots now that serve up location lists, and they have been different in structure, a mix of common attributes and others unique to the bot. In @FloodSocial, the location list is made up of major Texas cities (roughly top 20 in population). With the snowbot, ski resorts are served up. Common attributes for these bots include location name, longitude and latitude.  In all cases these coordinates are based on the geographical center of the location list **places**. For the snowbot, a resort ID is also the configuration metadata. These IDs are needed when making requests of the snow report API. 
+  * Adding 'features' to the 'get resources' process. These resources are data files containing metadata for the bot, such as location lists to present to bot users. Basically these are CSV files that have values loaded into a Twitter DM Quick Reply.
+  * Need to support file headers/comments.
+  * I've built two bots now that serve up location lists, and they have been different in structure, a mix of common attributes and others unique to the bot. In @FloodSocial, the location list is made up of major Texas cities (roughly top 20 in population). With the snowbot, ski resorts are served up. Common attributes for these bots include location name, longitude and latitude.  In all cases these coordinates are based on the geographical center of the location list **places**. For the snowbot, a resort ID is also the configuration metadata. These IDs are needed when making requests of the snow report API. 
   
 ## Upcoming? 
 
