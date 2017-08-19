@@ -101,13 +101,19 @@ end
   
 ### Implementing CRC Check
  
+[Link to docs]
+
+[Notes? Narrative]
+While developing this code, you need to trigger a CRC check from Twitter. This is done by sending a PUT command to the AA endpoint and sending in your encypted consumer key. 
+
+When developing this code, it took some patience since the AA endpoint had a rate minute of 1 request every 15 minutes. Unless you get your code working on the first try (I did not), you'll have to wait 15 minutes before retrying. For that reason it is a great idea to at least validate the format and structure of your CRC trigger request before calling the AA endpoint. (link to tester?)
+ 
 ```ruby
 def generate_crc_response(consumer_secret, crc_token)
   hash = OpenSSL::HMAC.digest('sha256', consumer_secret, crc_token)
-	eturn Base64.encode64(hash).strip!
+  return Base64.encode64(hash).strip!
 end
 ```
- 
  
 ```ruby
 # Receives challenge response check (CRC).
