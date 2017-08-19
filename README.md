@@ -1,11 +1,11 @@
 # snowbot
 A snow bot, of course.
 
-This is the second Twitter bot I've built. Code wise, this is an iteration on the [@FloodSocial bot](https://github.com/jimmoffitt/FloodSocial). That bot is a flood notification proof-of-concept app developed to learn the Account Activity and Direct Message APIs, and was first demoed at an early-warning conference in June 2017.
+This is the second Twitter bot I've built. Code wise, this is an iteration on the [@FloodSocial bot](https://github.com/jimmoffitt/FloodSocial). That bot is a flood notification proof-of-concept app developed to learn the Account Activity and Direct Message APIs, and was first demoed at an early-warning conference in June 2017. That bot was thrown together to meet a conference dead-line, and some of the code reflects that: the 'event manager' class is like a run-on sentence, and the 'generate Direct Message content' code has lots of redundant code. So the Snowbot code represents an on-going clean-up of those types of issues. Still, the @FloodSocial demo worked out well and may have helped in receiving an 'innovation in hydrologic warning' conference award ;)
 
 This bot is much more of a sandbox, and will evolve as new and different aspects of the AA and DM APIs are implemented in the bot. An example of this is that the snowbot serves (locally hosted) photos as DM media attachments. 
 
-Basically a snowbox for experimenting and exploring...A playground for sending DMs with media and links, serving third-party weather and snow api data. 
+Basically a *snowbox* for experimenting and exploring...A playground for sending DMs with media and links, serving third-party weather and snow api data. 
 
 ## New twists:
 
