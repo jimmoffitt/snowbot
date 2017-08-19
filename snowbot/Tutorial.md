@@ -55,49 +55,62 @@ this app when any of 'its' accounts receive a Direct Message.
    
  ## Building Account Activity API client
  
+ ```ruby
+ 
+require 'sinatra'
+
+class SnowBotApp < Sinatra::Base
+
+  def initialize
+    super()
+  end
+
+end
+ 
+ ```
  
  
  ### Implementing endpoints and routes
   
- ```ruby
- require 'sinatra'
- require_relative "../../app/helpers/event_manager"
+```ruby
+require 'sinatra'
+require_relative "../../app/helpers/event_manager"
 
 class SnowBotApp < Sinatra::Base
 
-	def initialize
-  	super()
-	end
-
-	get '/' do
-		"<p><b>Welcome to the snow bot...</b></p>
+  def initialize
+    super()
   end
 
-# Receives DM events.
-	post '/snowbot' do
-		request.body.rewind
-		events = request.body.read
-		manager = EventManager.new
-		manager.handle_event(events)
-  	status 200
-	end
+  get '/' do
+    "<p><b>Welcome to the snow bot...</b></p>
+  end
+  
+  # Receives DM events.
+  post '/snowbot' do
+    request.body.rewind
+    events = request.body.read
+    manager = EventManager.new
+    manager.handle_event(events)
+    status 200
+  end
 end
 ```
   
   
   
- ### Implementing CRC Check
+### Implementing CRC Check
  
- ```ruby
- 	# Receives challenge response check (CRC).
-	get '/snowbot' do
-		crc_token = params['crc_token']
-		response = {}
-		response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
-		body response.to_json
-		status 200
-	end
- ```
+```ruby
+# Receives challenge response check (CRC).
+get '/snowbot' do
+  crc_token = params['crc_token']
+  response = {}
+  response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
+  body response.to_json
+  status 200
+end
+```
  
  
  ### Validating setup
