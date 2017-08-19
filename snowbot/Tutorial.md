@@ -102,6 +102,14 @@ end
 ### Implementing CRC Check
  
 ```ruby
+def generate_crc_response(consumer_secret, crc_token)
+  hash = OpenSSL::HMAC.digest('sha256', consumer_secret, crc_token)
+	eturn Base64.encode64(hash).strip!
+end
+```
+ 
+ 
+```ruby
 # Receives challenge response check (CRC).
 get '/snowbot' do
   crc_token = params['crc_token']
