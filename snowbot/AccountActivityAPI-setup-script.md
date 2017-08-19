@@ -93,9 +93,3 @@ Webhook URL does not meet the requirements. Please consult: https://dev.twitter.
 
 If you receive this message you'll need to wait to retry. The default rate limit is one request every 15 minutes. 
 
-require 'bundler'
-Bundler.require
-
-require File.expand_path('../snowbot/config/environment',  __FILE__)
-
-run SnowBotApp
