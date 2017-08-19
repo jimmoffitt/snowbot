@@ -127,9 +127,14 @@ end
 ```
  
  
- ### Validating setup
+ ### Validating web app setup
+ 
+Deploy and test. Hit home page, and trigger a CRC check. At a minumum stub in your event manager and confirm you are receiving expected DM (and other) events. 
 
+[Notes on any other points? This is a stage where setting up endpoint and subscriptions happens, as well as iterating on the default welecome message. Intro to next section.]
 
+[Link to SEPARATE helper scripts? Link to Node examples too]
+This doc explains why those are needed, but does not detail features and how to use.]
 
 # Next Steps
 
@@ -138,6 +143,8 @@ end
 + Account Activity API documentation https://dev.twitter.com/webhooks/account-activity
 + Direct Message API methods: https://dev.twitter.com/rest/direct-messages
 + Read about another example bot. 
+
+
 
 
 
