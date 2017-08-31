@@ -3,12 +3,13 @@
 
 ## Introduction
 
-The purpose of this tutorial is to help developers get started with the Account Activity and Direct Message APIs.
+The purpose of this tutorial is to help developers get started with the Twitter Account Activity and Direct Message APIs.
 
 The material below is split into several pieces. Much of the narrative is language-agnostic, and includes many code 
 examples written in Ruby. Since these code examples are very short and have comments, we can consider them as pseudo-code. 
-Pseudo-code that hopefully illustrates fundamental concepts that are readily applied to non-Ruby languages.
+Pseudo-code that hopefully illustrates fundamental concepts that are readily implemented in non-Ruby languages.
 
+We'll start off with a how to get started with these APIs. The steps here include getting access keys to the APIs, and deploying a web app that integrates both APIs. By integrating with the Account Activity (AA) API you are developing a consumer of webhook events sent from Twitter. By integrating the Direct Message (DM) API, you are building the private communication channel to your bot users. The AA API prodives the ability to listen for Twitter account activities, and the DM API enables you to send messages back to your users. 
 
 
 # Getting Started
@@ -54,51 +55,85 @@ this app when any of 'its' accounts receive a Direct Message.
    
  ## Building Account Activity API client
  
+ ```ruby
+ 
+require 'sinatra'
+
+class SnowBotApp < Sinatra::Base
+
+  def initialize
+    super()
+  end
+
+end
+ 
+ ```
  
  
  ### Implementing endpoints and routes
   
- ```ruby
- require 'sinatra'
- require_relative "../../app/helpers/event_manager"
+```ruby
+require 'sinatra'
+require_relative "../../app/helpers/event_manager"
 
 class SnowBotApp < Sinatra::Base
 
-	def initialize
-  	super()
-	end
-
-	get '/' do
-		"<p><b>Welcome to the snow bot...</b></p>
+  def initialize
+    super()
   end
 
-	# Receives challenge response check (CRC).
-	get '/snowbot' do
-		crc_token = params['crc_token']
-		response = {}
-		response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
-		body response.to_json
-		status 200
-	end
-
-	# Receives DM events.
-	post '/snowbot' do
-		request.body.rewind
-		events = request.body.read
-		manager = EventManager.new
-		manager.handle_event(events)
-  	status 200
-	end
+  get '/' do
+    "<p><b>Welcome to the snow bot...</b></p>
+  end
+  
+  # Receives DM events.
+  post '/snowbot' do
+    request.body.rewind
+    events = request.body.read
+    manager = EventManager.new
+    manager.handle_event(events)
+    status 200
+  end
 end
 ```
   
   
   
- ### Implementing CRC Check
+### Implementing CRC Check
  
- ### Validating setup
+[Link to docs]
 
+[Notes? Narrative]
+While developing this code, you need to trigger a CRC check from Twitter. This is done by sending a PUT command to the AA endpoint and sending in your encypted consumer key. 
 
+When developing this code, it took some patience since the AA endpoint had a rate minute of 1 request every 15 minutes. Unless you get your code working on the first try (I did not), you'll have to wait 15 minutes before retrying. For that reason it is a great idea to at least validate the format and structure of your CRC trigger request before calling the AA endpoint. (link to tester?)
+ 
+```ruby
+def generate_crc_response(consumer_secret, crc_token)
+  hash = OpenSSL::HMAC.digest('sha256', consumer_secret, crc_token)
+  return Base64.encode64(hash).strip!
+end
+```
+ 
+```ruby
+# Receives challenge response check (CRC).
+get '/snowbot' do
+  crc_token = params['crc_token']
+  response = {}
+  response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
+  body response.to_json
+  status 200
+end
+```
+  
+ ### Validating web app setup
+ 
+Deploy and test. Hit home page, and trigger a CRC check. At a minumum stub in your event manager and confirm you are receiving expected DM (and other) events. 
+
+[Notes on any other points? This is a stage where setting up endpoint and subscriptions happens, as well as iterating on the default welecome message. Intro to next section.]
+
+[Link to SEPARATE helper scripts? Link to Node examples too]
+This doc explains why those are needed, but does not detail features and how to use.]
 
 # Next Steps
 
@@ -109,202 +144,3 @@ end
 + Read about another example bot. 
 
 
-
-# Scripts for managing Account Activity API configuration
-
-
-## Setting up webhooks
-
-The setup_webooks.rb script helps automate Account Activity configuration management. https://dev.twitter.com/webhooks/managing
-
-```
-Usage: setup_webhooks [options]
-    -c, --config CONFIG              Configuration file (including path) that provides account OAuth details. 
-    -t, --task TASK                  Securing Webhooks Task to perform: trigger CRC ('crc'), set config ('set'), list configs ('list'), delete config ('delete'), subscribe app ('subscribe'), unsubscribe app ('unsubscribe'),get subscription ('subscription').
-    -u, --url URL                    Webhooks 'consumer' URL, e.g. https://mydomain.com/webhooks/twitter.
-    -i, --id ID                      Webhook ID
-    -h, --help                       Display this screen.  
-```
-
-
-Here are some example commands:
-
-
-  + setup_webhooks.rb -t "set" -u "https://snowbotdev.herokuapp.com/snowbot"
-  
-```
-Setting a webhook configuration...
-Created webhook instance with webhook_id: 890716673514258432 | pointing to https://snowbotdev.herokuapp.com/snowbot
-```
-  
-If your web app is not running, or your CRC code is not quite ready, you will receive the following response:  
-  
-```
-  Setting a webhook configuration...
-error code: 400 #<Net::HTTPBadRequest:0x007ffe0f710f10>
-{"code"=>214, "message"=>"Webhook URL does not meet the requirements. Please consult: https://dev.twitter.com/webhooks/securing"}
-```  
-
-  + setup_webhooks.rb -t "list"
-
-```
-Retrieving webhook configurations...
-Webhook ID 890716673514258432 --> https://snowbotdev.herokuapp.com/snowbot
-```
-
-  + setup_webhooks.rb -t "delete" -i 883437804897931264 
-  
-```
-Attempting to delete configuration for webhook id: 883437804897931264.
-Webhook configuration for 883437804897931264 was successfully deleted.
-```
-
-
-### Adding Subscriptions to a Webhook ID
-
-  + setup_webhooks.rb -t "subscribe" -i webhook_id
-  
-```
-Setting subscription for 'host' account for webhook id: 890716673514258432
-Webhook subscription for 890716673514258432 was successfully added.
-```
-
-  + setup_webhooks.rb -t "unsubscribe" -i webhook_id
-  
-```
-Attempting to delete subscription for webhook: 890716673514258432.
-Webhook subscription for 890716673514258432 was successfully deleted.
-```
-
-  + setup_webhooks.rb -t "subscription" -i webhook_id
-  
-```
-Retrieving webhook subscriptions...
-Webhook subscription exists for 890716673514258432.
-```
-
-
-### Triggering CRC check 
-
-  + setup_webhooks.rb -t "crc"
-
-```
-Retrieving webhook configurations...
-204
-CRC request successful and webhook status set to valid.
-```
-
-If you receive a response saying the 'Webhook URL does not meet the requirements', make sure your web app is up and running. If you are using a cloud platform, make sure your app is not hibernating. 
-
-```
-Retrieving webhook configurations...
-Too Many Requests  - Rate limited...
-error: #<Net::HTTPTooManyRequests:0x007fc4239c1190>
-{"errors":[{"code":88,"message":"Rate limit exceeded."}]}
-Webhook URL does not meet the requirements. Please consult: https://dev.twitter.com/webhook/security
-```
-
-If you receive this message you'll need to wait to retry. The default rate limit is one request every 15 minutes. 
-
-require 'bundler'
-Bundler.require
-
-require File.expand_path('../snowbot/config/environment',  __FILE__)
-
-run SnowBotApp
-
-
-
-## Setting up Welcome Messages
-
-* *set_welcome_messages.rb* script that makes requests to the Twitter Direct Message API. 
-* Takes one or two command-line parameters. 
-
-```
-Usage: setup_welcome_message [options]
-    -w, --default WELCOME            Default Welcome Management: 'create', 'set', 'get', 'delete'
-    -r, --rule RULE                  Welcome Message Rule management: 'create', 'get', 'delete'
-    -i, --id ID                      Message or rule ID
-    -h, --help                       Display this screen.
-```
-
--w "create"
-
-```
-Creating Welcome Message...
-error code: 403 #<Net::HTTPForbidden:0x007ff29903f230>
-Errors occurred.
-{"code"=>151, "message"=>"There was an error sending your message: Field description is not present in all options."}
-```
-
-
-
-setup_welcome_message --w "set" -i 883450462757765123
-
-
-<What the story here? when one option did not have a description, this error is triggered:>
-
-
-
-
-
-setup_welcome_message -w "delete" -i 883450462757765123
-
-```
-Deleting Welcome Message with id: 883450462757765123.
-Deleted message id: 883450462757765123
-```
-
--w "get"
-
-```
-Getting welcome message list.
-Message IDs: 
-Message ID 890789035756503044 with message: ❄ Welcome to snowbot ❄ 
-Message ID 893578135685406724 with message: ❄ Welcome to snowbot ❄ 
-Message ID 893579774534209539 with message: ❄ Welcome to snowbot (ver. 0.02) ❄ 
-```
-
-Here we see some debris... The one with the versioned message is the current one, and the other two are early ones that can be deleted. Note that there are common use-cases where you need multiple welcome messages, such as a 'under maintenance' message. This is not such a use-case, so let's go ahead and delete the unwanted welcome messages.
-
--w "delete" -i 890789035756503044
-
-```
-Deleting Welcome Message with id: 890789035756503044.
-Deleted message id: 890789035756503044
-```
--w "delete" -i 893578135685406724
-
-```
-Deleting Welcome Message with id: 893578135685406724.
-Deleted message id: 893578135685406724
-```
-
-If you try to delete an unexisting Welcome Message ID: 
-
--w "get"
-
-```
-Getting welcome message list.
-Message IDs: 
-Message ID 893579774534209539 with message: ❄ Welcome to snowbot (ver. 0.02) ❄ 
-```
-
-### Setting the default Welcome Message
-
--r "get"
-
-```
-Getting welcome message rules list.
-No rules exist.
-```
-Setting the default Welcome Message
--w "set" -i 893579774534209539
-
-```
-Setting default Welcome Message to message with id 893579774534209539...
-```
-
--r "delete" -i 870397618781691904
-
-## Validate setup
