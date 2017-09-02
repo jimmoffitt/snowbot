@@ -414,12 +414,12 @@ class GenerateDirectMessageContent
   def generate_system_help(recipient_id)
 
 	  message_text = "Several commands are supported: \n \n" + 
-                "#{BOT_CHAR} 'home', 'main' ---> Main menu \n " + 
+                "#{BOT_CHAR} 'bot', 'home', 'main' ---> Main menu \n " +
                 "#{BOT_CHAR} 'photo', 'pic' --> See photo \n " + 
                 "#{BOT_CHAR} 'weather', 'wx' --> Get weather conditions \n "  +
 		            "#{BOT_CHAR} 'report', 'resort' --> Get resort snow report \n "  +
 		            "#{BOT_CHAR} 'learn', 'link' --> Learn about snow \n" +
-		            "#{BOT_CHAR} 'playlist' --> Get playlist \n" +
+		            "#{BOT_CHAR} 'playlist', 'music' --> Get playlist \n" +
 		            "#{BOT_CHAR} 'about' --> Learn about bot \n" +
 		            "#{BOT_CHAR} 'help' --> Review these commands \n"
 
@@ -452,25 +452,25 @@ class GenerateDirectMessageContent
 
 		option = {}
 		option['label'] = "#{BOT_CHAR} See snow picture"
-		option['description'] = 'Come on, take a look'
+		option['description'] = 'Come on, take a look...'
 		option['metadata'] = 'see_photo'
 		options << option
 		
 		option = {}
 		option['label'] = "#{BOT_CHAR} Weather data from anywhere"
-		option['description'] = 'Exact location or Place centroid'
+		option['description'] = 'Select an exact location or Twitter Place...'
 		option['metadata'] = 'weather_info'
 		options << option
 		
 		option = {}
 		option['label'] = "#{BOT_CHAR} Learn something new about snow"
-		option['description'] = 'Other than it melts around 32°F and is fun to slide on'
+		option['description'] = 'Other than it melts around 32°F and is fun to slide on...'
 		option['metadata'] = 'learn_snow'
 		options << option
 
 	  option = {}
-		option['label'] = "#{BOT_CHAR} Get a snow or rain themed playlist"
-		option['description'] = "'Sounds good.'"
+		option['label'] = "#{BOT_CHAR} Get a geo or weather themed playlist"
+		option['description'] = "Carefully curated Spotify playlists...'"
 		option['metadata'] = 'snow_music'
 		options << option
 
