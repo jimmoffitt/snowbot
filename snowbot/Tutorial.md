@@ -1,7 +1,6 @@
 # Tutorial: Building the snowbot
 #### Tags: DMAPI, AAAPI, Ruby, WebApp, Sinatra
 
-## Introduction
 # Introduction
 The purpose of this tutorial is to help developers get started with the Twitter Account Activity and Direct Message APIs. The material below is split into several pieces. Much of the narrative is language-agnostic, and includes many code examples written in Ruby. Since these code examples are very short and have comments, we can consider them as pseudo-code. Pseudo-code that hopefully illustrates fundamental concepts that are readily implemented in non-Ruby languages.
 
