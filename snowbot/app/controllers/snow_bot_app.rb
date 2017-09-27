@@ -26,7 +26,7 @@ class SnowBotApp < Sinatra::Base
 	end
 
 	get '/' do
-		'<p><b>Welcome to the snow bot...</b></p>
+		'<p><b>Welcome to the snowbot...</b></p>
      <p>I am a sinatra-based web app...</p>
      <p>I consume Twitter Account Activity webhook events and manage DM bot dialogs...</p>
      <p>I serve a local hive of snow photos, weather conditions, snow reports, snow research links... </p>
@@ -41,9 +41,9 @@ class SnowBotApp < Sinatra::Base
 
 		if not crc_token.nil?
 
-			puts "CRC event with #{crc_token}"
-			puts "headers: #{headers}"
-			puts headers['X-Twitter-Webhooks-Signature']
+			#puts "CRC event with #{crc_token}"
+			#puts "headers: #{headers}"
+			#puts headers['X-Twitter-Webhooks-Signature']
 
 			response = {}
 			response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
