@@ -31,7 +31,6 @@ If your web app is not running, or your CRC code is not quite ready, you will re
 error code: 400 #<Net::HTTPBadRequest:0x007ffe0f710f10>
 {"code"=>214, "message"=>"Webhook URL does not meet the requirements. Please consult: https://dev.twitter.com/webhooks/securing"}
 ```  
-
   + setup_webhooks.rb -t "list"
 
 ```

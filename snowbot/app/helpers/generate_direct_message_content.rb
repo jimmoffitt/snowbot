@@ -9,7 +9,7 @@ require_relative 'get_resources'        #Loads local resources used to present D
 
 class GenerateDirectMessageContent
 	
-  VERSION = 0.05
+  VERSION = 0.06
 	BOT_NAME = 'snowbot'
 	BOT_CHAR = '❄'
 
@@ -451,7 +451,7 @@ class GenerateDirectMessageContent
 		options = []
 
 		option = {}
-		option['label'] = "#{BOT_CHAR} See snow picture"
+		option['label'] = "#{BOT_CHAR} See snow picture 📷"
 		option['description'] = 'Come on, take a look...'
 		option['metadata'] = 'see_photo'
 		options << option
@@ -527,8 +527,8 @@ class GenerateDirectMessageContent
 	  options = []
 
 	  option = {}
-	  option['label'] = "#{BOT_CHAR} Another"
-	  option['description'] = 'Another snow photo'
+	  option['label'] = "#{BOT_CHAR} Another 📷 "
+	  option['description'] = '📷Another snow photo'
 	  option['metadata'] = "see_photo"
 	  options << option
 
@@ -544,7 +544,7 @@ class GenerateDirectMessageContent
 		options = []
 
 		option = {}
-		option['label'] = '<- Back'
+		option['label'] = '⬅ Back'
 		option['description'] = 'Previous list...' if description
 		option['metadata'] = "go_back #{type} "
 		

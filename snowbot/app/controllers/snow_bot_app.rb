@@ -21,7 +21,9 @@ class SnowBotApp < Sinatra::Base
 	set :title, 'SnowBot'
 
 	def generate_crc_response(consumer_secret, crc_token)
+		puts crc_token
 		hash = OpenSSL::HMAC.digest('sha256', consumer_secret, crc_token)
+		puts hash
 		return Base64.encode64(hash).strip!
 	end
 
@@ -41,9 +43,9 @@ class SnowBotApp < Sinatra::Base
 
 		if not crc_token.nil?
 
-			#puts "CRC event with #{crc_token}"
-			#puts "headers: #{headers}"
-			#puts headers['X-Twitter-Webhooks-Signature']
+			puts "CRC event with #{crc_token}"
+			puts "headers: #{headers}"
+			puts headers['X-Twitter-Webhooks-Signature']
 
 			response = {}
 			response['response_token'] = "sha256=#{generate_crc_response(settings.dm_api_consumer_secret, crc_token)}"
